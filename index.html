@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="src/images/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Hearthstone</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="src/stylesheets/animations.css">
+    <div id="victory">
+        <div id="victoryImg1"></div>
+        <div id="victoryImg2"></div>
+        <div id="victorylabel">Victory!</div>
+        <div id="victoryhint">Congratulations, you have finished the tutorial and have now unlocked "Play" mode!</div>
+    </div>
+    <div id="leftsideblock"></div>
+    <div id="rightsideblock"></div>
+    <div id="transitionblock"></div>
+</head>
+
+<div id="preventCORS">Click anywhere to continue...</div>
+<div id="load"></div>
+<button class="openbtn" onclick="showGameMenu()"><i class="fa fa-gear"></i></button>
+<span id="fps"></span>
+<span id="time"></span>
+<div class="gamemenu" id="gamemenu">
+    <div id="gamemenuContent">
+        <div id="gamemenuTitle">Game Menu</div>
+        <div id="border1" class="gamemenuTitleBorder"></div>
+        <div id="border2" class="gamemenuTitleBorder"></div>
+        <div id="line1"></div>
+        <div id="line2"></div>
+        <div id="darkborder1"></div>
+        <div id="circle1"></div>
+        <div id="circle2"></div>
+        <div id="silverborder1"></div>
+        <div id="goldborder1"></div>
+        <button id="concedebutton">Concede</button>
+        <div id="darkborder2"></div>
+        <div id="circle3"></div>
+        <div id="circle4"></div>
+        <div id="silverborder2"></div>
+        <div id="goldborder2"></div>
+        <button id="optionsbutton">Options</button>
+        <div id="darkborder3"></div>
+        <div id="circle5"></div>
+        <div id="circle6"></div>
+        <div id="silverborder3"></div>
+        <div id="goldborder3"></div>
+        <button id="quitbutton">Quit</button>
+        <div id="darkborder4"></div>
+        <div id="circle7"></div>
+        <div id="circle8"></div>
+        <div id="silverborder4"></div>
+        <div id="goldborder4"></div>
+        <button id="resumebutton">Resume</button>
+    </div>
+</div>
+<div class="optionsmenu" id="optionsmenu">
+    <div id="optionsmenuContent">
+        <h1 style="color: white; position: absolute; left: 68%; top: 0%;">Sound</h1>
+        <div style="position: absolute; left: 60%; top:10%;">
+            <h1 style="color: white;">Master Volume</h1><input type="range" id="volume-control">
+        </div>
+        <div style="position: absolute; left: 60%; top:28%;">
+            <h1 style="color: white;">Music Volume</h1><input type="range" id="volume-control">
+        </div>
+        <button id="togglefps"></button>
+        <h1 style="color: white; position: absolute; left: 15%; top: 65%;">Show FPS</h1>
+        <button id="togglescreenshake"></button>
+        <h1 id="enablescreenshake">Enable Screen Shake</h1>
+        <div id="optionsmenuTitle">Options</div>
+        <div id="border3" class="optionsmenuTitleBorder"></div>
+        <div id="border4" class="optionsmenuTitleBorder"></div>
+        <div id="line3"></div>
+        <div id="line4"></div>
+        <div id="darkborder5"></div>
+        <div id="circle9"></div>
+        <div id="circle10"></div>
+        <div id="silverborder5"></div>
+        <div id="goldborder5"></div>
+        <button id="miscellaneousbutton" draggable="false">Official Website</button>
+    </div>
+</div>
+<div class="shopmenu" id="shopmenu">
+    <div id="shopmenuContent">
+        <div id="cardpackimg"></div>
+        <div id="darkborder7"></div>
+        <div id="circle15"></div>
+        <div id="circle16"></div>
+        <div id="silverborder11"></div>
+        <div id="goldborder12"></div>
+        <button id="buybutton" draggable="false">100🪙 BUY</button>
+    </div>
+</div>
+<div class="tutorialmenu" id="tutorialmenu">
+    <div id="tutorialmenuContent">
+        <div id="tutorialmenuTitle">Defeat Hogger!</div>
+        <div id="border5" class="gamemenuTitleBorder"></div>
+        <div id="border6" class="gamemenuTitleBorder"></div>
+        <div id="hoggerposter"></div>
+        <div id="tutorialmenuhint">Play minions and use them<br>to attack Hogger.<br><br>Deal enough damage and<br>you
+            win!
+        </div>
+        <div id="darkborder10"></div>
+        <div id="circle11"></div>
+        <div id="circle12"></div>
+        <div id="silverborder10"></div>
+        <div id="goldborder10"></div>
+        <button id="starttutorialbutton">Start!</button>
+    </div>
+</div>
+<div id="contents">
+    <div id="vs"></div>
+    <span id="playerlabel">Jaina Proudmoore</span>
+    <span id="playerclasslabel">MAGE</span>
+    <span id="opponentlabel">The Lich King</span>
+
+    <body oncontextmenu="return false" id="body">
+        <div id="mainmenu" class="mainmenu">
+            <div id="myGoldBackground"></div>
+            <div id="myGold">0 🪙</div>
+            <div id="goldborder6"></div>
+            <button id="playbutton">Play</button>
+            <div id="goldborder7"></div>
+            <button id="tutorialbutton">Tutorial</button>
+            <div id="goldborder8"></div>
+            <button id="howtoplaybutton">How To Play</button>
+            <div id="goldborder9"></div>
+            <button id="maintenancebutton2" disabled>Under Maintenance</button>
+            <button id="openpacksbutton"></button>
+            <button id="shopbutton"></button>
+            <div id="myPacksBackground"></div>
+            <div id="myPacks">0</div>
+            <div id="blockmainmenu"></div>
+        </div>
+        <div id="game" class="game">
+            <div id="divineShield"></div>
+            <div id="texthint">Play a card onto the board.</div>
+            <div id="gifhint"></div>
+            <div id="triangle"></div>
+            <div id="hintbackbackground"></div>
+            <div id="hintbackground"></div>
+            <div id="hint">
+                <div id="hintlabel">Free hero!</div>
+            </div>
+            <div id="computerdamagecontainer">
+                <div id="computerdamagelabel"></div>
+                <div id="computerdamagevalue">-0</div>
+            </div>
+            <div id="playerdamagecontainer">
+                <div id="playerdamagelabel"></div>
+                <div id="playerdamagevalue">-0</div>
+            </div>
+            <div id="playerbubble">You asked<br>for it!</div>
+            <div id="computerbubble">You call that<br>wretched pile of<br>cards a deck?</div>
+            <canvas id='fireworkCanvas' width='1500' height='1000'
+                style="position:absolute; left: 10%; z-index: 10;"></canvas>
+            <canvas id='snowCanvas' width='1500' height='1000'
+                style="position:absolute; left: 3; top: -41%; z-index: 10;"></canvas>
+            <div class="bg-image"></div>
+            <div id="manacontainer">
+            </div>
+            <div id="collisionbox" class="collisionbox"></div>
+            <div class="enemycards">
+                <div class="enemycard"></div>
+                <div class="enemycard"></div>
+                <div class="enemycard"></div>
+                <div class="enemycard"></div>
+                <div class="enemycard"></div>
+            </div>
+            <div id="cards" class="cards">
+            </div>
+            <button id="confirm">Play</button>
+            <div class="computer-deck deck" id="computerDeck"></div>
+            <div class="computer-card-slot card-slot"></div>
+            <div class="player-deck deck" id="playerDeck"></div>
+            <div class="player-card-slot card-slot"></div>
+            <div id="board--opponent" class="board"></div>
+            <div class="opponenthero">
+                <div class="cardinplay" id="opposinghero">
+                    <div>
+                        <div></div>
+                    </div>
+                    <div>
+                        <div class="opposingHeroHealth">30</div>
+                    </div>
+                </div>
+            </div>
+            <div class="playerhero">
+                <div class="cardinplay" id="playerhero">
+                    <div></div>
+                    <div class="playerHeroHealth">30</div>
+                </div>
+            </div>
+            <button id="endturn">END TURN</button>
+            <div id="block"></div>
+            <div class="playerheropower">
+                <div class="cardinplay" id="playerheropower">
+                    <div>
+                        <div class="heroPowerAttack">1</div>
+                    </div>
+                    <div>
+                        <div class="heroPowerHealth">99999999</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mana" id="mana">1/1</div>
+            <div id="board--player" class="board"></div>
+            <video id="cinematicVideo">
+                <source src="src/media/introcinematic.mp4" type="video/mp4">
+            </video>
+            <!-- <button id="skipcinematicbtn">Skip ▶</button> -->
+        </div>
+</div>
+<div id="pkcollisionbox" class="pkcollisionbox"></div>
+<div id="openpacks">
+    <div id="darkborder6"></div>
+    <div id="circle13"></div>
+    <div id="circle14"></div>
+    <div id="silverborder6"></div>
+    <div id="goldborder11"></div>
+    <button id="backfrompackbtn">Back</button>
+    <div id="packOpenAnimElem"></div>
+</div>
+</div>
+<div id="containerOpenPack"></div>
+<button id="donepackbutton">Done</button>
+<div id="innercursor"></div>
+<div id="outercursor"></div>
+<div id="arrowcursor"></div>
+<svg id="svg" width="100%" height="100%">
+    <path id="svgpath" fill="none" stroke="#e82e12" stroke-width="40" stroke-dasharray="60,10" d="">
+</svg>
+</div>
+<div id="howtoplay"></div>
+<div id="computerTurn"></div>
+</body>
+</div>
+
+<script src="jquery-3.7.1.min.js"></script>
+<script src="jquery-ui-1.13.3.min.js"></script>
+<script src="src/scripts/attack.js"></script>
+<script type="module" src="index.js"></script>
+<script src="src/scripts/AI.js"></script>
+<script src="src/scripts/fps.js"></script>
+<script src="src/scripts/pack_handler.js"></script>
+<script src="src/scripts/elementsController.js"></script>
+<script src="src/scripts/load.js"></script>
+<script src="src/scripts/fireworks.js"></script>
+<script src="src/scripts/snow.js"></script>
+<script src="src/scripts/time.js"></script>
+<script src="src/scripts/window_focus.js"></script>
+<!-- <script src="src/scripts/testing.js"></script> -->
+<script>
+    function showGameMenu() {
+        document.getElementById("gamemenu").style.display = "block";
+        document.getElementById("gamemenuContent").style.display = "block";
+        document.getElementById("gamemenuContent").classList.add('openMenuAnim');
+        openmenuSnd.play();
+    }
+</script>
+</html>
