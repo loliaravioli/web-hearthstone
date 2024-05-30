@@ -111,10 +111,12 @@ function startGame(tutorial) {
         }
     });
 
-    $(`${playerBoardView.getElement().id}`).droppable({
+    $(`#${playerBoardView.getElement().id}`).droppable({
         accept: '.card',
         drop: function (event, ui) {
             console.log('dropped card onto board!');
+            playerBoardView.addCard(playerHandView.getCardView(0).getElement());
+            playerHandView.removeCard(0);
         }
     });
 }
@@ -138,7 +140,7 @@ function updateManaGUI() {
 /* end turn button when clicked plays an audio file and calls the 
 opponentTurn function then checks if the audio has been played yet and if not plays it and sets audioIsPlayed to false */
 document.getElementById("endturn").addEventListener("click", function () {
-    Audio("src/sounds/endturn.mp3").play();
+    (new Audio("src/sounds/endturn.mp3")).play();
     document.querySelector("#endturn").style.zIndex = "50";
     document.getElementById("gifhint").style.backgroundImage = "url('src/hints/attack.gif')";
     document.getElementById("texthint").innerText = "Click on an green glowing allied card then click on an enemy to attack.";

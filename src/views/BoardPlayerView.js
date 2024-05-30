@@ -11,13 +11,13 @@ export class BoardPlayerView {
         return document.getElementById('board--player');
     }
 
-    addMinion(minion, position) {
-        this.cardViews.splice(position, 0, MinionCardPlayerBoardView(minion));
-        this.board.addMinion(card, position);
+    addCard(card, position) {
+        this.cardViews.splice(position, 0, new MinionCardPlayerBoardView(card, position));
+        this.board.addCard(card, position);
         this.update();
     }
 
-    removeMinion(index) {
+    removeCard(index) {
         this.cardViews.splice(index, 1);
         this.board.removeCard(index);
         this.update();

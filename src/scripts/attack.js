@@ -190,9 +190,9 @@ function attack() {
 
         if (currentAttackersElement.classList.contains('player-cardinplay')) {
           if (currentAttackerAttack >= 5) {
-            Audio("src/sounds/bigattack.mp3").play();
+            (new Audio("src/sounds/bigattack.mp3")).play();
           } else {
-            Audio("src/sounds/attack.mp3").play();
+            (new Audio("src/sounds/attack.mp3")).play();
           }
         } else {
           heropowerSnd.play();
@@ -207,12 +207,12 @@ function attack() {
 
 function gameWon() {
   if (isTutorial) {
-    Audio("src/sounds/victorytutorial.mp3").play();
+    (new Audio("src/sounds/victorytutorial.mp3")).play();
     song.pause();
   } else {
     lichkingOST.pause();
     let myGold = Number(localStorage.getItem('myGold'));
-    Audio("src/sounds/victory.mp3").play();
+    (new Audio("src/sounds/victory.mp3")).play();
     myGold += 10; // number of gold earned per win
     localStorage.setItem('myGold', myGold.toString());
     // 20% or 1/5 chance of getting a pack on win

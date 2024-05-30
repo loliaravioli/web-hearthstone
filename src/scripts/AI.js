@@ -127,7 +127,7 @@ function AI() {
   }
 
   if (numOfOpponentCards >= 1) {
-    Audio("src/sounds/attack.mp3").play();
+    (new Audio("src/sounds/attack.mp3")).play();
   }
 
   for (let i = 0; i < numOfAlliedCards; i++) {

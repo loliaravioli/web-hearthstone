@@ -9,7 +9,7 @@ export class king_krush extends AbstractMinion {
         this.name = "King Krush";
         this.rarity = RARITY.LEGENDARY;
         this.info = "Charge";
-        this.image = "../../../../cardimages/king_krush.jpg";
+        this.image = "src/cardimages/king_krush.jpg";
         // this.playSound = new Audio("../../sounds/cardPlaceSnds/king_krush_play.mp3");
         this.tribe = TRIBE.BEAST;
 

@@ -179,7 +179,12 @@
             <div class="computer-card-slot card-slot"></div>
             <div class="player-deck deck" id="playerDeck"></div>
             <div class="player-card-slot card-slot"></div>
-            <div id="board--opponent" class="board"></div>
+
+            <div id="board_container">
+                <div id="board--opponent" class="board"></div>
+                <div id="board--player" class="board"></div>
+            </div>
+
             <div class="opponenthero">
                 <div class="cardinplay" id="opposinghero">
                     <div>
@@ -209,7 +214,6 @@
                 </div>
             </div>
             <div class="mana" id="mana">1/1</div>
-            <div id="board--player" class="board"></div>
             <video id="cinematicVideo">
                 <source src="src/media/introcinematic.mp4" type="video/mp4">
             </video>
@@ -254,7 +258,6 @@
 <script src="src/scripts/snow.js"></script>
 <script src="src/scripts/time.js"></script>
 <script src="src/scripts/window_focus.js"></script>
-<!-- <script src="src/scripts/testing.js"></script> -->
 <script>
     function showGameMenu() {
         document.getElementById("gamemenu").style.display = "block";
@@ -263,4 +266,5 @@
         openmenuSnd.play();
     }
 </script>
+
 </html>

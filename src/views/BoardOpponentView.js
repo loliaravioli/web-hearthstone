@@ -12,7 +12,7 @@ export class BoardOpponentView {
     }
 
     addMinion(minion, position) {
-        this.cardViews.splice(position, 0, MinionCardOpponentBoardView(minion));
+        this.cardViews.splice(position, 0, new MinionCardOpponentBoardView(minion, position));
         this.board.addMinion(card, position);
         this.update();
     }

@@ -11,6 +11,10 @@ export class HandPlayerView {
         return document.querySelector('.cards');
     }
 
+    getCardView(index) {
+        return this.cardViews[index];
+    }
+
     addCard(card) {
         this.cardViews.push(new MinionCardHandView(card));
         this.hand.addCard(card);

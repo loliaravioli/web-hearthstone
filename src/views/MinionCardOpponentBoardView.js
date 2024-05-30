@@ -1,7 +1,7 @@
 export class MinionCardOpponentBoardView {
     constructor(card) {
         this.card = card;
-        this.element = this.generateHTML();
+        this.element = this.generateElement(boardIndex);
         this.update();
     }
 
@@ -16,7 +16,7 @@ export class MinionCardOpponentBoardView {
             attackValue = document.createElement('div'),
             healthValue = document.createElement('div');
 
-        cardDiv.id = `cpuCardInPlay${id2}`;
+        cardDiv.id = `cpuCardInPlay${index}`;
 
         cardDiv.classList.add("cardinplay");
         cardDiv.classList.add("computer-cardinplay");
@@ -33,8 +33,6 @@ export class MinionCardOpponentBoardView {
         healthValueBackground.appendChild(healthValue);
 
         cardDiv.style.backgroundImage = "url('" + this.image + "')";
-
-        id2++;
 
         return cardDiv;
     }

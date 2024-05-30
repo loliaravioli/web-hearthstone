@@ -309,7 +309,7 @@ playbtn.onclick = function () {
         document.getElementById("playerclasslabel").style.visibility = "visible";
         document.getElementById("opponentlabel").style.visibility = "visible";
         document.getElementById("vs").style.visibility = "visible";
-        Audio("src/sounds/ongameload.mp3").play();
+        (new Audio("src/sounds/ongameload.mp3")).play();
         document.querySelector('.playerhero').classList.add("onLoadPlayerAnim");
         document.querySelector('.opponenthero').classList.add("onLoadComputerAnim");
         setTimeout(function () {

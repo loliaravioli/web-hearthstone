@@ -2,26 +2,26 @@
 
 export class Board {
     constructor() {
-        this.minions = [];
+        this.cards = [];
     }
 
     count() {
-        return this.minions.length;
+        return this.cards.length;
     }
 
     isFull() {
-        return this.minions.length == 7;
+        return this.cards.length == 7;
     }
 
     isEmpty() {
-        return this.minions.length == 0;
+        return this.cards.length == 0;
     }
 
-    addMinion(minion, position) {
-        this.minions.splice(position, 0, minion);
+    addCard(card, position) {
+        this.cards.splice(position, 0, card);
     }
 
-    removeMinion(position) {
-        this.minions.splice(position, 1);
+    removeCard(position) {
+        this.cards.splice(position, 1);
     }
 }

@@ -1,7 +1,7 @@
 export class MinionCardPlayerBoardView {
-    constructor(card) {
+    constructor(card, boardIndex) {
         this.card = card;
-        this.element = this.generateElement();
+        this.element = this.generateElement(boardIndex);
         this.update();
     }
 
@@ -9,14 +9,14 @@ export class MinionCardPlayerBoardView {
         return this.element;
     }
 
-    generateElement() {
+    generateElement(index) {
         const cardDiv = document.createElement('div'),
             attackValueBackground = document.createElement('div'),
             healthValueBackground = document.createElement('div'),
             attackValue = document.createElement('div'),
             healthValue = document.createElement('div');
 
-        cardDiv.id = `playerCardInPlay${id1}`;
+        cardDiv.id = `playerCardInPlay${index}`;
 
         cardDiv.classList.add("cardinplay");
         cardDiv.classList.add("computer-cardinplay");
@@ -33,8 +33,6 @@ export class MinionCardPlayerBoardView {
         healthValueBackground.appendChild(healthValue);
 
         cardDiv.style.backgroundImage = "url('" + this.image + "')";
-
-        id1++;
 
         return cardDiv;
     }

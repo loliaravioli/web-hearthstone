@@ -50,8 +50,8 @@ export class AbstractMinion extends AbstractCard {
     }
 
     triggerPlay() {
-        Audio(this.musicSound).play();
-        Audio(this.playSound).play();
+        (new Audio(this.musicSound)).play();
+        (new Audio(this.playSound)).play();
         // play this minion
         // overload?
         // combo?
@@ -60,13 +60,13 @@ export class AbstractMinion extends AbstractCard {
     }
 
     triggerDeath() {
-        Audio(this.deathSound).play();
+        (new Audio(this.deathSound)).play();
         // destroy this minion
         // trigger deathrattle?
     }
 
     triggerAttack() {
-        Audio(this.attackSound).play();
+        (new Audio(this.attackSound)).play();
         // attack with this minion
         // take damage
         // trigger enrage?
