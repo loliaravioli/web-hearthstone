@@ -11,8 +11,8 @@ export class HandPlayerView {
         return document.querySelector('.cards');
     }
 
-    getCardView(index) {
-        return this.cardViews[index];
+    getCard(index) {
+        return this.hand.getCard(index);
     }
 
     addCard(card) {

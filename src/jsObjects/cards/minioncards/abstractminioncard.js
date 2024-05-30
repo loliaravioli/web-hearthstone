@@ -6,6 +6,9 @@ export class AbstractMinion extends AbstractCard {
     constructor(mana, attack, health) {
         super();
         this.setDefaultValues();
+        this.attack = attack;
+        this.health = health;
+        this.mana = mana;
         this.baseAttack = attack;
         this.baseHealth = health;
         this.baseMana = mana;
@@ -15,10 +18,6 @@ export class AbstractMinion extends AbstractCard {
         this.isMinion = true;
 
         this.minionID = MINION_IDS.WISP;
-        this.attack = 0;
-        this.health = 1;
-        this.baseAttack = 0;
-        this.baseHealth = 1;
         this.tribe = TRIBE.NONE;
 
         this.deathSound = '';

@@ -7,14 +7,8 @@ export class Hand {
         return this.cards.length;
     }
 
-    getCard(id, index) {
-        currentIndex = 0;
-        this.cards.forEach(i => {
-            currentIndex++;
-            if(i.minionID === id && currentIndex === index) {
-                return i;
-            }
-        });
+    getCard(index) {
+        return this.cards[index];
     }
 
     addCard(card) {

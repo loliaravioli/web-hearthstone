@@ -6,6 +6,7 @@ import { BoardPlayerView } from './src/views/BoardPlayerView.js';
 import { DeckOpponentView } from './src/views/DeckOpponentView.js';
 import { DeckPlayerView } from './src/views/DeckPlayerView.js';
 import { HandPlayerView } from './src/views/HandPlayerView.js';
+import { MINION_IDS } from './src/jsObjects/cards/minioncards/abstractminioncard.js';
 
 // defines global variables
 // TODO: get rid of global variables. move this shit into separate relevant files/classes/objects
@@ -114,8 +115,7 @@ function startGame(tutorial) {
     $(`#${playerBoardView.getElement().id}`).droppable({
         accept: '.card',
         drop: function (event, ui) {
-            console.log('dropped card onto board!');
-            playerBoardView.addCard(playerHandView.getCardView(0).getElement());
+            playerBoardView.addCard(playerHandView.getCard(0), 0);
             playerHandView.removeCard(0);
         }
     });
