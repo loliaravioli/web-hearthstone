@@ -547,6 +547,12 @@ head {
 	max-width: 50%;
 	padding: 0;
 	z-index: 1;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+
+	gap: 24px;
 }
 
 #board--player {}
@@ -558,7 +564,6 @@ head {
 	background-size: cover;
 	background-repeat: no-repeat;
 	float: left;
-	margin: 0 auto;
 	transition: border 0.3s ease, box-shadow 0.3s ease;
 	border: solid 5px #735c4c;
 	border-radius: 100%;
