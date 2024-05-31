@@ -74,7 +74,7 @@ function startGame(tutorial) {
 
     inRound = false;
 
-    for (let i = 0; i < 3; i++) { // theoretically drawing three cards
+    for (let i = 0; i < 5; i++) { // theoretically drawing three cards
         playerHandView.addCard(playerDeckView.drawCard());
     }
 
@@ -115,8 +115,9 @@ function startGame(tutorial) {
     $(`#${playerBoardView.getElement().id}`).droppable({
         accept: '.card',
         drop: function (event, ui) {
-            playerBoardView.addCard(playerHandView.getCard(0), 0);
-            playerHandView.removeCard(0);
+            const droppedCard = ui.draggable;
+            playerBoardView.addCard(playerHandView.getCard(droppedCard.data('handIndex')), 0);
+            playerHandView.removeCard(droppedCard.data('handIndex'));
         }
     });
 }

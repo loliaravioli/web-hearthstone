@@ -16,7 +16,7 @@ export class HandPlayerView {
     }
 
     addCard(card) {
-        this.cardViews.push(new MinionCardHandView(card));
+        this.cardViews.push(new MinionCardHandView(card, this.cardViews.length));
         this.hand.addCard(card);
         this.update();
     }

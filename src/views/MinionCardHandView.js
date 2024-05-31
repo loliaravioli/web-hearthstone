@@ -1,6 +1,7 @@
 export class MinionCardHandView {
-    constructor(card) {
+    constructor(card, handIndex) {
         this.card = card;
+        this.handIndex = handIndex;
         this.playable = false;
         this.element = this.generateElement();
         this.update();
@@ -11,7 +12,7 @@ export class MinionCardHandView {
     }
 
     generateElement() {
-        const playerCardInHandDiv = document.createElement('div'),
+        const cardDiv = document.createElement('div'),
             playerCardFaceInHandDiv = document.createElement('div'),
             playerCardBorderInHandDiv = document.createElement('div'),
             playerAttackValueInHand = document.createElement('div'),
@@ -21,7 +22,9 @@ export class MinionCardHandView {
             playerNameValueInHand = document.createElement('div'),
             tutorialHintValueInHand = document.createElement('div');
 
-        playerCardInHandDiv.classList.add("card");
+        cardDiv.dataset.handIndex = this.handIndex;
+
+        cardDiv.classList.add("card");
         playerCardFaceInHandDiv.classList.add("card-face");
         playerCardBorderInHandDiv.classList.add("card-border");
         playerAttackValueInHand.classList.add("cardAttackValue");
@@ -31,7 +34,7 @@ export class MinionCardHandView {
         playerNameValueInHand.classList.add("cardNameValue");
         tutorialHintValueInHand.classList.add("cardtutorialhint");
 
-        playerCardInHandDiv.appendChild(playerCardFaceInHandDiv);
+        cardDiv.appendChild(playerCardFaceInHandDiv);
         playerCardFaceInHandDiv.appendChild(playerAttackValueInHand);
         playerCardFaceInHandDiv.appendChild(playerHealthValueInHand);
         playerCardFaceInHandDiv.appendChild(playerManaValueInHand);
@@ -47,7 +50,7 @@ export class MinionCardHandView {
         playerNameValueInHand.innerText = this.card.name;
         playerCardFaceInHandDiv.style.backgroundImage = "url('" + this.card.image + "')";
 
-        return playerCardInHandDiv;
+        return cardDiv;
     }
 
     update() {
@@ -56,8 +59,8 @@ export class MinionCardHandView {
         this.getElement().querySelector('.cardManaValue').innerText = this.card.mana;
 
         // if (this.playable) {
-            this.getElement().style.pointerEvents = "all";
-            this.getElement().children[0].children[4].style.border = "solid 4px #0FCC00";
+        this.getElement().style.pointerEvents = "all";
+        this.getElement().children[0].children[4].style.border = "solid 4px #0FCC00";
         // } else {
         //     this.getElement().style.pointerEvents = "none";
         //     this.getElement().children[0].children[4].style.border = "solid 4px rgb(56, 56, 56)";

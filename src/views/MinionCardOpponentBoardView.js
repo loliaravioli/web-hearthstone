@@ -17,6 +17,7 @@ export class MinionCardOpponentBoardView {
             healthValue = document.createElement('div');
 
         cardDiv.id = `cpuCardInPlay${index}`;
+        cardDiv.dataset.boardIndex = this.boardIndex;
 
         cardDiv.classList.add("cardinplay");
         cardDiv.classList.add("computer-cardinplay");

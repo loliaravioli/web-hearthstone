@@ -18,6 +18,7 @@ export class MinionCardPlayerBoardView {
             healthValue = document.createElement('div');
 
         cardDiv.id = `playerCardInPlay${this.boardIndex}`;
+        cardDiv.dataset.boardIndex = this.boardIndex;
 
         cardDiv.classList.add("cardinplay");
         cardDiv.classList.add("computer-cardinplay");
