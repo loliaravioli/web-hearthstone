@@ -84,6 +84,10 @@ function startGame(tutorial) {
 
     isTutorial = tutorial;
 
+    refreshCards();
+}
+
+function refreshCards() {
     $('.card').draggable({
         // snap: ,
         snapMode: 'inner',
@@ -120,6 +124,7 @@ function startGame(tutorial) {
             playerHandView.removeCard(droppedCard.data('handIndex'));
             document.getElementById("gifhint").style.display = "none";
             document.getElementById("texthint").style.display = "none";
+            refreshCards();
         }
     });
 }

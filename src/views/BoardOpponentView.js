@@ -11,22 +11,26 @@ export class BoardOpponentView {
         return document.getElementById('board--opponent');
     }
 
-    addMinion(minion, position) {
-        this.cardViews.splice(position, 0, new MinionCardOpponentBoardView(minion, position));
-        this.board.addMinion(card, position);
+    addCard(card, position) {
+        this.board.addCard(card, position);
         this.update();
     }
 
-    removeMinion(index) {
-        this.cardViews.splice(index, 1);
+    removeCard(index) {
         this.board.removeCard(index);
         this.update();
     }
 
     update() {
         this.getElement().replaceChildren();
-        this.cardViews.forEach(i => {
-            this.getElement().append(i.getElement());
+        this.cardViews = [];
+
+        let currentIndex = 0;
+        this.board.cards.forEach(i => {
+            const view = new MinionCardOpponentBoardView(i, currentIndex);
+            this.cardViews.push(view);
+            this.getElement().append(view.getElement());
+            currentIndex++;
         });
     }
 }

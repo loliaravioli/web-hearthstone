@@ -12,21 +12,25 @@ export class BoardPlayerView {
     }
 
     addCard(card, position) {
-        this.cardViews.splice(position, 0, new MinionCardPlayerBoardView(card, position));
         this.board.addCard(card, position);
         this.update();
     }
 
     removeCard(index) {
-        this.cardViews.splice(index, 1);
         this.board.removeCard(index);
         this.update();
     }
 
     update() {
         this.getElement().replaceChildren();
-        this.cardViews.forEach(i => {
-            this.getElement().append(i.getElement());
+        this.cardViews = [];
+
+        let currentIndex = 0;
+        this.board.cards.forEach(i => {
+            const view = new MinionCardPlayerBoardView(i, currentIndex);
+            this.cardViews.push(view);
+            this.getElement().append(view.getElement());
+            currentIndex++;
         });
     }
 }

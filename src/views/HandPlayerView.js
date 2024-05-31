@@ -16,21 +16,25 @@ export class HandPlayerView {
     }
 
     addCard(card) {
-        this.cardViews.push(new MinionCardHandView(card, this.cardViews.length));
         this.hand.addCard(card);
         this.update();
     }
 
     removeCard(index) {
-        this.cardViews.splice(index, 1);
         this.hand.removeCard(index);
         this.update();
     }
 
     update() {
         this.getElement().replaceChildren();
-        this.cardViews.forEach(i => {
-            this.getElement().append(i.getElement());
+        this.cardViews = [];
+
+        let currentIndex = 0;
+        this.hand.cards.forEach(i => {
+            const view = new MinionCardHandView(i, currentIndex);
+            this.cardViews.push(view);
+            this.getElement().append(view.getElement());
+            currentIndex++;
         });
     }
 }
