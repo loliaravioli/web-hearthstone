@@ -118,6 +118,8 @@ function startGame(tutorial) {
             const droppedCard = ui.draggable;
             playerBoardView.addCard(playerHandView.getCard(droppedCard.data('handIndex')), 0);
             playerHandView.removeCard(droppedCard.data('handIndex'));
+            document.getElementById("gifhint").style.display = "none";
+            document.getElementById("texthint").style.display = "none";
         }
     });
 }
@@ -148,14 +150,8 @@ document.getElementById("endturn").addEventListener("click", function () {
     opponentTurn();
 });
 
-/* defines new function that calls the getComputerHTML function from deck.js using the first card at the top of the computers' deck and appends as a child to 
-the computers board and uses the shift method to remove the first card in the array then proceeds to call both updateDeckCount and playerTurn functions. */
 function opponentTurn() {
     playersTurn = false;
-
-    for (let i = 0; i < playerBoard.count(); i++) {
-        playerBoard.htmlElement.children[i].style.boxShadow = "none";
-    }
 
     for (let i = 0; i < hand.count(); i++) {
         hand.children[i].children[0].children[4].style.border = "solid 4px rgb(56, 56, 56)";
@@ -180,10 +176,6 @@ function opponentTurn() {
 
             if (opponentCardsInPlay != maxOpponentCardsInPlay) {
                 computerCardPlace();
-                // to fix position of board GUI onclick
-                if (opponentCardsInPlay >= 0) {
-                    opponentBoard.htmlElement.style.transform = "translateY(17.5%)";
-                }
             }
 
             setTimeout(function () {
@@ -195,10 +187,6 @@ function opponentTurn() {
         setTimeout(function () {
             if (opponentBoard.count() != maxOpponentCardsInPlay) {
                 computerCardPlace();
-                // to fix position of board GUI onclick
-                if (opponentBoard.count() >= 0) {
-                    opponentBoard.htmlElement.style.transform = "translateY(17.5%)";
-                }
             }
 
             // then calls the player turn function allowing the player to play his turn
