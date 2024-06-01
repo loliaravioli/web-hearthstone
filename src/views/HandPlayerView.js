@@ -33,7 +33,7 @@ export class HandPlayerView {
         this.hand.cards.forEach(i => {
             const view = new MinionCardHandView(i, currentIndex);
             this.cardViews.push(view);
-            this.getElement().append(view.getElement());
+            this.getElement().appendChild(view.getElement());
             currentIndex++;
         });
     }

@@ -9,6 +9,6 @@ export class water_elemental extends AbstractMinion {
         this.name = "Water Elemental";
         this.rarity = RARITY.FREE;
         this.info = "Freeze any character damaged by this minion.";
-        this.image = "../../cardimages/water_elemental.jpg";
+        this.image = "water_elemental.jpg";
     }
 }

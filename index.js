@@ -89,30 +89,14 @@ function startGame(tutorial) {
 
 function refreshCards() {
     $('.card').draggable({
-        // snap: ,
-        snapMode: 'inner',
-        snapTolerance: 10,
         revert: 'invalid',
         containment: 'window',
-        start: function (event, ui) {
-            // ui.helper.css({
-            //     'z-index': parseInt(ui.helper.css('z-index')) + 1,
-            //     'box-shadow': '1px 1px 5px rgba(0, 0, 0, 0.35)',
-            //     'filter': ui.helper.hasClass(SWAP_TILE_CLASS) ? 'brightness(1.8) saturate(0.1)' : 'brightness(1.03)',
-            //     'background-image': ui.helper.hasClass(SWAP_TILE_CLASS) ? SWAP_TILE_IMAGE_URL : '',
-            //     'cursor': 'grabbing'
-            // });
-        },
-        stop: function (event, ui) {
-            // ui.helper
-            // .draggable('option', 'revert', 'invalid')
-            // .css({
-            //     'z-index': parseInt(ui.helper.css('z-index')) - 1,
-            //     'box-shadow': '',
-            //     'filter': '',
-            //     'background-image': ui.helper.hasClass(SWAP_TILE_CLASS) ? SWAP_TILE_IMAGE_URL : '',
-            //     'cursor': 'pointer'
-            // });
+        drag: function (event, ui) {
+            const draggable = $(this);
+            const offset = draggable.offset();
+            if (ui.helper.data('hovering-board')) {
+                playerBoardView.generatePlaceholder(offset.left + (draggable.width() / 2));
+            }
         }
     });
 
@@ -120,12 +104,16 @@ function refreshCards() {
         accept: '.card',
         drop: function (event, ui) {
             const droppedCard = ui.draggable;
-            playerBoardView.addCard(playerHandView.getCard(droppedCard.data('handIndex')), 0);
+            playerBoardView.addCard(playerHandView.getCard(droppedCard.data('handIndex')));
             playerHandView.removeCard(droppedCard.data('handIndex'));
             document.getElementById("gifhint").style.display = "none";
             document.getElementById("texthint").style.display = "none";
             refreshCards();
-        }
+        }, over: function (event, ui) {
+            ui.helper.data('hovering-board', true);
+        }, out: function (event, ui) {
+            ui.helper.data('hovering-board', false);
+        },
     });
 }
 

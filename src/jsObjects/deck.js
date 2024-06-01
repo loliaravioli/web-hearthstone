@@ -1,4 +1,5 @@
 import { king_krush } from './cards/minioncards/hunter/king_krush.js';
+import { water_elemental } from './cards/minioncards/mage/water_elemental.js';
 
 export class Deck {
 	constructor() {
@@ -23,12 +24,9 @@ export class Deck {
 	}
 
 	shuffle() {
-		for (let i = this.numberOfCards - 1; i > 0; i--) {
-			const newIndex = Math.floor(Math.random() * (i + 1));
-			const oldValue = this.cards[newIndex];
-
-			this.cards[newIndex] = this.cards[i];
-			this.cards[i] = oldValue;
+		for (let i = this.cards.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
 		}
 	}
 
@@ -49,32 +47,21 @@ export class Deck {
 			new king_krush(),
 			new king_krush(),
 			new king_krush(),
-			new king_krush(),
-			new king_krush(),
-			new king_krush(),
-			new king_krush(),
-			new king_krush(),
-			new king_krush(),
-			new king_krush(),
-			new king_krush(),
-			new king_krush(),
-			new king_krush(),
-			new king_krush(),
-			new king_krush(),
-			new king_krush(),
-			new king_krush(),
-			new king_krush(),
-			new king_krush(),
-			new king_krush(),
-			new king_krush(),
-			new king_krush(),
-			new king_krush(),
-			new king_krush(),
-			new king_krush(),
-			new king_krush(),
-			new king_krush(),
-			new king_krush(),
-			new king_krush()
+			new water_elemental(),
+			new water_elemental(),
+			new water_elemental(),
+			new water_elemental(),
+			new water_elemental(),
+			new water_elemental(),
+			new water_elemental(),
+			new water_elemental(),
+			new water_elemental(),
+			new water_elemental(),
+			new water_elemental(),
+			new water_elemental(),
+			new water_elemental(),
+			new water_elemental(),
+			new water_elemental()
 		]
 	}
 }

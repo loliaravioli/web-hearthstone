@@ -29,7 +29,7 @@ export class BoardOpponentView {
         this.board.cards.forEach(i => {
             const view = new MinionCardOpponentBoardView(i, currentIndex);
             this.cardViews.push(view);
-            this.getElement().append(view.getElement());
+            this.getElement().appendChild(view.getElement());
             currentIndex++;
         });
     }

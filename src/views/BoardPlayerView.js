@@ -4,6 +4,7 @@ export class BoardPlayerView {
     constructor(board) {
         this.board = board;
         this.cardViews = [];
+        this.placeholderIndex = -1;
         this.update();
     }
 
@@ -11,8 +12,9 @@ export class BoardPlayerView {
         return document.getElementById('board--player');
     }
 
-    addCard(card, position) {
-        this.board.addCard(card, position);
+    addCard(card) {
+        this.board.addCard(card, this.placeholderIndex);
+        this.placeholderIndex = -1;
         this.update();
     }
 
@@ -21,16 +23,50 @@ export class BoardPlayerView {
         this.update();
     }
 
+    generatePlaceholder(cardX) {
+        let cardsCount = this.cardViews.length;
+        for (let i = 0; i < cardsCount; i++) {
+            const element = this.cardViews[i].getElement();
+            const center = element.offsetLeft + (element.offsetWidth / 2);
+            if (cardX < center) {
+                if (i == this.placeholderIndex) {
+                    return;
+                }
+                this.placeholderIndex = i;
+                console.log('placeholderIndex=', this.placeholderIndex);
+                this.update();
+                return;
+            }
+        }
+
+        if (cardsCount == this.placeholderIndex) {
+            return;
+        }
+        this.placeholderIndex = cardsCount;
+        console.log('placeholderIndex=', this.placeholderIndex);
+        this.update();
+    }
+
     update() {
         this.getElement().replaceChildren();
         this.cardViews = [];
 
-        let currentIndex = 0;
-        this.board.cards.forEach(i => {
-            const view = new MinionCardPlayerBoardView(i, currentIndex);
+        if (this.placeholderIndex == 0) {
+            const placeholderCard = document.createElement('div');
+            placeholderCard.classList.add('cardinplay', 'card--placeholder', 'computer-cardinplay');
+            this.getElement().appendChild(placeholderCard);
+        }
+
+        for (let i = 0; i < this.board.cards.length; i++) {
+            const view = new MinionCardPlayerBoardView(this.board.cards[i], i);
             this.cardViews.push(view);
-            this.getElement().append(view.getElement());
-            currentIndex++;
-        });
+            this.getElement().appendChild(view.getElement());
+
+            if (i + 1 == this.placeholderIndex) {
+                const placeholderCard = document.createElement('div');
+                placeholderCard.classList.add('cardinplay', 'card--placeholder', 'computer-cardinplay');
+                this.getElement().appendChild(placeholderCard);
+            }
+        }
     }
 }

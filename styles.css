@@ -150,6 +150,10 @@ head {
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
+.card--placeholder {
+	visibility: hidden;
+}
+
 .card .cardtutorialhint {
 	display: none;
 }

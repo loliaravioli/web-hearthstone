@@ -21,7 +21,7 @@ export class MinionCardOpponentBoardView {
 
         cardDiv.classList.add("cardinplay");
         cardDiv.classList.add("computer-cardinplay");
-        cardDiv.classList.add('placeCardAnim');
+        // cardDiv.classList.add('placeCardAnim');
 
         attackValue.classList.add("attackValue");
         attackValueBackground.classList.add("attackValueBackground");
@@ -33,7 +33,7 @@ export class MinionCardOpponentBoardView {
         cardDiv.appendChild(healthValueBackground);
         healthValueBackground.appendChild(healthValue);
 
-        cardDiv.style.backgroundImage = "url('" + this.image + "')";
+        cardDiv.style.backgroundImage = "url('src/cardimages/" + this.image + "')";
 
         return cardDiv;
     }
