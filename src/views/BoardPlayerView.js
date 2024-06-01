@@ -30,9 +30,7 @@ export class BoardPlayerView {
     generatePlaceholder(cardX) {
         let cardsCount = this.cardViews.length;
         for (let i = 0; i < cardsCount; i++) {
-            const element = this.cardViews[i].getElement();
-            const center = element.offsetLeft + (element.offsetWidth / 2);
-            if (cardX < center) {
+            if (cardX < this.cardViews[i].getElementCenter().x) {
                 if (i == this.placeholderIndex) { return; }
 
                 this.placeholderIndex = i;
@@ -63,9 +61,9 @@ export class BoardPlayerView {
         }
 
         for (let i = 0; i < this.board.cards.length; i++) {
-            const view = new MinionCardPlayerBoardView(this.board.cards[i], i);
+            const view = new MinionCardPlayerBoardView(this.board.cards[i], i, this.getElement());
             this.cardViews.push(view);
-            this.getElement().appendChild(view.getElement());
+            view.render();
 
             if (i + 1 == this.placeholderIndex) {
                 const placeholderCard = document.createElement('div');

@@ -1,13 +1,26 @@
 export class MinionCardPlayerBoardView {
-    constructor(card, boardIndex) {
+    constructor(card, boardIndex, container) {
         this.card = card;
         this.boardIndex = boardIndex;
+        this.container = container;
+        this.elementCenterX = 0;
+        this.elementCenterY = 0;
         this.element = this.generateElement();
         this.update();
     }
 
     getElement() {
         return this.element;
+    }
+
+    getElementCenter() {
+        return { x: this.elementCenterX, y: this.elementCenterY };
+    }
+
+    render() {
+        this.container.appendChild(this.getElement());
+        this.elementCenterX = this.getElement().offsetLeft + (this.getElement().offsetWidth / 2);
+        this.elementCenterY = this.getElement().offsetTop + (this.getElement().offsetTop / 2);
     }
 
     generateElement() {
@@ -44,7 +57,7 @@ export class MinionCardPlayerBoardView {
             $('#outercursor').css('visibility', 'visible');
             $('#arrowcursor').css('visibility', 'visible');
             $('body').css('cursor', 'none');
-    
+
             $('body').on('mousemove', function (e2) {
                 let xDest = e2.clientX,
                     yDest = e2.clientY,
