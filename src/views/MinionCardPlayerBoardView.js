@@ -21,7 +21,7 @@ export class MinionCardPlayerBoardView {
         cardDiv.dataset.boardIndex = this.boardIndex;
 
         cardDiv.classList.add("cardinplay");
-        cardDiv.classList.add("computer-cardinplay");
+        cardDiv.classList.add("player-cardinplay");
         // cardDiv.classList.add('placeCardAnim');
 
         attackValue.classList.add("attackValue");
@@ -35,6 +35,25 @@ export class MinionCardPlayerBoardView {
         healthValueBackground.appendChild(healthValue);
 
         cardDiv.style.backgroundImage = "url('src/cardimages/" + this.card.image + "')";
+
+        $(cardDiv).on('mousedown', function (e) {
+            let xOrigin = e.clientX,
+                yOrigin = e.clientY;
+            $('#svg').show();
+            $('#innercursor').css('visibility', 'visible');
+            $('#outercursor').css('visibility', 'visible');
+            $('#arrowcursor').css('visibility', 'visible');
+            $('body').css('cursor', 'none');
+    
+            $('body').on('mousemove', function (e2) {
+                let xDest = e2.clientX,
+                    yDest = e2.clientY,
+                    angleDeg = Math.atan2(yDest - yOrigin, xDest - xOrigin) * 180 / Math.PI,
+                    deg = angleDeg + 90;
+                $('#arrowcursor').css('transform', 'rotate(' + deg + 'deg) translate(-50%,-110%)');
+                $('#svgpath').attr('d', 'M' + xDest + ',' + yDest + ' ' + xOrigin + ',' + yOrigin);
+            });
+        });
 
         return cardDiv;
     }

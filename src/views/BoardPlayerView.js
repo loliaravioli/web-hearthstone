@@ -13,8 +13,12 @@ export class BoardPlayerView {
     }
 
     addCard(card) {
-        this.board.addCard(card, this.placeholderIndex);
-        this.placeholderIndex = -1;
+        if(this.placeholderIndex == -1) {
+            this.board.addCard(card, 0);
+        } else {
+            this.board.addCard(card, this.placeholderIndex);
+            this.placeholderIndex = -1;
+        }
         this.update();
     }
 
@@ -48,13 +52,13 @@ export class BoardPlayerView {
         this.update();
     }
 
-    update() {
+    update() { // TODO: add another "soft update" method that gets called for the placeholder slot
         this.getElement().replaceChildren();
         this.cardViews = [];
 
         if (this.placeholderIndex == 0) {
             const placeholderCard = document.createElement('div');
-            placeholderCard.classList.add('cardinplay', 'card--placeholder', 'computer-cardinplay');
+            placeholderCard.classList.add('cardinplay', 'card--placeholder', 'player-cardinplay');
             this.getElement().appendChild(placeholderCard);
         }
 
@@ -65,7 +69,7 @@ export class BoardPlayerView {
 
             if (i + 1 == this.placeholderIndex) {
                 const placeholderCard = document.createElement('div');
-                placeholderCard.classList.add('cardinplay', 'card--placeholder', 'computer-cardinplay');
+                placeholderCard.classList.add('cardinplay', 'card--placeholder', 'player-cardinplay');
                 this.getElement().appendChild(placeholderCard);
             }
         }
