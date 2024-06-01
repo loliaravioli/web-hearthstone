@@ -47,6 +47,11 @@ export class BoardPlayerView {
         this.update();
     }
 
+    removePlaceholder() {
+        this.placeholderIndex = -1;
+        this.update();
+    }
+
     update() {
         this.getElement().replaceChildren();
         this.cardViews = [];

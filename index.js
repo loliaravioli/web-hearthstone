@@ -89,15 +89,17 @@ function startGame(tutorial) {
 
 function refreshCards() {
     $('.card').draggable({
-        revert: 'invalid',
         containment: 'window',
-        drag: function (event, ui) {
+        revert: function (valid) {
+            playerBoardView.removePlaceholder();
+            return !valid;
+        }, drag: function (event, ui) {
             const draggable = $(this);
             const offset = draggable.offset();
             if (ui.helper.data('hovering-board')) {
                 playerBoardView.generatePlaceholder(offset.left + (draggable.width() / 2));
             }
-        }
+        },
     });
 
     $(`#${playerBoardView.getElement().id}`).droppable({
