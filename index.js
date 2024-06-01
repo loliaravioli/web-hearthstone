@@ -74,7 +74,7 @@ function startGame(tutorial) {
 
     inRound = false;
 
-    for (let i = 0; i < 5; i++) { // theoretically drawing three cards
+    for (let i = 0; i < 5; i++) {
         playerHandView.addCard(playerDeckView.drawCard());
     }
 
@@ -84,25 +84,23 @@ function startGame(tutorial) {
 
     isTutorial = tutorial;
 
-    refreshCards();
+    refreshElements();
 }
 
-function refreshCards() {
+function refreshElements() {
     $('.card').draggable({
         containment: 'window',
         revert: function (valid) {
             playerBoardView.removePlaceholder();
             return !valid;
-        }, drag: function (event, ui) {
-            const draggable = $(this);
-            const offset = draggable.offset();
+        }, drag: throttle(function (event, ui) {
             if (ui.helper.data('hovering-board')) {
-                playerBoardView.generatePlaceholder(offset.left + (draggable.width() / 2));
+                playerBoardView.generatePlaceholder(ui.helper.offset().left + (ui.helper.width() / 2));
             }
-        },
+        }, 50)
     });
 
-    $(`#${playerBoardView.getElement().id}`).droppable({
+    $('#board--player').droppable({
         accept: '.card',
         drop: function (event, ui) {
             const droppedCard = ui.draggable;
@@ -110,13 +108,32 @@ function refreshCards() {
             playerHandView.removeCard(droppedCard.data('handIndex'));
             document.getElementById("gifhint").style.display = "none";
             document.getElementById("texthint").style.display = "none";
-            refreshCards();
+            refreshElements();
         }, over: function (event, ui) {
             ui.helper.data('hovering-board', true);
         }, out: function (event, ui) {
             ui.helper.data('hovering-board', false);
         },
     });
+}
+
+function throttle(func, limit) {
+    let lastFunc;
+    let lastRan;
+    return function (...args) {
+        if (!lastRan) {
+            func.apply(this, args);
+            lastRan = Date.now();
+        } else {
+            clearTimeout(lastFunc);
+            lastFunc = setTimeout(function () {
+                if ((Date.now() - lastRan) >= limit) {
+                    func.apply(this, args);
+                    lastRan = Date.now();
+                }
+            }, limit - (Date.now() - lastRan));
+        }
+    };
 }
 
 /* updates the mana GUI at the bottom left of the screen

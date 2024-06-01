@@ -29,21 +29,17 @@ export class BoardPlayerView {
             const element = this.cardViews[i].getElement();
             const center = element.offsetLeft + (element.offsetWidth / 2);
             if (cardX < center) {
-                if (i == this.placeholderIndex) {
-                    return;
-                }
+                if (i == this.placeholderIndex) { return; }
+
                 this.placeholderIndex = i;
-                console.log('placeholderIndex=', this.placeholderIndex);
                 this.update();
                 return;
             }
         }
 
-        if (cardsCount == this.placeholderIndex) {
-            return;
-        }
+        if (cardsCount == this.placeholderIndex) { return; }
+
         this.placeholderIndex = cardsCount;
-        console.log('placeholderIndex=', this.placeholderIndex);
         this.update();
     }
 
