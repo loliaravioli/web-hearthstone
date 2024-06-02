@@ -1,3 +1,5 @@
+import { AttackEvent } from "../jsObjects/attackEvent.js";
+
 export class MinionCardPlayerBoardView {
     constructor(card, boardIndex, container) {
         this.card = card;
@@ -6,6 +8,7 @@ export class MinionCardPlayerBoardView {
         this.elementCenterX = 0;
         this.elementCenterY = 0;
         this.element = this.generateElement();
+        this.attackEvent = null;
         this.update();
     }
 
@@ -19,8 +22,9 @@ export class MinionCardPlayerBoardView {
 
     render() {
         this.container.appendChild(this.getElement());
-        this.elementCenterX = this.getElement().offsetLeft + (this.getElement().offsetWidth / 2);
-        this.elementCenterY = this.getElement().offsetTop + (this.getElement().offsetTop / 2);
+        const rect = this.getElement().getBoundingClientRect();
+        this.elementCenterX = rect.left + rect.width / 2;
+        this.elementCenterY = rect.top + rect.height / 2;
     }
 
     generateElement() {
@@ -49,24 +53,11 @@ export class MinionCardPlayerBoardView {
 
         cardDiv.style.backgroundImage = "url('src/cardimages/" + this.card.image + "')";
 
-        $(cardDiv).on('mousedown', function (e) {
-            let xOrigin = e.clientX,
-                yOrigin = e.clientY;
-            $('#svg').show();
-            $('#innercursor').css('visibility', 'visible');
-            $('#outercursor').css('visibility', 'visible');
-            $('#arrowcursor').css('visibility', 'visible');
-            $('body').css('cursor', 'none');
-
-            $('body').on('mousemove', function (e2) {
-                let xDest = e2.clientX,
-                    yDest = e2.clientY,
-                    angleDeg = Math.atan2(yDest - yOrigin, xDest - xOrigin) * 180 / Math.PI,
-                    deg = angleDeg + 90;
-                $('#arrowcursor').css('transform', 'rotate(' + deg + 'deg) translate(-50%,-110%)');
-                $('#svgpath').attr('d', 'M' + xDest + ',' + yDest + ' ' + xOrigin + ',' + yOrigin);
-            });
-        });
+        cardDiv.onmousedown = (e) => {
+            e.preventDefault();
+            this.attackEvent = new AttackEvent();
+            this.attackEvent.setAttacker(this);
+        };
 
         return cardDiv;
     }

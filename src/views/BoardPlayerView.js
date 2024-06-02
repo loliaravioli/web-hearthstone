@@ -13,7 +13,7 @@ export class BoardPlayerView {
     }
 
     addCard(card) {
-        if(this.placeholderIndex == -1) {
+        if (this.placeholderIndex == -1) {
             this.board.addCard(card, 0);
         } else {
             this.board.addCard(card, this.placeholderIndex);
@@ -28,6 +28,7 @@ export class BoardPlayerView {
     }
 
     generatePlaceholder(cardX) {
+        if (this.cardViews.length == 0) { return; }
         let cardsCount = this.cardViews.length;
         for (let i = 0; i < cardsCount; i++) {
             if (cardX < this.cardViews[i].getElementCenter().x) {
@@ -51,7 +52,7 @@ export class BoardPlayerView {
     }
 
     update() { // TODO: add another "soft update" method that gets called for the placeholder slot
-        this.getElement().replaceChildren();
+        $('.player-cardinplay').remove();
         this.cardViews = [];
 
         if (this.placeholderIndex == 0) {

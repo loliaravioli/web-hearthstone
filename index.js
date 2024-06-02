@@ -93,7 +93,7 @@ function refreshElements() {
         revert: function (valid) {
             playerBoardView.removePlaceholder();
             return !valid;
-        }, drag: throttle(function (event, ui) {
+        }, drag: throttle(function (event, ui) { // TODO: fix glitch where placeholder slot will remain even after dropping card
             if (ui.helper.data('hovering-board')) {
                 playerBoardView.generatePlaceholder(ui.helper.offset().left + (ui.helper.width() / 2));
             }
@@ -103,6 +103,7 @@ function refreshElements() {
     $('#board--player').droppable({
         accept: '.card',
         drop: function (event, ui) {
+            ui.helper.data('hovering-board', false);
             const droppedCard = ui.draggable;
             playerBoardView.addCard(playerHandView.getCard(droppedCard.data('handIndex')));
             playerHandView.removeCard(droppedCard.data('handIndex'));
