@@ -6,20 +6,15 @@ import { BoardPlayerView } from './src/views/BoardPlayerView.js';
 import { DeckOpponentView } from './src/views/DeckOpponentView.js';
 import { DeckPlayerView } from './src/views/DeckPlayerView.js';
 import { HandPlayerView } from './src/views/HandPlayerView.js';
-import { MINION_IDS } from './src/jsObjects/cards/minioncards/abstractminioncard.js';
+import { AttackController } from './src/jsObjects/attackController.js';
 
 // defines global variables
 // TODO: get rid of global variables. move this shit into separate relevant files/classes/objects
-let iElements = null,
-    currentAttacker = null,
-    manaCost = null,
-    collision = new Boolean(false),
-    canAttack = new Boolean(false),
+let manaCost = null,
     playersTurn = new Boolean(false),
     alreadyMocked = new Boolean(false),
     gameIsWon = new Boolean(false),
     isTutorial = new Boolean(false),
-    tauntExists = new Boolean(false),
     isScreenShake = new Boolean(true),
     manaCapacity = 1,
     mana = manaCapacity,
@@ -28,11 +23,6 @@ let iElements = null,
     jobsdoneSnd = new Audio("src/voiceovers/innkeeper_jobs_done.mp3"),
     playerturnSnd = new Audio("src/sounds/playerturn.mp3"),
     heropowerSnd = new Audio("src/sounds/heropower.mp3"),
-    amount = 0,
-    oldNumOfChild = 0,
-    playerHandArray = [],
-    getNameOfElement = "",
-    originalDeck,
     playerDeck,
     computerDeck,
     playerDeckView,
@@ -43,18 +33,12 @@ let iElements = null,
     opponentHand,
     playerHandView,
     opponentHandView,
+    attackController,
     hand = new Hand(),
     inRound;
 
 const opponentBoard = new Board(),
     playerBoard = new Board(),
-    svg = document.getElementById('svg'),
-    svgpath = document.getElementById('svgpath'),
-    body = document.getElementById('body'),
-    playerHero = document.getElementById('playerhero'),
-    cpuHero = document.getElementById('opposinghero'),
-    cardinplay = document.getElementsByClassName('cardinplay'),
-    collisionbox = document.getElementById("collisionbox"),
     cardsInHand = document.getElementsByClassName("card"),
     manaElement = document.getElementById('mana'),
     screenshakebtn = document.getElementById('togglescreenshake');
@@ -71,6 +55,8 @@ function startGame(tutorial) {
 
     playerBoardView = new BoardPlayerView(playerBoard);
     opponentBoardView = new BoardOpponentView(opponentBoard);
+
+    attackController = new AttackController(playerBoardView, opponentBoardView);
 
     inRound = false;
 
@@ -118,6 +104,8 @@ function refreshElements() {
     });
 }
 
+// certain events trigger every millisecond (e.g. onmousemove)
+// use this method to make them only trigger every x milliseconds to improve performance
 function throttle(func, limit) {
     let lastFunc;
     let lastRan;

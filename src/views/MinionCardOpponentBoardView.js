@@ -1,7 +1,9 @@
 export class MinionCardOpponentBoardView {
-    constructor(card) {
+    constructor(card, boardIndex, container) {
         this.card = card;
-        this.element = this.generateElement(boardIndex);
+        this.boardIndex = boardIndex;
+        this.container = container;
+        this.element = this.generateElement();
         this.update();
     }
 
@@ -16,7 +18,7 @@ export class MinionCardOpponentBoardView {
             attackValue = document.createElement('div'),
             healthValue = document.createElement('div');
 
-        cardDiv.id = `cpuCardInPlay${index}`;
+        cardDiv.id = `cpuCardInPlay${this.boardIndex}`;
         cardDiv.dataset.boardIndex = this.boardIndex;
 
         cardDiv.classList.add("cardinplay");
@@ -33,14 +35,14 @@ export class MinionCardOpponentBoardView {
         cardDiv.appendChild(healthValueBackground);
         healthValueBackground.appendChild(healthValue);
 
-        cardDiv.style.backgroundImage = "url('src/cardimages/" + this.image + "')";
+        cardDiv.style.backgroundImage = "url('src/cardimages/" + this.card.image + "')";
 
         return cardDiv;
     }
 
     update() {
-        this.getElement().querySelector('.attackValue').innerText = this.attack;
-        this.getElement().querySelector('.healthValue').innerText = this.health;
+        this.getElement().querySelector('.attackValue').innerText = this.card.attack;
+        this.getElement().querySelector('.healthValue').innerText = this.card.health;
 
         // also update mana
         // this.element.querySelector('.attackValue').innerText = this.attack;

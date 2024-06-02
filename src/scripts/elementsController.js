@@ -94,7 +94,7 @@ let concedebtn = document.querySelector('#concedebutton'),
     starttutorialbtn = document.querySelector('#starttutorialbutton'),
     backfrompackbtn = document.querySelector('#backfrompackbtn'),
     donepackbtn = document.querySelector('#donepackbutton');
-    // skipcinematicbtn = document.querySelector('#skipcinematicbtn');
+// skipcinematicbtn = document.querySelector('#skipcinematicbtn');
 
 concedebtn.addEventListener('mouseover', function () {
     menuhoverSnd.play();
@@ -135,7 +135,6 @@ shopbtn.addEventListener('mouseover', function () {
 buybtn.addEventListener('mouseover', function () {
     menuhoverSnd.play();
 })
-
 
 concedebtn.onclick = function () {
     openmenuSnd.play()
@@ -757,9 +756,8 @@ donepackbtn.onclick = function () {
     }
 }
 
-const targetDiv = document.getElementById("fps"),
-    fpsbtn = document.getElementById('togglefps')
-fpsbtn.onclick = function () {
+const targetDiv = document.getElementById("fps");
+document.getElementById('togglefps').onclick = function () {
     if (targetDiv.style.display !== "none") {
         targetDiv.style.display = "none";
     } else {
@@ -836,35 +834,35 @@ preventCORSbtn.onclick = function () {
 }
 // button to skip the cinematic for the tutorial
 // skipcinematicbtn.onclick = function () {
-    // tutorialIntroRunning = true;
-    // document.getElementById("skipcinematicbtn").style.display = "none";
-    // let cinematicvideo = document.getElementById("cinematicVideo");
-    // cinematicvideo.pause();
-    // cinematicvideo.style.display = "none";
-    // document.querySelector(".playerhero").style.visibility = "hidden";
-    // document.querySelector(".opponenthero").style.visibility = "hidden";
-    // document.querySelector(".opponenthero").style.backgroundImage = "url(src/images/hogger.png)";
-    // document.querySelector('#endturn').style.zIndex = "10";
-    // document.querySelector(".playerhero").style.zIndex = "20";
-    // document.querySelector(".opponenthero").style.zIndex = "5";
-    // document.getElementById('transitionblock').style.visibility = "visible";
-    // document.getElementById("block").style.visibility = "visible";
-    // document.querySelector('#endturn').style.zIndex = "9";
-    // setTimeout(function () {
-    //     document.getElementById('transitionblock').classList.add("fadeInAnim");
-    //     document.getElementById('transitionblock').classList.add("fadeOutAnim");
-    //     setTimeout(function () {
-    //         document.getElementById('transitionblock').style.visibility = "hidden";
-    //         document.querySelector('#triangle').style.visibility = "visible";
-    //         document.querySelector('#hintbackbackground').style.visibility = "visible";
-    //         document.querySelector('#hintbackground').style.visibility = "visible";
-    //         document.querySelector('#hint').style.visibility = "visible";
-    //         document.querySelector('#triangle').classList.add("triangleOpenMenuAnim");
-    //         document.querySelector('#hintbackbackground').classList.add("openMenuAnim");
-    //         document.querySelector('#hintbackground').classList.add("openMenuAnim");
-    //         document.querySelector('#hint').classList.add("openMenuAnim");
-    //     }, 1 * 1000);
-    // }, 1 * 1000);
+// tutorialIntroRunning = true;
+// document.getElementById("skipcinematicbtn").style.display = "none";
+// let cinematicvideo = document.getElementById("cinematicVideo");
+// cinematicvideo.pause();
+// cinematicvideo.style.display = "none";
+// document.querySelector(".playerhero").style.visibility = "hidden";
+// document.querySelector(".opponenthero").style.visibility = "hidden";
+// document.querySelector(".opponenthero").style.backgroundImage = "url(src/images/hogger.png)";
+// document.querySelector('#endturn').style.zIndex = "10";
+// document.querySelector(".playerhero").style.zIndex = "20";
+// document.querySelector(".opponenthero").style.zIndex = "5";
+// document.getElementById('transitionblock').style.visibility = "visible";
+// document.getElementById("block").style.visibility = "visible";
+// document.querySelector('#endturn').style.zIndex = "9";
+// setTimeout(function () {
+//     document.getElementById('transitionblock').classList.add("fadeInAnim");
+//     document.getElementById('transitionblock').classList.add("fadeOutAnim");
+//     setTimeout(function () {
+//         document.getElementById('transitionblock').style.visibility = "hidden";
+//         document.querySelector('#triangle').style.visibility = "visible";
+//         document.querySelector('#hintbackbackground').style.visibility = "visible";
+//         document.querySelector('#hintbackground').style.visibility = "visible";
+//         document.querySelector('#hint').style.visibility = "visible";
+//         document.querySelector('#triangle').classList.add("triangleOpenMenuAnim");
+//         document.querySelector('#hintbackbackground').classList.add("openMenuAnim");
+//         document.querySelector('#hintbackground').classList.add("openMenuAnim");
+//         document.querySelector('#hint').classList.add("openMenuAnim");
+//     }, 1 * 1000);
+// }, 1 * 1000);
 // };
 
 // custom cursor when attacking with the use of svg
@@ -885,4 +883,3 @@ const onMouseTriangleMove = (e) => {
     document.getElementById('arrowcursor').style.top = e.pageY + 'px';
 }
 document.addEventListener('mousemove', onMouseTriangleMove);
-
