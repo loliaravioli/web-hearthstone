@@ -213,21 +213,23 @@ function opponentTurn() {
 /* places a card onto the computers board whose mana is equal 
 to the player's mana capacity */
 function computerCardPlace() {
-    for (let i = 0; i < computerDeck.cards.length; i++) {
-        if (computerDeck.cards[i]['mana'] == manaCapacity) {
-            opponentBoard.insertCard(computerDeck.cards[i]);
-            // let index = computerDeck.cards.indexOf(i);
-            // cardplaceSnd.play();
-            break;
-            /* if the player's mana capacity is at the maxiumum (10) then 
-            plays the card at the top of the computer's deck */
-        } else if (manaCapacity == 10) {
-            opponentBoard.insertCard(computerDeck.topCard());
-            break;
-        }
-    }
-    // removes the card that was placed from the deck
-    computerDeck.cards.splice(index, 1);
+    opponentBoardView.addCard(computerDeck.drawCard());
+
+    // for (let i = 0; i < computerDeck.count(); i++) {
+    //     if (computerDeck.cards[i]['mana'] == manaCapacity) {
+    //         opponentBoard.insertCard(computerDeck.cards[i]);
+    //         // let index = computerDeck.cards.indexOf(i);
+    //         // cardplaceSnd.play();
+    //         break;
+    //         /* if the player's mana capacity is at the maxiumum (10) then 
+    //         plays the card at the top of the computer's deck */
+    //     } else if (manaCapacity == 10) {
+    //         opponentBoard.insertCard(computerDeck.topCard());
+    //         break;
+    //     }
+    // }
+    // // removes the card that was placed from the deck
+    // computerDeck.cards.splice(index, 1);
 }
 
 /* the player turn function allows the player to place cards and attack 

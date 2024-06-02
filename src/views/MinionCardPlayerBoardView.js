@@ -1,32 +1,16 @@
-import { AttackEvent } from "../jsObjects/attackEvent.js";
-
 export class MinionCardPlayerBoardView {
     constructor(card, boardIndex, container) {
         this.card = card;
         this.boardIndex = boardIndex;
         this.container = container;
-        this.elementCenterX = 0;
-        this.elementCenterY = 0;
         this.element = this.generateElement();
-        this.attackEvent = null;
         this.update();
     }
 
     getElement() {
         return this.element;
     }
-
-    getElementCenter() {
-        return { x: this.elementCenterX, y: this.elementCenterY };
-    }
-
-    render() {
-        this.container.appendChild(this.getElement());
-        const rect = this.getElement().getBoundingClientRect();
-        this.elementCenterX = rect.left + rect.width / 2;
-        this.elementCenterY = rect.top + rect.height / 2;
-    }
-
+    
     generateElement() {
         const cardDiv = document.createElement('div'),
             attackValueBackground = document.createElement('div'),
@@ -52,12 +36,6 @@ export class MinionCardPlayerBoardView {
         healthValueBackground.appendChild(healthValue);
 
         cardDiv.style.backgroundImage = "url('src/cardimages/" + this.card.image + "')";
-
-        cardDiv.onmousedown = (e) => {
-            e.preventDefault();
-            this.attackEvent = new AttackEvent();
-            this.attackEvent.setAttacker(this);
-        };
 
         return cardDiv;
     }
