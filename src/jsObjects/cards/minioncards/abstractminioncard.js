@@ -76,6 +76,7 @@ export class AbstractMinion extends AbstractCard {
         if (this.health < 1) {
             // trigger death
         }
+        return this.health < 1;
     }
 }
 

@@ -3,9 +3,9 @@ export class AttackController {
         this.playerBoardView = playerBoardView;
         this.opponentBoardView = opponentBoardView;
 
-         // HTML dom elements, not views or objects
-         // use .dataSet.boardIndex or id to distinguish them
-        this.draggedCard = null;
+        // HTML dom elements, not views or objects
+        // use .dataSet.boardIndex or id to distinguish them
+        this.attackerCard = null;
         this.targetCard = null;
 
         this.playerBoardView.getElement().addEventListener('mousedown', (e) => this.onDragStart(e));
@@ -18,9 +18,9 @@ export class AttackController {
     onDragStart(event) {
         event.preventDefault();
         if (event.target.classList.contains('player-cardinplay')) {
-            this.draggedCard = event.target;
+            this.attackerCard = event.target;
 
-            const rect = this.draggedCard.getBoundingClientRect();
+            const rect = this.attackerCard.getBoundingClientRect();
             const x = rect.left + (rect.width / 2),
                 y = rect.top + (rect.height / 2);
 
@@ -44,8 +44,8 @@ export class AttackController {
         event.preventDefault();
         if (event.target.classList.contains('computer-cardinplay')) {
             this.targetCard = event.target;
-            
-            if (this.draggedCard) {
+
+            if (this.attackerCard) {
                 this.doAttack();
                 this.resetAttack();
             }
@@ -56,22 +56,32 @@ export class AttackController {
 
     onMouseUp(event) {
         event.preventDefault();
-        if (this.draggedCard && this.targetCard) {
+        if (this.attackerCard && this.targetCard) {
             this.doAttack();
         }
         this.resetAttack();
     }
 
     doAttack() {
-        console.log(`${this.draggedCard.id} attacks ${this.targetCard.id}`);
-        const attackerCardView = this.playerBoardView.card(this.draggedCard.dataset.boardIndex);
-        const targetCardView = this.opponentBoardView.card(this.targetCard.dataset.boardIndex);
-        targetCardView.applyDamage(attackerCardView.getAttack());
-        attackerCardView.applyDamage(targetCardView.getAttack());
+        console.log(`${this.attackerCard.id} attacks ${this.targetCard.id}`);
+        const attackerViewIndex = this.attackerCard.dataset.boardIndex,
+            targetViewIndex = this.targetCard.dataset.boardIndex;
+        const attackerCardView = this.playerBoardView.card(attackerViewIndex);
+        const targetCardView = this.opponentBoardView.card(targetViewIndex);
+        const targetIsDead = targetCardView.applyDamage(attackerCardView.getAttack());
+        const attackerIsDead = attackerCardView.applyDamage(targetCardView.getAttack());
+
+        if (targetIsDead) {
+            this.opponentBoardView.removeCard(targetViewIndex);
+        }
+
+        if(attackerIsDead) {
+            this.playerBoardView.removeCard(attackerViewIndex);
+        }
     }
 
     resetAttack() {
-        this.draggedCard = null;
+        this.attackerCard = null;
         this.targetCard = null;
 
         document.getElementById('svg').style.display = 'none';

@@ -13,8 +13,9 @@ export class AbstractMinionBoardView {
     }
     
     applyDamage(dmg) {
-        this.card.applyDamage(dmg);
+        const isDead = this.card.applyDamage(dmg);
         this.update();
+        return isDead;
     }
 
     getAttack() {
