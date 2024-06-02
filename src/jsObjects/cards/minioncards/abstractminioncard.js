@@ -71,7 +71,7 @@ export class AbstractMinion extends AbstractCard {
         // trigger enrage?
     }
 
-    subtractHealth(dmg) {
+    applyDamage(dmg) {
         this.health -= dmg;
         if (this.health < 1) {
             // trigger death

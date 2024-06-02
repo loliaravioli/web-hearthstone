@@ -33,7 +33,7 @@ export class AttackController {
             document.body.addEventListener('mousemove', (e) => {
                 const destX = e.clientX, destY = e.clientY;
                 const angleDeg = (Math.atan2(destY - y, destX - x) * 180 / Math.PI) + 90;
-                // TODO: fix bug where this arrow briefly appears on the previous card it was on
+                // TODO: fix visual bug where this arrow briefly appears on the previous card it was on
                 $('#arrowcursor').css('transform', `rotate(${angleDeg}deg) translate(-50%,-110%)`);
                 $('#svgpath').attr('d', `M${destX},${destY} ${x},${y}`);
             });
@@ -46,9 +46,11 @@ export class AttackController {
             this.targetCard = event.target;
             
             if (this.draggedCard) {
-                this.doAttack(this.draggedCard, this.targetCard);
+                this.doAttack();
                 this.resetAttack();
             }
+        } else {
+            console.log('invalid target for attack');
         }
     }
 
@@ -62,6 +64,10 @@ export class AttackController {
 
     doAttack() {
         console.log(`${this.draggedCard.id} attacks ${this.targetCard.id}`);
+        const attackerCardView = this.playerBoardView.card(this.draggedCard.dataset.boardIndex);
+        const targetCardView = this.opponentBoardView.card(this.targetCard.dataset.boardIndex);
+        targetCardView.applyDamage(attackerCardView.getAttack());
+        attackerCardView.applyDamage(targetCardView.getAttack());
     }
 
     resetAttack() {

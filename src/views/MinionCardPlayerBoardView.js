@@ -1,14 +1,10 @@
-export class MinionCardPlayerBoardView {
-    constructor(card, boardIndex, container) {
-        this.card = card;
-        this.boardIndex = boardIndex;
-        this.container = container;
+import { AbstractMinionBoardView } from "./AbstractMinionBoardView.js";
+
+export class MinionCardPlayerBoardView extends AbstractMinionBoardView {
+    constructor(card, boardIndex) {
+        super(card, boardIndex);
         this.element = this.generateElement();
         this.update();
-    }
-
-    getElement() {
-        return this.element;
     }
     
     generateElement() {
