@@ -3,7 +3,7 @@ class 'canAttack', when attacking the card is checked to see if the card has
 this class.*/
 function attack() {
     document.getElementById("playerheropower").classList.add("canAttack");
-    let numOfChild = playerBoard.count();
+    let numOfChild = GAME.playerBoard.count();
     for (let i = 0; i < numOfChild; i++) {
         document.getElementsByClassName("player-cardinplay")[i].style.boxShadow = "0px 2px 15px 12px #0FCC00";
         document.getElementsByClassName("player-cardinplay")[i].classList.add("canAttack");
@@ -17,8 +17,8 @@ function attack() {
             if (currentAttacker == null) {
 
             } else if ((this.classList.contains('computer-cardinplay') || (this.id == 'opposinghero'))) {
-                playerBoard.htmlElement.style.zIndex = "2"
-                opponentBoard.htmlElement.style.zIndex = "1"
+                GAME.playerBoard.htmlElement.style.zIndex = "2"
+                GAME.opponentBoard.htmlElement.style.zIndex = "1"
                 let target = this.id,
                     currentAttackerElement = document.getElementById(currentAttacker),
                     targetElement = document.getElementById(target),
@@ -65,7 +65,7 @@ function attack() {
 
                     if (targetElement.classList.contains("hasDivineShield")) {
                         targetElement.classList.remove("hasDivineShield");
-                        opponentBoard.htmlElement.lastChild.children[2].style.visibility = "hidden";
+                        GAME.opponentBoard.htmlElement.lastChild.children[2].style.visibility = "hidden";
                     } else {
                         targetHealth -= currentAttackerAttack;
                         targetElement.children[1].children[0].style.color = "#f20301";
@@ -140,8 +140,8 @@ function attack() {
                         } else {
                             targetElement.remove();
                             // adjust position of player board to fix GUI
-                            if (opponentBoard.count() == 0) {
-                                opponentBoard.htmlElement.style.transform = "translateY(57.5%)";
+                            if (GAME.opponentBoard.count() == 0) {
+                                GAME.opponentBoard.htmlElement.style.transform = "translateY(57.5%)";
                             }
                         }
                     }
@@ -154,12 +154,12 @@ function attack() {
                 document.getElementById("innercursor").style.visibility = "hidden";
                 document.getElementById("outercursor").style.visibility = "hidden";
                 document.getElementById("arrowcursor").style.visibility = "hidden";
-                body.style.cursor = "url(src/cursor/cursor.png) 10 2, auto";
+                body.style.cursor = "url(src/media/images/cursor/cursor.png) 10 2, auto";
                 currentAttackerElement.classList.remove("canAttack");
 
                 if (hand.cardCount() == 0 || mana == 0) {
-                    for (let i = 0; i < playerBoard.count(); i++) {
-                        if (playerBoard.htmlElement.children[i].classList.contains("canAttack")) {
+                    for (let i = 0; i < GAME.playerBoard.count(); i++) {
+                        if (GAME.playerBoard.htmlElement.children[i].classList.contains("canAttack")) {
                             break;
                         }
 
@@ -171,9 +171,9 @@ function attack() {
 
                 if (currentAttackersElement.classList.contains('player-cardinplay')) {
                     if (currentAttackerAttack >= 5) {
-                        (new Audio("src/sounds/bigattack.mp3")).play();
+                        (new Audio("src/media/sounds/bigattack.mp3")).play();
                     } else {
-                        (new Audio("src/sounds/attack.mp3")).play();
+                        (new Audio("src/media/sounds/attack.mp3")).play();
                     }
                 } else {
                     heropowerSnd.play();
@@ -188,12 +188,12 @@ function attack() {
 
 function gameWon() {
     if (isTutorial) {
-        (new Audio("src/sounds/victorytutorial.mp3")).play();
+        (new Audio("src/media/sounds/victorytutorial.mp3")).play();
         song.pause();
     } else {
         lichkingOST.pause();
         let myGold = Number(localStorage.getItem('myGold'));
-        (new Audio("src/sounds/victory.mp3")).play();
+        (new Audio("src/media/sounds/victory.mp3")).play();
         myGold += 10; // number of gold earned per win
         localStorage.setItem('myGold', myGold.toString());
         // 20% or 1/5 chance of getting a pack on win
@@ -220,7 +220,7 @@ function gameWon() {
     }
 
     // adjust position of player board to fix GUI
-    opponentBoard.htmlElement.style.transform = "translateY(17.5%)";
+    GAME.opponentBoard.htmlElement.style.transform = "translateY(17.5%)";
     setTimeout(function () {
         document.querySelector(".opponenthero").style.display = "none";
         if (isScreenShake) {

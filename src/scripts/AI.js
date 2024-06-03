@@ -2,9 +2,9 @@
 function AI() {
     const currentHeroHealth = document.getElementById('playerhero').children[1].innerText,
         opponentCards = document.querySelectorAll('.computer-cardinplay'),
-        numOfOpponentCards = opponentBoard.count(),
+        numOfOpponentCards = GAME.opponentBoard.count(),
         alliedCards = document.querySelectorAll('.player-cardinplay'),
-        numOfAlliedCards = playerBoard.count();
+        numOfAlliedCards = GAME.playerBoard.count();
 
     if ((numOfOpponentCards == 1) && (numOfAlliedCards == 0)) {
         noAlliedCards();
@@ -127,7 +127,7 @@ function AI() {
     }
 
     if (numOfOpponentCards >= 1) {
-        (new Audio("src/sounds/attack.mp3")).play();
+        (new Audio("src/media/sounds/attack.mp3")).play();
     }
 
     for (let i = 0; i < numOfAlliedCards; i++) {
@@ -156,9 +156,9 @@ where the parameter 'largestValue' determines the value of n
 when nth value is returned*/
 function findMaxOpponentAttack(largestValue) {
     const opponentCards = document.querySelectorAll('.computer-cardinplay'),
-        numOfOpponentCards = opponentBoard.count(),
+        numOfOpponentCards = GAME.opponentBoard.count(),
         alliedCards = document.querySelectorAll('player-cardinplay'),
-        numOfAlliedCards = playerBoard.count();
+        numOfAlliedCards = GAME.playerBoard.count();
 
     let attackValues = [],
         biggestValue = 0;
@@ -198,9 +198,9 @@ where the parameter 'largestValue' determines wheather the 2nd largest value
 3rd largest value 4th largest etc. is returned*/
 function findMaxPlayerAttack(largestValue) {
     const opponentCards = document.querySelectorAll('.computer-cardinplay'),
-        numOfOpponentCards = opponentBoard.count(),
+        numOfOpponentCards = GAME.opponentBoard.count(),
         alliedCards = document.querySelectorAll('.player-cardinplay'),
-        numOfAlliedCards = playerBoard.count();
+        numOfAlliedCards = GAME.playerBoard.count();
 
     let attackValues = [],
         biggestValue = 0;
@@ -240,9 +240,9 @@ where the parameter 'largestValue' determines wheather the 2nd largest value
 3rd largest value 4th largest etc. is returned*/
 function findMaxOpponentHealth(largestValue) {
     const opponentCards = document.querySelectorAll('.computer-cardinplay'),
-        numOfOpponentCards = opponentBoard.count(),
+        numOfOpponentCards = GAME.opponentBoard.count(),
         alliedCards = document.querySelectorAll('player-cardinplay'),
-        numOfAlliedCards = playerBoard.count();
+        numOfAlliedCards = GAME.playerBoard.count();
 
     let healthValues = [],
         biggestValue = 0;
@@ -281,9 +281,9 @@ where the parameter 'largestValue' determines wheather the 2nd largest value
 3rd largest value 4th largest etc. is returned*/
 function findMaxPlayerHealth(largestValue) {
     const opponentCards = document.querySelectorAll('.computer-cardinplay'),
-        numOfOpponentCards = opponentBoard.count(),
+        numOfOpponentCards = GAME.opponentBoard.count(),
         alliedCards = document.querySelectorAll('.player-cardinplay'),
-        numOfAlliedCards = playerBoard.count();
+        numOfAlliedCards = GAME.playerBoard.count();
 
     let healthValues = [],
         biggestValue = 0;
@@ -334,7 +334,7 @@ function checkForLoss() {
 
 function getSumOfAttack() {
     const opponentCards = document.querySelectorAll('.computer-cardinplay'),
-        numOfOpponentCards = opponentBoard.count();
+        numOfOpponentCards = GAME.opponentBoard.count();
 
     let sumOfAttack = 0,
         heroHealth = document.getElementById('playerhero').children[1].innerText;
@@ -378,7 +378,7 @@ function noAlliedCards() {
 function oneAlliedCard() {
     const opponentCards = document.querySelectorAll('.computer-cardinplay'),
         alliedCards = document.querySelectorAll('.player-cardinplay'),
-        numOfOpponentCards = opponentBoard.count();
+        numOfOpponentCards = GAME.opponentBoard.count();
 
     let maxAttack = findMaxOpponentAttack(0),
         healthModifier = 10;
@@ -415,9 +415,9 @@ function oneAlliedCard() {
         maxAttack.children[1].children[0].innerText = opponentHealth - alliedAttack;
         if (alliedCards[0].classList.contains("hasDivineShield")) {
             alliedCards[0].classList.remove("hasDivineShield");
-            playerBoard.htmlElement.children[0].children[2].classList.add("divineShieldBreak");
+            GAME.playerBoard.htmlElement.children[0].children[2].classList.add("divineShieldBreak");
             setTimeout(function () {
-                playerBoard.htmlElement.children[0].children[2].style.visibility = "hidden";
+                GAME.playerBoard.htmlElement.children[0].children[2].style.visibility = "hidden";
             }, 400);
         } else {
             alliedCards[0].children[1].children[0].innerText = alliedHealth - opponentAttack;
@@ -457,8 +457,8 @@ function oneAlliedCard() {
 function twoAlliedCards() {
     const opponentCards = document.querySelectorAll('.computer-cardinplay'),
         alliedCards = document.querySelectorAll('.player-cardinplay'),
-        numOfOpponentCards = opponentBoard.count(),
-        numOfAlliedCards = playerBoard.count();
+        numOfOpponentCards = GAME.opponentBoard.count(),
+        numOfAlliedCards = GAME.playerBoard.count();
 
     let remainingToAttack = numOfOpponentCards - numOfAlliedCards,
         healthModifier = 9;
@@ -476,15 +476,15 @@ function twoAlliedCards() {
     }
 
     if ((tauntExists == true) && (numOfOpponentCards <= 1)) {
-        for (let i = 0; i < playerBoard.count(); i++) {
-            if (playerBoard.htmlElement.children[i].classList.contains("hasTaunt")) {
+        for (let i = 0; i < GAME.playerBoard.count(); i++) {
+            if (GAME.playerBoard.htmlElement.children[i].classList.contains("hasTaunt")) {
                 let maxOpponentAttack = findMaxOpponentAttack(0),
-                    alliedAttack = playerBoard.htmlElement.children[i].children[0].children[0].innerText,
-                    alliedHealth = playerBoard.htmlElement.children[i].children[1].children[0].innerText,
+                    alliedAttack = GAME.playerBoard.htmlElement.children[i].children[0].children[0].innerText,
+                    alliedHealth = GAME.playerBoard.htmlElement.children[i].children[1].children[0].innerText,
                     opponentAttack = maxOpponentAttack.children[0].children[0].innerText,
                     opponentHealth = maxOpponentAttack.children[1].children[0].innerText;
 
-                playerBoard.htmlElement.children[i].children[1].children[0].innerText = alliedHealth - opponentAttack;
+                    GAME.playerBoard.htmlElement.children[i].children[1].children[0].innerText = alliedHealth - opponentAttack;
                 maxOpponentAttack.children[1].children[0].innerText = opponentHealth - alliedAttack;
                 break
             }
@@ -507,11 +507,11 @@ function twoAlliedCards() {
                 var opponentAttack = maxOpponentAttack.children[0].children[0].innerText;
                 var opponentHealth = maxOpponentAttack.children[1].children[0].innerText;
                 maxOpponentAttack.children[1].children[0].innerText = opponentHealth - alliedAttack;
-                if (playerBoard.htmlElement.children[i].classList.contains("hasDivineShield")) {
-                    playerBoard.htmlElement.children[i].classList.remove("hasDivineShield");
-                    playerBoard.htmlElement.children[i].children[2].classList.add("divineShieldBreak");
+                if (GAME.playerBoard.htmlElement.children[i].classList.contains("hasDivineShield")) {
+                    GAME.playerBoard.htmlElement.children[i].classList.remove("hasDivineShield");
+                    GAME.playerBoard.htmlElement.children[i].children[2].classList.add("divineShieldBreak");
                     setTimeout(function () {
-                        playerBoard.htmlElement.children[i].children[2].style.visibility = "hidden";
+                        GAME.playerBoard.htmlElement.children[i].children[2].style.visibility = "hidden";
                     }, 400);
                 } else {
                     maxPlayerAttack.children[1].children[0].innerText = alliedHealth - opponentAttack;
@@ -578,8 +578,8 @@ function twoAlliedCards() {
 function threeAlliedCards() {
     const opponentCards = document.querySelectorAll('.computer-cardinplay'),
         alliedCards = document.querySelectorAll('.player-cardinplay'),
-        numOfOpponentCards = opponentBoard.count(),
-        numOfAlliedCards = playerBoard.count();
+        numOfOpponentCards = GAME.opponentBoard.count(),
+        numOfAlliedCards = GAME.playerBoard.count();
 
     let remainingToAttack = numOfOpponentCards - numOfAlliedCards,
         healthModifier = 8;
@@ -597,15 +597,15 @@ function threeAlliedCards() {
     }
 
     if ((tauntExists == true) && (numOfOpponentCards <= 1)) {
-        for (let i = 0; i < playerBoard.count(); i++) {
-            if (playerBoard.htmlElement.children[i].classList.contains("hasTaunt")) {
+        for (let i = 0; i < GAME.playerBoard.count(); i++) {
+            if (GAME.playerBoard.htmlElement.children[i].classList.contains("hasTaunt")) {
                 let maxOpponentAttack = findMaxOpponentAttack(0),
-                    alliedAttack = playerBoard.htmlElement.children[i].children[0].children[0].innerText,
-                    alliedHealth = playerBoard.htmlElement.children[i].children[1].children[0].innerText,
+                    alliedAttack = GAME.playerBoard.htmlElement.children[i].children[0].children[0].innerText,
+                    alliedHealth = GAME.playerBoard.htmlElement.children[i].children[1].children[0].innerText,
                     opponentAttack = maxOpponentAttack.children[0].children[0].innerText,
                     opponentHealth = maxOpponentAttack.children[1].children[0].innerText;
 
-                playerBoard.htmlElement.children[i].children[1].children[0].innerText = alliedHealth - opponentAttack;
+                    GAME.playerBoard.htmlElement.children[i].children[1].children[0].innerText = alliedHealth - opponentAttack;
                 maxOpponentAttack.children[1].children[0].innerText = opponentHealth - alliedAttack;
                 break
             }
@@ -629,11 +629,11 @@ function threeAlliedCards() {
                     opponentHealth = maxOpponentAttack.children[1].children[0].innerText;
                 maxOpponentAttack.children[1].children[0].innerText = opponentHealth - alliedAttack;
 
-                if (playerBoard.htmlElement.children[i].classList.contains("hasDivineShield")) {
-                    playerBoard.htmlElement.children[i].classList.remove("hasDivineShield");
-                    playerBoard.htmlElement.children[i].children[2].classList.add("divineShieldBreak");
+                if (GAME.playerBoard.htmlElement.children[i].classList.contains("hasDivineShield")) {
+                    GAME.playerBoard.htmlElement.children[i].classList.remove("hasDivineShield");
+                    GAME.playerBoard.htmlElement.children[i].children[2].classList.add("divineShieldBreak");
                     setTimeout(function () {
-                        playerBoard.htmlElement.children[i].children[2].style.visibility = "hidden";
+                        GAME.playerBoard.htmlElement.children[i].children[2].style.visibility = "hidden";
                     }, 400);
                 } else {
                     maxPlayerAttack.children[1].children[0].innerText = alliedHealth - opponentAttack;
@@ -668,11 +668,11 @@ function threeAlliedCards() {
                 opponentAttackSum += opponentAttack;
                 maxOpponentAttack.children[1].children[0].innerText = opponentHealth - alliedAttack;
 
-                if (playerBoard.htmlElement.children[i].classList.contains("hasDivineShield")) {
-                    playerBoard.htmlElement.children[i].classList.remove("hasDivineShield");
-                    playerBoard.htmlElement.children[i].children[2].classList.add("divineShieldBreak");
+                if (GAME.playerBoard.htmlElement.children[i].classList.contains("hasDivineShield")) {
+                    GAME.playerBoard.htmlElement.children[i].classList.remove("hasDivineShield");
+                    GAME.playerBoard.htmlElement.children[i].children[2].classList.add("divineShieldBreak");
                     setTimeout(function () {
-                        playerBoard.htmlElement.children[i].children[2].style.visibility = "hidden";
+                        GAME.playerBoard.htmlElement.children[i].children[2].style.visibility = "hidden";
                     }, 400);
                 } else {
                     maxPlayerAttack.children[1].children[0].innerText = alliedHealth - opponentAttack;
@@ -708,8 +708,8 @@ function threeAlliedCards() {
 function fourAlliedCards() {
     const opponentCards = document.querySelectorAll('.computer-cardinplay'),
         alliedCards = document.querySelectorAll('.player-cardinplay'),
-        numOfOpponentCards = opponentBoard.count(),
-        numOfAlliedCards = playerBoard.count();
+        numOfOpponentCards = GAME.opponentBoard.count(),
+        numOfAlliedCards = GAME.playerBoard.count();
 
     let remainingToAttack = numOfOpponentCards - numOfAlliedCards,
         healthModifier = 7;
@@ -841,7 +841,7 @@ function fourAlliedCards() {
 function fiveAlliedCards() {
     const opponentCards = document.querySelectorAll('.computer-cardinplay'),
         alliedCards = document.querySelectorAll('.player-cardinplay'),
-        numOfOpponentCards = opponentBoard.count(),
+        numOfOpponentCards = GAME.opponentBoard.count(),
         numOfAlliedCards = playerBoard.count();
 
     let remainingToAttack = numOfOpponentCards - numOfAlliedCards,
@@ -976,7 +976,7 @@ function fiveAlliedCards() {
 function sixAlliedCards() {
     const opponentCards = document.querySelectorAll('.computer-cardinplay'),
         alliedCards = document.querySelectorAll('.player-cardinplay'),
-        numOfOpponentCards = opponentBoard.count(),
+        numOfOpponentCards = GAME.opponentBoard.count(),
         numOfAlliedCards = playerBoard.count();
 
     let remainingToAttack = numOfOpponentCards - numOfAlliedCards,
@@ -1110,7 +1110,7 @@ function sixAlliedCards() {
 function sevenAlliedCards() {
     const opponentCards = document.querySelectorAll('.computer-cardinplay'),
         alliedCards = document.querySelectorAll('.player-cardinplay'),
-        numOfOpponentCards = opponentBoard.count(),
+        numOfOpponentCards = GAME.opponentBoard.count(),
         numOfAlliedCards = playerBoard.count();
 
     let remainingToAttack = numOfOpponentCards - numOfAlliedCards,

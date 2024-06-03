@@ -31,7 +31,7 @@ export class MinionCardPlayerBoardView extends AbstractMinionBoardView {
         cardDiv.appendChild(healthValueBackground);
         healthValueBackground.appendChild(healthValue);
 
-        cardDiv.style.backgroundImage = "url('src/cardimages/" + this.card.image + "')";
+        cardDiv.style.backgroundImage = "url('src/media/images/cardimages/" + this.card.image + "')";
 
         return cardDiv;
     }

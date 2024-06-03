@@ -12,20 +12,20 @@ body {
 }
 
 body {
-	cursor: url(src/cursor/cursor.png) 10 2, auto;
+	cursor: url(src/media/images/cursor/cursor.png) 10 2, auto;
 	background-color: black;
 }
 
 body:active {
-	cursor: url(src/cursor/click.png) 10 2, auto;
+	cursor: url(src/media/images/cursor/click.png) 10 2, auto;
 }
 
 button:hover {
-	cursor: url(src/cursor/cursor.png) 10 2, auto;
+	cursor: url(src/media/images/cursor/cursor.png) 10 2, auto;
 }
 
 button:active {
-	cursor: url(src/cursor/click.png) 10 2, auto;
+	cursor: url(src/media/images/cursor/cursor.png) 10 2, auto;
 }
 
 head {
@@ -40,7 +40,7 @@ head {
 	top: 0;
 	left: 0;
 	right: 0;
-	background-image: url(src/images/background.png) !important;
+	background-image: url(src/media/images/background.png) !important;
 	background-size: contain;
 	background-attachment: fixed;
 	background-position: center;
@@ -66,7 +66,7 @@ head {
 	text-align: center;
 	user-select: none;
 	color: white;
-	background-image: url("src/images/loading.gif") !important;
+	background-image: url(src/media/images/loading.gif) !important;
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -179,7 +179,7 @@ head {
 	height: 160px;
 	margin: -15px;
 	position: relative;
-	background-image: url(src/images/frostcardback.png);
+	background-image: url(src/media/images/frostcardback.png);
 	background-repeat: no-repeat;
 	background-size: contain;
 	-webkit-touch-callout: none;
@@ -206,7 +206,7 @@ head {
 }
 
 .card:active {
-	cursor: url(src/cursor/grab.png) 10 2, auto;
+	cursor: url(src/media/images/cursor/grab.png) 10 2, auto;
 }
 
 .card-face {
@@ -969,7 +969,7 @@ head {
 
 .cardinplay:hover {
 	box-shadow: 0 0 3em 1px white;
-	cursor: url(src/cursor/cursor.png) 10 2, auto;
+	cursor: url(src/media/images/cursor/cursor.png) 10 2, auto;
 }
 
 .playerhero:hover {
@@ -985,7 +985,7 @@ head {
 }
 
 .cardinplay:active {
-	cursor: url(src/cursor/click.png) 10 2, auto;
+	cursor: url(src/media/images/cursor/click.png) 10 2, auto;
 }
 
 svg {
@@ -1021,7 +1021,7 @@ svg {
 	left: 46.75%;
 	top: 67.75%;
 	z-index: 20;
-	background-image: url(src/images/jaina_proudmoore.gif);
+	background-image: url(src/media/images/jaina_proudmoore.gif);
 	background-repeat: no-repeat;
 	/* Do not repeat the image */
 	background-size: contain;
@@ -1034,7 +1034,7 @@ svg {
 	top: 69%;
 	left: 56%;
 	z-index: 0;
-	background-image: url(src/images/heropower.gif);
+	background-image: url(src/media/images/heropower.gif);
 	background-repeat: no-repeat;
 	/* Do not repeat the image */
 	background-size: contain;
@@ -1057,7 +1057,7 @@ svg {
 	left: 46.75%;
 	top: 9.75%;
 	z-index: 11;
-	background-image: url(src/images/lich_king.png);
+	background-image: url(src/media/images/lich_king.png);
 	background-repeat: no-repeat;
 	/* Do not repeat the image */
 	background-size: contain;
@@ -1272,7 +1272,7 @@ svg {
 }
 
 .player-deck {
-	background-image: url(src/images/legendcardback.png);
+	background-image: url(src/media/images/legendcardback.png);
 	background-repeat: no-repeat;
 	background-size: contain;
 	color: white;
@@ -1284,7 +1284,7 @@ svg {
 }
 
 .computer-deck {
-	background-image: url(src/images/frostcardback.png);
+	background-image: url(src/media/images/frostcardback.png);
 	background-repeat: no-repeat;
 	background-size: contain;
 	color: white;
@@ -2214,7 +2214,7 @@ svg {
 	bottom: 0;
 	left: 0;
 	right: 0;
-	background-image: url(src/images/mainmenubackground.jpg) !important;
+	background-image: url(src/media/images/mainmenubackground.jpg) !important;
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
@@ -2509,7 +2509,7 @@ svg {
 	position: absolute;
 	top: 40%;
 	left: 45%;
-	background-image: url("src/images/vs.png");
+	background-image: url(src/media/images/vs.png);
 	background-size: contain;
 	background-repeat: no-repeat;
 	z-index: 20;
@@ -2535,7 +2535,7 @@ svg {
 	position: absolute;
 	top: 23%;
 	left: 43.75%;
-	background-image: url("src/images/jaina_proudmoore.gif");
+	background-image: url(src/media/images/jaina_proudmoore.gif);
 	background-size: contain;
 	background-repeat: no-repeat;
 	z-index: 13;
@@ -2547,7 +2547,7 @@ svg {
 	position: absolute;
 	top: 23%;
 	left: 43.75%;
-	background-image: url("src/images/lich_king.png");
+	background-image: url(src/media/images/lich_king.png);
 	background-size: contain;
 	background-repeat: no-repeat;
 	z-index: 12;
@@ -3029,7 +3029,7 @@ svg {
 	position: absolute;
 	top: 20%;
 	left: 10%;
-	background-image: url("src/images/hoggerposter.png");
+	background-image: url(src/media/images/hoggerposter.png);
 	background-repeat: no-repeat;
 	background-size: contain;
 }
@@ -3049,7 +3049,7 @@ svg {
 	position: absolute;
 	bottom: 0;
 	left: 12%;
-	background-image: url("src/hints/place_card.gif");
+	background-image: url("src/media/hints/place_card.gif");
 	background-repeat: no-repeat;
 	background-size: contain;
 	display: none;
@@ -3168,7 +3168,7 @@ svg {
 	top: 0;
 	left: 12%;
 	right: 0;
-	background-image: url(src/images/openpacksbackground.png) !important;
+	background-image: url(src/media/images/openpacksbackground.png) !important;
 	background-size: contain;
 	background-repeat: no-repeat;
 	display: none;
@@ -3201,7 +3201,7 @@ svg {
 }
 
 .pack:active {
-	cursor: url(src/cursor/grab.png) 10 2, auto;
+	cursor: url(src/media/images/cursor/grab.png) 10 2, auto;
 }
 
 .pack-image {
@@ -3317,7 +3317,7 @@ svg {
 	width: 17%;
 	height: 34%;
 	position: absolute;
-	background-image: url(src/images/pack.png);
+	background-image: url(src/media/images/pack.png);
 	background-repeat: no-repeat;
 	background-size: contain;
 	transform-style: preserve-3d;
@@ -3473,7 +3473,7 @@ svg {
 	position: absolute;
 	left: 68%;
 	top: 10%;
-	background-image: url(src/images/pack.png);
+	background-image: url(src/media/images/pack.png);
 	background-repeat: no-repeat;
 	background-size: contain;
 }
@@ -3614,7 +3614,7 @@ svg {
 	position: absolute;
 	top: -22%;
 	left: -31.5%;
-	background-image: url(src/images/divine_shield.png) !important;
+	background-image: url(src/media/images/divine_shield.png) !important;
 	background-size: contain;
 	background-repeat: no-repeat;
 	user-select: none;
@@ -3622,7 +3622,7 @@ svg {
 }
 
 .taunt {
-	background-image: url(src/images/taunt.png) !important;
+	background-image: url(src/media/images/taunt.png) !important;
 	background-size: contain;
 	background-repeat: no-repeat;
 	user-select: none;
@@ -3636,7 +3636,7 @@ svg {
 	position: absolute;
 	top: -13%;
 	left: 5.5%;
-	background-image: url(src/images/legendaryinplay.png) !important;
+	background-image: url(src/media/images/legendaryinplay.png) !important;
 	background-size: contain;
 	background-repeat: no-repeat;
 	user-select: none;
@@ -3652,7 +3652,7 @@ svg {
 	top: 0;
 	left: 12%;
 	right: 0;
-	background-image: url(src/images/example.png) !important;
+	background-image: url(src/media/images/example.png) !important;
 	background-size: contain;
 	background-repeat: no-repeat;
 	display: none;

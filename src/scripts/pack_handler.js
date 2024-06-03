@@ -1,9 +1,9 @@
-let openpackSnd = new Audio("src/sounds/openpack.mp3"),
-	cardflipSnd = new Audio("src/sounds/flipcard.mp3"),
-	overlapCardFlipSnd = new Audio("src/sounds/flipcard.mp3"),
-	rareSnd = new Audio("src/sounds/rare.mp3"),
-	epicSnd = new Audio("src/sounds/epic.mp3"),
-	legendarySnd = new Audio("src/sounds/legendary.mp3"),
+let openpackSnd = new Audio("src/media/sounds/openpack.mp3"),
+	cardflipSnd = new Audio("src/media/sounds/flipcard.mp3"),
+	overlapCardFlipSnd = new Audio("src/media/sounds/flipcard.mp3"),
+	rareSnd = new Audio("src/media/sounds/rare.mp3"),
+	epicSnd = new Audio("src/media/sounds/epic.mp3"),
+	legendarySnd = new Audio("src/media/sounds/legendary.mp3"),
 	alreadyHasRare = new Boolean(false);
 
 // creates the pack html element
@@ -14,7 +14,7 @@ function createPack() {
 
 	packPack.classList.add("pack");
 	imgpack.classList.add("pack-image");
-	imgpack.src = "src/images/pack.png";
+	imgpack.src = "src/media/images/pack.png";
 	imgpack.setAttribute('draggable', false);
 	packs.appendChild(packPack);
 	packPack.appendChild(imgpack);
@@ -30,7 +30,7 @@ function createCommonCard() {
 		backFlipCard = document.createElement('div'),
 		imgFlipCard = document.createElement("IMG");
 
-	imgFlipCard.src = "src/images/legendcardback.png";
+	imgFlipCard.src = "src/media/images/legendcardback.png";
 	flipCard.classList.add("flip-card");
 	flipCard.classList.add("flip-card-common");
 	innerFlipCard.classList.add("flip-card-inner");
@@ -83,7 +83,7 @@ function createRareCard() {
 		backFlipCard = document.createElement('div'),
 		imgFlipCard = document.createElement("IMG");
 
-	imgFlipCard.src = "src/images/legendcardback.png";
+	imgFlipCard.src = "src/media/images/legendcardback.png";
 	flipCard.classList.add("flip-card");
 	flipCard.classList.add("flip-card-rare");
 	innerFlipCard.classList.add("flip-card-inner");
@@ -135,7 +135,7 @@ function createEpicCard() {
 		backFlipCard = document.createElement('div'),
 
 		imgFlipCard = document.createElement("IMG");
-	imgFlipCard.src = "src/images/legendcardback.png";
+	imgFlipCard.src = "src/media/images/legendcardback.png";
 	flipCard.classList.add("flip-card");
 	flipCard.classList.add("flip-card-epic");
 	innerFlipCard.classList.add("flip-card-inner");
@@ -188,7 +188,7 @@ function createLegendaryCard() {
 		backFlipCard = document.createElement('div'),
 		imgFlipCard = document.createElement("IMG");
 
-	imgFlipCard.src = "src/images/legendcardback.png";
+	imgFlipCard.src = "src/media/images/legendcardback.png";
 	flipCard.classList.add("flip-card");
 	flipCard.classList.add("flip-card-legendary");
 	innerFlipCard.classList.add("flip-card-inner");
@@ -310,7 +310,7 @@ function init() {
 	whooshvoltarget = 0;
 	whoosh = new Audio();
 	whoosh.addEventListener('canplaythrough', audioload);
-	whoosh.src = 'src/sounds/whoosh.ogg';
+	whoosh.src = 'src/media/sounds/whoosh.ogg';
 	whoosh.volume = 0;
 	whoosh.loop = true;
 
@@ -318,7 +318,7 @@ function init() {
 	majestyvoltarget = 0;
 	majesty = new Audio();
 	majesty.addEventListener('canplaythrough', audioload);
-	majesty.src = 'src/sounds/majesty.ogg';
+	majesty.src = 'src/media/sounds/majesty.ogg';
 	majesty.volume = 0;
 	majesty.loop = true;
 }

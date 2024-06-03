@@ -20,10 +20,12 @@ export class AbstractBoardView {
             this.board.addCard(card, this.placeholderIndex);
             this.placeholderIndex = -1;
         }
+        card.triggerPlay();
         this.update();
     }
 
-    removeCard(index) {
+    killCard(index) {
+        this.cardViews[index].triggerDeath();
         this.board.removeCard(index);
         this.update();
     }

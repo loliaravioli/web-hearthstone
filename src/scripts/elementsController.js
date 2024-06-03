@@ -1,15 +1,15 @@
 // TODO: wtf are these methods doing
 
 let isTutorial = true,
-    openmenuSnd = new Audio("src/sounds/openmenu.mp3"),
-    menubtnsSnd = new Audio("src/sounds/menubtnpress.mp3"),
-    purchaseSnd = new Audio("src/sounds/purchase.mp3"),
-    menuhoverSnd = new Audio("src/sounds/menuselect.mp3"),
-    shophoverSnd = new Audio("src/sounds/shophover.mp3"),
-    shoponclickSnd = new Audio("src/sounds/shoponclick.mp3"),
-    startTutorialSnd = new Audio("src/voiceovers/innkeeper_starttutorial.mp3"),
-    battlebeginSnd = new Audio("src/voiceovers/innkeeper_tutorialbattle.mp3"),
-    jainathreatSnd = new Audio("src/voiceovers/jaina_tutorialbattle.mp3"),
+    openmenuSnd = new Audio("src/media/sounds/openmenu.mp3"),
+    menubtnsSnd = new Audio("src/media/sounds/menubtnpress.mp3"),
+    purchaseSnd = new Audio("src/media/sounds/purchase.mp3"),
+    menuhoverSnd = new Audio("src/media/sounds/menuselect.mp3"),
+    shophoverSnd = new Audio("src/media/sounds/shophover.mp3"),
+    shoponclickSnd = new Audio("src/media/sounds/shoponclick.mp3"),
+    startTutorialSnd = new Audio("src/media/sounds/voiceovers/innkeeper_starttutorial.mp3"),
+    battlebeginSnd = new Audio("src/media/sounds/voiceovers/innkeeper_tutorialbattle.mp3"),
+    jainathreatSnd = new Audio("src/media/sounds/voiceovers/jaina_tutorialbattle.mp3"),
     hasPlayedBattleBeginSnd = new Boolean(false),
     isInGame = new Boolean(false),
     tutorialIntroRunning = new Boolean(false);
@@ -18,14 +18,14 @@ let isTutorial = true,
 let vol = 0.5,
     interval = 175; // 200ms interval
 // soundtrack's to be randomly selected in game
-let lichkingOST = new Audio("src/ost/knights_of_the_frozen_throne.mp3"),
+let lichkingOST = new Audio("src/media/sounds/ost/knights_of_the_frozen_throne.mp3"),
     songs = [
-        "src/ost/mulligan.mp3",
-        "src/ost/bad_reputation.mp3",
-        "src/ost/better_hand.mp3",
-        "src/ost/dont_let_your_guard_down.mp3",
-        "src/ost/duel.mp3",
-        "src/ost/the_forge.mp3"
+        "src/media/sounds/ost/mulligan.mp3",
+        "src/media/sounds/ost/bad_reputation.mp3",
+        "src/media/sounds/ost/better_hand.mp3",
+        "src/media/sounds/ost/dont_let_your_guard_down.mp3",
+        "src/media/sounds/ost/duel.mp3",
+        "src/media/sounds/ost/the_forge.mp3"
     ]
 
 let item = songs[Math.floor(Math.random() * songs.length)];
@@ -308,7 +308,7 @@ playbtn.onclick = function () {
         document.getElementById("playerclasslabel").style.visibility = "visible";
         document.getElementById("opponentlabel").style.visibility = "visible";
         document.getElementById("vs").style.visibility = "visible";
-        (new Audio("src/sounds/ongameload.mp3")).play();
+        (new Audio("src/media/sounds/ongameload.mp3")).play();
         document.querySelector('.playerhero').classList.add("onLoadPlayerAnim");
         document.querySelector('.opponenthero').classList.add("onLoadComputerAnim");
         setTimeout(function () {
@@ -400,7 +400,7 @@ function tutorial() {
     document.querySelector('#confirm').style.top = "34%";
     document.querySelector('#confirm').style.left = "44.7%";
     document.querySelector('#confirm').style.transform = "rotate(-15deg)";
-    document.querySelector('#confirm').style.backgroundImage = "url(src/images/pack.png)";
+    document.querySelector('#confirm').style.backgroundImage = "url(src/media/images/pack.png)";
     setTimeout(function () {
         if (tutorialIntroRunning == false) {
             tutorialIntroRunning = true;
@@ -408,7 +408,7 @@ function tutorial() {
             introcinematic.style.display = "none";
             document.querySelector(".playerhero").style.visibility = "hidden";
             document.querySelector(".opponenthero").style.visibility = "hidden";
-            document.querySelector(".opponenthero").style.backgroundImage = "url(src/images/hogger.png)";
+            document.querySelector(".opponenthero").style.backgroundImage = "url(src/media/images/hogger.png)";
             document.querySelector('#endturn').style.zIndex = "10";
             document.querySelector(".playerhero").style.zIndex = "20";
             document.querySelector(".opponenthero").style.zIndex = "5";
@@ -809,7 +809,7 @@ preventCORSbtn.onclick = function () {
     cinematicvideo.style.display = "none";
     document.querySelector(".playerhero").style.visibility = "hidden";
     document.querySelector(".opponenthero").style.visibility = "hidden";
-    document.querySelector(".opponenthero").style.backgroundImage = "url(src/images/hogger.png)";
+    document.querySelector(".opponenthero").style.backgroundImage = "url(src/media/images/hogger.png)";
     document.querySelector('#endturn').style.zIndex = "10";
     document.querySelector(".playerhero").style.zIndex = "20";
     document.querySelector(".opponenthero").style.zIndex = "5";
@@ -841,7 +841,7 @@ preventCORSbtn.onclick = function () {
 // cinematicvideo.style.display = "none";
 // document.querySelector(".playerhero").style.visibility = "hidden";
 // document.querySelector(".opponenthero").style.visibility = "hidden";
-// document.querySelector(".opponenthero").style.backgroundImage = "url(src/images/hogger.png)";
+// document.querySelector(".opponenthero").style.backgroundImage = "url(src/media/images/hogger.png)";
 // document.querySelector('#endturn').style.zIndex = "10";
 // document.querySelector(".playerhero").style.zIndex = "20";
 // document.querySelector(".opponenthero").style.zIndex = "5";

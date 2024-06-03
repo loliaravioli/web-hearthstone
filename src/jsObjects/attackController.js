@@ -71,12 +71,15 @@ export class AttackController {
         const targetIsDead = targetCardView.applyDamage(attackerCardView.getAttack());
         const attackerIsDead = attackerCardView.applyDamage(targetCardView.getAttack());
 
+        // instead of simply removing the cards here, have a separate function which kills minions
+        // which is usable elsewhere
+
         if (targetIsDead) {
-            this.opponentBoardView.removeCard(targetViewIndex);
+            this.opponentBoardView.killCard(targetViewIndex);
         }
 
         if(attackerIsDead) {
-            this.playerBoardView.removeCard(attackerViewIndex);
+            this.playerBoardView.killCard(attackerViewIndex);
         }
     }
 
@@ -88,6 +91,6 @@ export class AttackController {
         document.getElementById('innercursor').style.visibility = 'hidden';
         document.getElementById('outercursor').style.visibility = 'hidden';
         document.getElementById('arrowcursor').style.visibility = 'hidden';
-        document.body.style.cursor = 'url(src/cursor/cursor.png) 10 2, auto';
+        document.body.style.cursor = 'url(src/media/images/cursor/cursor.png) 10 2, auto';
     }
 }

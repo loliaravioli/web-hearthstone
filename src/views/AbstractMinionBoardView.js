@@ -21,4 +21,8 @@ export class AbstractMinionBoardView {
     getAttack() {
         return this.card.attack;
     }
+
+    triggerDeath() {
+        this.card.triggerDeath();
+    }
 }

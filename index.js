@@ -1,12 +1,4 @@
-import { Deck } from './src/jsObjects/deck.js';
-import { Hand } from './src/jsObjects/hand.js';
-import { Board } from './src/jsObjects/board.js';
-import { BoardOpponentView } from './src/views/BoardOpponentView.js';
-import { BoardPlayerView } from './src/views/BoardPlayerView.js';
-import { DeckOpponentView } from './src/views/DeckOpponentView.js';
-import { DeckPlayerView } from './src/views/DeckPlayerView.js';
-import { HandPlayerView } from './src/views/HandPlayerView.js';
-import { AttackController } from './src/jsObjects/attackController.js';
+import GAME from './game.js';
 
 // defines global variables
 // TODO: get rid of global variables. move this shit into separate relevant files/classes/objects
@@ -19,49 +11,19 @@ let manaCost = null,
     manaCapacity = 1,
     mana = manaCapacity,
     maxOpponentCardsInPlay = 7,
-    mockSnd = new Audio("src/sounds/mock.mp3"),
-    jobsdoneSnd = new Audio("src/voiceovers/innkeeper_jobs_done.mp3"),
-    playerturnSnd = new Audio("src/sounds/playerturn.mp3"),
-    heropowerSnd = new Audio("src/sounds/heropower.mp3"),
-    playerDeck,
-    computerDeck,
-    playerDeckView,
-    computerDeckView,
-    playerBoardView,
-    opponentBoardView,
-    playerHand,
-    opponentHand,
-    playerHandView,
-    opponentHandView,
-    attackController,
-    hand = new Hand(),
+    mockSnd = new Audio("src/media/sounds/mock.mp3"),
+    jobsdoneSnd = new Audio("src/media/sounds/voiceovers/innkeeper_jobs_done.mp3"),
+    playerturnSnd = new Audio("src/media/sounds/playerturn.mp3"),
+    heropowerSnd = new Audio("src/media/sounds/heropower.mp3"),
     inRound;
 
-const opponentBoard = new Board(),
-    playerBoard = new Board(),
-    cardsInHand = document.getElementsByClassName("card"),
-    manaElement = document.getElementById('mana'),
-    screenshakebtn = document.getElementById('togglescreenshake');
+const manaElement = document.getElementById('mana');
 
 function startGame(tutorial) {
-    playerDeck = new Deck();
-    playerDeckView = new DeckPlayerView(playerDeck);
-
-    computerDeck = new Deck();
-    computerDeckView = new DeckOpponentView(computerDeck);
-
-    playerHand = new Hand();
-    playerHandView = new HandPlayerView(playerHand);
-
-    playerBoardView = new BoardPlayerView(playerBoard);
-    opponentBoardView = new BoardOpponentView(opponentBoard);
-
-    attackController = new AttackController(playerBoardView, opponentBoardView);
-
     inRound = false;
 
     for (let i = 0; i < 5; i++) {
-        playerHandView.addCard(playerDeckView.drawCard());
+        GAME.playerHandView.addCard(GAME.playerDeckView.drawCard());
     }
 
     checkForRequiredMana();
@@ -77,11 +39,11 @@ function refreshElements() {
     $('.card').draggable({
         containment: 'window',
         revert: function (valid) {
-            playerBoardView.removePlaceholder();
+            GAME.playerBoardView.removePlaceholder();
             return !valid;
         }, drag: throttle(function (event, ui) { // TODO: fix glitch where placeholder slot will remain even after dropping card
             if (ui.helper.data('hovering-board')) {
-                playerBoardView.generatePlaceholder(ui.helper.offset().left + (ui.helper.width() / 2));
+                GAME.playerBoardView.generatePlaceholder(ui.helper.offset().left + (ui.helper.width() / 2));
             }
         }, 50)
     });
@@ -91,8 +53,8 @@ function refreshElements() {
         drop: function (event, ui) {
             ui.helper.data('hovering-board', false);
             const droppedCard = ui.draggable;
-            playerBoardView.addCard(playerHandView.getCard(droppedCard.data('handIndex')));
-            playerHandView.removeCard(droppedCard.data('handIndex'));
+            GAME.playerBoardView.addCard(GAME.playerHandView.getCard(droppedCard.data('handIndex')));
+            GAME.playerHandView.removeCard(droppedCard.data('handIndex'));
             document.getElementById("gifhint").style.display = "none";
             document.getElementById("texthint").style.display = "none";
             refreshElements();
@@ -144,9 +106,9 @@ function updateManaGUI() {
 /* end turn button when clicked plays an audio file and calls the 
 opponentTurn function then checks if the audio has been played yet and if not plays it and sets audioIsPlayed to false */
 document.getElementById("endturn").addEventListener("click", function () {
-    (new Audio("src/sounds/endturn.mp3")).play();
+    (new Audio("src/media/sounds/endturn.mp3")).play();
     document.querySelector("#endturn").style.zIndex = "50";
-    document.getElementById("gifhint").style.backgroundImage = "url('src/hints/attack.gif')";
+    document.getElementById("gifhint").style.backgroundImage = "url('src/media/hints/attack.gif')";
     document.getElementById("texthint").innerText = "Click on an green glowing allied card then click on an enemy to attack.";
     opponentTurn();
 });
@@ -159,12 +121,12 @@ function opponentTurn() {
     }
 
     document.getElementById("playerheropower").style.boxShadow = "none";
-    document.body.style.cursor = "url(src/cursor/spectate.png) 10 2, auto";
+    document.body.style.cursor = "url(src/media/images/cursor/spectate.png) 10 2, auto";
     document.getElementById("computerTurn").style.display = "block";
     document.getElementById("endturn").style.backgroundColor = "grey";
     document.getElementById("endturn").innerText = "ENEMY TURN";
 
-    if (!opponentBoard.isEmpty()) {
+    if (!GAME.opponentBoard.isEmpty()) {
         /* calls function defined in AI.js (determines what the computer 
         attacks and with what minions) */
         setTimeout(function () {
@@ -173,7 +135,7 @@ function opponentTurn() {
 
         // stops the AI from having more than 7 cards on the board at a time
         setTimeout(function () {
-            let opponentCardsInPlay = opponentBoard.count();
+            let opponentCardsInPlay = GAME.opponentBoard.count();
 
             if (opponentCardsInPlay != maxOpponentCardsInPlay) {
                 computerCardPlace();
@@ -186,7 +148,7 @@ function opponentTurn() {
     } else {
         // places card if number of cards on board has not reached the max amount (10)
         setTimeout(function () {
-            if (opponentBoard.count() != maxOpponentCardsInPlay) {
+            if (GAME.opponentBoard.count() != maxOpponentCardsInPlay) {
                 computerCardPlace();
             }
 
@@ -201,23 +163,23 @@ function opponentTurn() {
 /* places a card onto the computers board whose mana is equal 
 to the player's mana capacity */
 function computerCardPlace() {
-    opponentBoardView.addCard(computerDeck.drawCard());
+    GAME.opponentBoardView.addCard(GAME.opponentDeck.drawCard());
 
-    // for (let i = 0; i < computerDeck.count(); i++) {
-    //     if (computerDeck.cards[i]['mana'] == manaCapacity) {
-    //         opponentBoard.insertCard(computerDeck.cards[i]);
-    //         // let index = computerDeck.cards.indexOf(i);
+    // for (let i = 0; i < GAME.opponentDeck.count(); i++) {
+    //     if (GAME.opponentDeck.cards[i]['mana'] == manaCapacity) {
+    //         GAME.opponentBoard.insertCard(GAME.opponentDeck.cards[i]);
+    //         // let index = GAME.opponentDeck.cards.indexOf(i);
     //         // cardplaceSnd.play();
     //         break;
     //         /* if the player's mana capacity is at the maxiumum (10) then 
     //         plays the card at the top of the computer's deck */
     //     } else if (manaCapacity == 10) {
-    //         opponentBoard.insertCard(computerDeck.topCard());
+    //         GAME.opponentBoard.insertCard(GAME.opponentDeck.topCard());
     //         break;
     //     }
     // }
     // // removes the card that was placed from the deck
-    // computerDeck.cards.splice(index, 1);
+    // GAME.opponentDeck.cards.splice(index, 1);
 }
 
 /* the player turn function allows the player to place cards and attack 
@@ -242,9 +204,9 @@ function playerTurn() {
         manaCrystals[i].style.backgroundColor = "#3669c9";
     }
 
-    oldNumOfChild = playerBoard.count();
+    oldNumOfChild = GAME.playerBoard.count();
     playerturnSnd.play();
-    document.body.style.cursor = "url(src/cursor/cursor.png) 10 2, auto";
+    document.body.style.cursor = "url(src/media/images/cursor/cursor.png) 10 2, auto";
     document.getElementById("playerheropower").style.boxShadow = "0px 2px 15px 12px #0FCC00";
     document.getElementById("playerheropower").classList.add("canAttack");
     document.getElementById("computerTurn").style.display = "none";
@@ -279,7 +241,7 @@ function playerTurn() {
 
     // the player draws a card if their hand is not full (max cards in hand 10 cards)
     if (hand.count() != 10) { // TODO: define a drawCard function
-        hand.addCardToHand(playerDeck.topCard());
+        hand.addCardToHand(GAME.playerDeck.topCard());
     }
 
     checkForRequiredMana();
@@ -289,10 +251,10 @@ function playerTurn() {
 /* checks if the player has enough mana to play each card in their hand 
 and if so makes the border of the card green */
 function checkForRequiredMana() {
-    for (let i = 0; i < cardsInHand.length; i++) {
-        // cardsInHand[i].setPlayable(mana < cardsInHand[i].children[0].children[2].innerText)
-        // TODO: toggle draggable here; also replace with OOP mana cost checks
-    }
+    // for (let i = 0; i < cardsInHand.length; i++) {
+    // cardsInHand[i].setPlayable(mana < cardsInHand[i].children[0].children[2].innerText)
+    // TODO: toggle draggable here; also replace with OOP mana cost checks
+    // }
 
     if (mana < 2) {
         document.getElementById("playerheropower").style.boxShadow = "none";
@@ -312,7 +274,7 @@ function createManaCrystal() {
 startGame(true);
 
 // disable and enable screen shakes (options menu)
-screenshakebtn.onclick = function () {
+document.getElementById('togglescreenshake').onclick = function () {
     isScreenShake = !isScreenShake;
     console.log("Screen Shaking has been set to " + isScreenShake);
 };

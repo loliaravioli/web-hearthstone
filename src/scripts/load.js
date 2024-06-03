@@ -1,10 +1,10 @@
-let mainmenuOST = new Audio("src/ost/mainmenu.mp3"),
-    crowdSnd = new Audio("src/sounds/crowd.mp3")
+let mainmenuOST = new Audio("src/media/sounds/ost/mainmenu.mp3"),
+    crowdSnd = new Audio("src/media/sounds/crowd.mp3")
 
 let introLines = [
-    "src/voiceovers/innkeeper_1.mp3",
-    "src/voiceovers/innkeeper_2.mp3",
-    "src/voiceovers/innkeeper_3.mp3"
+    "src/media/sounds/voiceovers/innkeeper_1.mp3",
+    "src/media/sounds/voiceovers/innkeeper_2.mp3",
+    "src/media/sounds/voiceovers/innkeeper_3.mp3"
 ]
 
 let introLine = introLines[Math.floor(Math.random() * introLines.length)],

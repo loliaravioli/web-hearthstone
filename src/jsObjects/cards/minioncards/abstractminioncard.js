@@ -19,8 +19,7 @@ export class AbstractMinion extends AbstractCard {
 
         this.minionID = MINION_IDS.WISP;
         this.tribe = TRIBE.NONE;
-
-        this.deathSound = '';
+        this.deathSound = '/src/media/sounds/cardPlaceSnds/king_krush_play.mp3';
         this.attackSound = '';
 
         this.canAttack = false;
