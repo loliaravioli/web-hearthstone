@@ -6,11 +6,11 @@ export class king_krush extends AbstractMinion {
     constructor() {
         super(9, 8, 8);
         this.minionID = MINION_IDS.KING_KRUSH;
-        this.name = "King Krush";
+        this.name = 'King Krush';
         this.rarity = RARITY.LEGENDARY;
-        this.info = "Charge";
-        this.image = "king_krush.jpg";
-        this.playSound = new Audio('src/media/sounds/cardPlaceSnds/king_krush_play.mp3');
+        this.info = 'Charge';
+        this.image = 'king_krush.jpg';
+        this.playSound = 'src/media/sounds/cardPlaceSnds/king_krush_play.mp3';
         this.tribe = TRIBE.BEAST;
 
         this.hasCharge = true;

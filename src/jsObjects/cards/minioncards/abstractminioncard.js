@@ -19,7 +19,8 @@ export class AbstractMinion extends AbstractCard {
 
         this.minionID = MINION_IDS.WISP;
         this.tribe = TRIBE.NONE;
-        this.deathSound = '/src/media/sounds/cardPlaceSnds/king_krush_play.mp3';
+        this.musicSound = '';
+        this.deathSound = '';
         this.attackSound = '';
 
         this.canAttack = false;
@@ -48,8 +49,14 @@ export class AbstractMinion extends AbstractCard {
     }
 
     triggerPlay() {
-        (new Audio(this.musicSound)).play();
-        (new Audio(this.playSound)).play();
+        if (this.musicSound != '') {
+            (new Audio(this.musicSound)).play();
+        }
+
+        if (this.playSound != '') {
+            (new Audio(this.playSound)).play();
+        }
+
         // play this minion
         // overload?
         // combo?
@@ -58,13 +65,19 @@ export class AbstractMinion extends AbstractCard {
     }
 
     triggerDeath() {
-        (new Audio(this.deathSound)).play();
+        if (this.deathSound != '') {
+            (new Audio(this.deathSound)).play();
+        }
+
         // destroy this minion
         // trigger deathrattle?
     }
 
     triggerAttack() {
-        (new Audio(this.attackSound)).play();
+        if (this.attackSound != '') {
+            (new Audio(this.attackSound)).play();
+        }
+        
         // attack with this minion
         // take damage
         // trigger enrage?
