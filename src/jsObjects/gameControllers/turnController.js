@@ -1,4 +1,5 @@
 // TODO: create separate functionality specifically for AI
+// TODO: create separate object for mana
 
 export class TurnController {
     constructor() {
@@ -16,7 +17,7 @@ export class TurnController {
         }
 
         mana = manaCapacity;
-        manaElement.innerHTML = mana + "/" + manaCapacity;
+        manaElement.innerHTML = `${mana}/${manaCapacity}`;
 
         let manaCrystals = document.getElementsByClassName("manabox");
         for (let i = 0; i < manaCrystals.length; i++) {
@@ -30,33 +31,6 @@ export class TurnController {
         document.getElementById("computerTurn").style.display = "none";
         document.getElementById("endturn").style.backgroundColor = "#4ce322";
         document.getElementById("endturn").innerText = "END TURN";
-
-        // mock's the user (dialogue) if it has been their turn for 30secs+
-        setTimeout(function () {
-            if (!this.playersTurn || alreadyMocked || gameIsWon) {
-                return;
-            }
-
-            alreadyMocked = true;
-            mockSnd.play();
-
-            setTimeout(function () {
-                document.querySelector("#computerbubble").innerText = "Go ahead. End\nyour turn, so that\nI can end you!";
-                document.querySelector("#computerbubble").style.visibility = "visible";
-                document.querySelector('#computerbubble').classList.add("openMenuAnim");
-
-                setTimeout(function () {
-                    document.querySelector('#computerbubble').classList.add("easeOutAnim");
-                    document.querySelector('#computerbubble').classList.remove("openMenuAnim");
-
-                    setTimeout(function () {
-                        document.querySelector("#computerbubble").style.visibility = "hidden";
-                        document.querySelector('#computerbubble').classList.remove("easeOutAnim");
-                    }, 0.25 * 1000);
-                    
-                }, 5 * 1000);
-            }, 0.25 * 1000);
-        }, 30 * 1000);
 
         GAME.playerHandView.addCard(GAME.playerDeckView.drawCard());
 
@@ -105,3 +79,36 @@ export class TurnController {
         }
     }
 }
+
+
+
+
+
+/*
+// mock's the user (dialogue) if it has been their turn for 30secs+
+setTimeout(function () {
+    if (!this.playersTurn || alreadyMocked || gameIsWon) {
+        return;
+    }
+
+    alreadyMocked = true;
+    mockSnd.play();
+
+    setTimeout(function () {
+        document.querySelector("#computerbubble").innerText = "Go ahead. End\nyour turn, so that\nI can end you!";
+        document.querySelector("#computerbubble").style.visibility = "visible";
+        document.querySelector('#computerbubble').classList.add("openMenuAnim");
+
+        setTimeout(function () {
+            document.querySelector('#computerbubble').classList.add("easeOutAnim");
+            document.querySelector('#computerbubble').classList.remove("openMenuAnim");
+
+            setTimeout(function () {
+                document.querySelector("#computerbubble").style.visibility = "hidden";
+                document.querySelector('#computerbubble').classList.remove("easeOutAnim");
+            }, 0.25 * 1000);
+            
+        }, 5 * 1000);
+    }, 0.25 * 1000);
+}, 30 * 1000);
+*/
