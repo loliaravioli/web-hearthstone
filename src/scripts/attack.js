@@ -18,7 +18,7 @@ function attack() {
             the player-cardinplay and the canAttack class or is the player's hero power */
             if (currentAttacker == null) {
 
-            } else if ((this.classList.contains('computer-cardinplay') || (this.id == 'opposinghero'))) {
+            } else if ((this.classList.contains('computer-cardinplay') || (this.id == 'opponentHero'))) {
                 GAME.playerBoard.htmlElement.style.zIndex = "2"
                 GAME.opponentBoard.htmlElement.style.zIndex = "1"
                 let target = this.id,
@@ -38,13 +38,13 @@ function attack() {
                         targetHealth -= currentAttackerAttack;
                         currentAttackerElement.children[1].children[0].innerHTML = currentAttackerHealth;
                         targetElement.children[1].children[0].innerHTML = targetHealth;
-                        if (targetElement.id != "opposinghero") {
+                        if (targetElement.id != "opponentHero") {
                             currentAttackerElement.children[1].children[0].style.color = "#f20301";
                         }
                         targetElement.children[1].children[0].style.color = "#f20301";
                         if (targetHealth <= 0) {
                             setTimeout(function () {
-                                if (targetElement.id == "opposinghero") {
+                                if (targetElement.id == "opponentHero") {
                                     gameWon();
                                 }
                                 targetElement.remove();
@@ -60,7 +60,7 @@ function attack() {
                         }, 0.4 * 1000);
                     } else {
                         currentAttackerHealth -= targetAttack;
-                        if (targetElement.id != "opposinghero") {
+                        if (targetElement.id != "opponentHero") {
                             currentAttackerElement.children[1].children[0].style.color = "#f20301";
                         }
                     }
@@ -84,7 +84,7 @@ function attack() {
                     }, 0.2 * 1000);
                 }
 
-                if (targetElement.id == 'opposinghero') {
+                if (targetElement.id == 'opponentHero') {
                     document.querySelector("#computerdamagevalue").innerText = "-" + currentAttackerAttack;
                     document.querySelector("#computerdamagecontainer").style.visibility = "visible";
                     document.getElementById('computerdamagecontainer').style.opacity = "1";
@@ -124,7 +124,7 @@ function attack() {
                     }
 
                     if (targetHealth <= 0) {
-                        if (document.querySelector('.opposingHeroHealth').innerText <= 0) {
+                        if (document.querySelector('.opponentHeroHealth').innerText <= 0) {
                             gameIsWon = true;
                             document.querySelector("#endturn").style.zIndex = "1";
                             let hasPlayedTutorial = "true";
@@ -222,7 +222,7 @@ function gameWon() {
     // adjust position of player board to fix GUI
     GAME.opponentBoard.htmlElement.style.transform = "translateY(17.5%)";
     setTimeout(function () {
-        document.querySelector(".opponenthero").style.display = "none";
+        document.querySelector(".opponentHeroContainer").style.display = "none";
         if (isScreenShake) {
             document.getElementById("game").classList.remove("shakeScreenAnim");
             document.getElementById("game").classList.add("shakeScreenAnim");

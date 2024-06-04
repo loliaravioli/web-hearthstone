@@ -594,7 +594,7 @@ head {
 		top: 123%;
 	}
 
-	.opposingHeroHealth {
+	.opponentHeroHealth {
 		left: 55%;
 		top: 74%;
 	}
@@ -789,7 +789,7 @@ head {
 		top: 103%;
 	}
 
-	.opposingHeroHealth {
+	.opponentHeroHealth {
 		left: 55%;
 		top: 80%;
 	}
@@ -976,7 +976,7 @@ head {
 	box-shadow: none;
 }
 
-.opponenthero:hover {
+.opponentHeroContainer:hover {
 	box-shadow: none;
 }
 
@@ -1050,7 +1050,7 @@ svg {
 	user-select: none;
 }
 
-.opponenthero {
+.opponentHeroContainer {
 	position: absolute;
 	width: 11%;
 	height: 17%;
@@ -1063,7 +1063,7 @@ svg {
 	background-size: contain;
 }
 
-#opposinghero {
+#opponentHero {
 	border: none !important;
 	width: 100% !important;
 	height: 100% !important;
@@ -1342,7 +1342,7 @@ svg {
 	animation-iteration-count: infinite;
 }
 
-.opposingHeroHealth {
+.opponentHeroHealth {
 	position: absolute;
 	width: 1.75rem;
 	height: 2rem;
