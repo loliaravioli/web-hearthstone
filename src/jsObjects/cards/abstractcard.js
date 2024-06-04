@@ -16,5 +16,7 @@ export class AbstractCard {
         this.overload = 0;
 
         this.playSound = 'src/media/sounds/cardplace.mp3';
+
+        this.isPlayable = false;
     }
 }

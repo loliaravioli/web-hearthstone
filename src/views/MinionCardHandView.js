@@ -58,12 +58,12 @@ export class MinionCardHandView {
         this.getElement().querySelector('.cardHealthValue').innerText = this.card.health;
         this.getElement().querySelector('.cardManaValue').innerText = this.card.mana;
 
-        // if (this.playable) {
-        this.getElement().style.pointerEvents = "all";
-        this.getElement().children[0].children[4].style.border = "solid 4px #0FCC00";
-        // } else {
-        //     this.getElement().style.pointerEvents = "none";
-        //     this.getElement().children[0].children[4].style.border = "solid 4px rgb(56, 56, 56)";
-        // }
+        this.getElement().style.pointerEvents = this.card.isPlayable ? 'all' : 'none';
+        this.getElement().children[0].children[4].style.border = `solid 4px ${this.card.isPlayable ? '#0FCC00' : 'rgb(56, 56, 56)'}`;
+    }
+
+    setPlayable(isPlayable) {
+        this.card.isPlayable = isPlayable;
+        this.update();
     }
 }

@@ -1,3 +1,5 @@
+import GAME from '../../game.js';
+
 // attacks differently according to how many cards are currently in play
 function AI() {
     const currentHeroHealth = document.getElementById('playerhero').children[1].innerText,

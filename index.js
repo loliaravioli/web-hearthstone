@@ -32,6 +32,8 @@ function startGame(tutorial) {
 
     isTutorial = tutorial;
 
+    GAME.playerHandView.setAllCardsPlayable();
+
     refreshElements();
 }
 
@@ -116,9 +118,7 @@ document.getElementById("endturn").addEventListener("click", function () {
 function opponentTurn() {
     playersTurn = false;
 
-    for (let i = 0; i < hand.count(); i++) {
-        hand.children[i].children[0].children[4].style.border = "solid 4px rgb(56, 56, 56)";
-    }
+    GAME.playerHandView.setAllCardsUnplayable();
 
     document.getElementById("playerheropower").style.boxShadow = "none";
     document.body.style.cursor = "url(src/media/images/cursor/spectate.png) 10 2, auto";
@@ -191,6 +191,8 @@ if so makes the boxShadow css property green*/
 function playerTurn() {
     playersTurn = true;
 
+    GAME.playerHandView.setAllCardsPlayable();
+
     if (manaCapacity != 10) {
         manaCapacity++;
         createManaCrystal();
@@ -204,7 +206,6 @@ function playerTurn() {
         manaCrystals[i].style.backgroundColor = "#3669c9";
     }
 
-    oldNumOfChild = GAME.playerBoard.count();
     playerturnSnd.play();
     document.body.style.cursor = "url(src/media/images/cursor/cursor.png) 10 2, auto";
     document.getElementById("playerheropower").style.boxShadow = "0px 2px 15px 12px #0FCC00";
@@ -239,10 +240,7 @@ function playerTurn() {
         }, 0.25 * 1000);
     }, 30 * 1000);
 
-    // the player draws a card if their hand is not full (max cards in hand 10 cards)
-    if (hand.count() != 10) { // TODO: define a drawCard function
-        hand.addCardToHand(GAME.playerDeck.topCard());
-    }
+    GAME.playerHandView.addCard(GAME.playerDeckView.drawCard());
 
     checkForRequiredMana();
     attack();

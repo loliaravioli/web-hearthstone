@@ -25,6 +25,22 @@ export class HandPlayerView {
         this.update();
     }
 
+    setAllCardsPlayable() { // debug method
+        this.cardViews.forEach(i => {
+            i.setPlayable(true);
+        });
+
+        this.update();
+    }
+
+    setAllCardsUnplayable() {
+        this.cardViews.forEach(i => {
+            i.setPlayable(false);
+        });
+
+        this.update();
+    }
+
     update() {
         this.getElement().replaceChildren();
         this.cardViews = [];
