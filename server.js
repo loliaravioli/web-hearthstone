@@ -30,6 +30,7 @@ const { debug } = require('console');
 
 
 // TODO: try using this instead of express?
+// try using C++ backend to have better performance than node.js
 const { App } = require('uWebSockets.js');
 const { Server } = require('socket.io');
 
