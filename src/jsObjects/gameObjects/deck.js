@@ -1,5 +1,5 @@
-import { king_krush } from './cards/minioncards/hunter/king_krush.js';
-import { water_elemental } from './cards/minioncards/mage/water_elemental.js';
+import { king_krush } from '../cards/minioncards/hunter/king_krush.js';
+import { water_elemental } from '../cards/minioncards/mage/water_elemental.js';
 
 export class Deck {
 	constructor() {

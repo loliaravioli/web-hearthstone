@@ -1,13 +1,14 @@
-import { Deck } from './src/jsObjects/deck.js';
-import { Hand } from './src/jsObjects/hand.js';
-import { Board } from './src/jsObjects/board.js';
-import { AttackController } from './src/jsObjects/attackController.js';
+import { Deck } from './src/jsObjects/gameObjects/deck.js';
+import { Hand } from './src/jsObjects/gameObjects/hand.js';
+import { Board } from './src/jsObjects/gameObjects/board.js';
+import { AttackController } from './src/jsObjects/gameControllers/attackController.js';
+import { TurnController } from './src/jsObjects/gameControllers/turnController.js';
 
-import { BoardOpponentView } from './src/views/BoardOpponentView.js';
-import { BoardPlayerView } from './src/views/BoardPlayerView.js';
-import { DeckOpponentView } from './src/views/DeckOpponentView.js';
-import { DeckPlayerView } from './src/views/DeckPlayerView.js';
-import { HandPlayerView } from './src/views/HandPlayerView.js';
+import { BoardOpponentView } from './src/jsObjects/views/BoardOpponentView.js';
+import { BoardPlayerView } from './src/jsObjects/views/BoardPlayerView.js';
+import { DeckOpponentView } from './src/jsObjects/views/DeckOpponentView.js';
+import { DeckPlayerView } from './src/jsObjects/views/DeckPlayerView.js';
+import { HandPlayerView } from './src/jsObjects/views/HandPlayerView.js';
 
 class GAME {
     constructor() {
@@ -27,6 +28,7 @@ class GAME {
         this.playerHandView = new HandPlayerView(this.playerHand);
 
         this.attackController = new AttackController(this.playerBoardView, this.opponentBoardView);
+        this.turnController = new TurnController();
     }
 }
 
