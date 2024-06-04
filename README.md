@@ -20,4 +20,4 @@ To-do List:
 
 - Create a functioning server. Current server.js is from a scrabble game I made-- will need major rewriting but there's a lot there that might be useful to start with. Try using C++ for backend instead of simple node-- there's some code in server.js related to this.
 
-- Move most of the game stuff here into the server. This can wait until after the vs-AI tutorial base of the game is done (and it's okay to keep the cards and controllers and stuff required for the tutorial and maybe even for other AI games) but for player-vs-player all of this card and game data will need to be done server-side.
+- Move most of the game stuff here into the server. This can wait until after the vs-AI tutorial base of the game is done (and it's okay to keep the cards and controllers and stuff required for the tutorial and maybe even for other AI games) but for player-vs-player all of this card and game data will need to be done server-side. Views can maybe stay client-side... need to figure it all out.
