@@ -1,7 +1,6 @@
 // TODO: wtf are these methods doing
 
-let isTutorial = true,
-    openmenuSnd = new Audio("src/media/sounds/openmenu.mp3"),
+let openmenuSnd = new Audio("src/media/sounds/openmenu.mp3"),
     menubtnsSnd = new Audio("src/media/sounds/menubtnpress.mp3"),
     purchaseSnd = new Audio("src/media/sounds/purchase.mp3"),
     menuhoverSnd = new Audio("src/media/sounds/menuselect.mp3"),
@@ -167,75 +166,75 @@ resumebtn.onclick = function () {
 };
 
 confirmbtn.onclick = function () {
-    if (isTutorial) {
-        document.querySelector("#block").style.zIndex = "9";
-        document.querySelector('#triangle').style.visibility = "hidden";
-        document.querySelector('#triangle').style.opacity = "0";
-        document.querySelector('#triangle').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
-        document.querySelector('#hintbackbackground').style.visibility = "hidden";
-        document.querySelector('#hintbackbackground').style.opacity = "0";
-        document.querySelector('#hintbackbackground').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
-        document.querySelector('#hintbackground').style.visibility = "hidden";
-        document.querySelector('#hintbackground').style.opacity = "0";
-        document.querySelector('#hintbackground').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
-        document.querySelector('#hint').style.visibility = "hidden";
-        document.querySelector('#hint').style.opacity = "0";
-        document.querySelector('#hint').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
-        document.querySelector(".opponenthero").style.zIndex = "5";
-        document.querySelector(".playerHeroHealth").innerText = "30";
-        document.querySelector(".opposingHeroHealth").innerText = "10";
-        document.querySelector('#confirm').classList.remove("packHoverAnim");
-        document.querySelector("#confirm").classList.add("openPackAnim");
-        endturnbtn.disabled = true;
+    document.querySelector("#block").style.zIndex = "9";
+    document.querySelector('#triangle').style.visibility = "hidden";
+    document.querySelector('#triangle').style.opacity = "0";
+    document.querySelector('#triangle').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
+    document.querySelector('#hintbackbackground').style.visibility = "hidden";
+    document.querySelector('#hintbackbackground').style.opacity = "0";
+    document.querySelector('#hintbackbackground').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
+    document.querySelector('#hintbackground').style.visibility = "hidden";
+    document.querySelector('#hintbackground').style.opacity = "0";
+    document.querySelector('#hintbackground').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
+    document.querySelector('#hint').style.visibility = "hidden";
+    document.querySelector('#hint').style.opacity = "0";
+    document.querySelector('#hint').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
+    document.querySelector(".opponenthero").style.zIndex = "5";
+    document.querySelector(".playerHeroHealth").innerText = "30";
+    document.querySelector(".opposingHeroHealth").innerText = "10";
+    document.querySelector('#confirm').classList.remove("packHoverAnim");
+    document.querySelector("#confirm").classList.add("openPackAnim");
+    endturnbtn.disabled = true;
+    setTimeout(function () {
+        startTutorialSnd.play();
         setTimeout(function () {
-            startTutorialSnd.play();
+            document.querySelector(".playerhero").style.visibility = "visible";
+            document.querySelector('.playerhero').classList.add("tutorialHeroAnim");
+            document.getElementById("game").classList.add("shakeScreenAnim");
+            document.querySelector('#confirm').style.visibility = "hidden";
+        }, 0.25 * 1000);
+        setTimeout(function () {
+            document.querySelector('#block').style.opacity = "0";
+            document.querySelector('#block').style.transition = "opacity 2s linear";
             setTimeout(function () {
-                document.querySelector(".playerhero").style.visibility = "visible";
-                document.querySelector('.playerhero').classList.add("tutorialHeroAnim");
-                document.getElementById("game").classList.add("shakeScreenAnim");
-                document.querySelector('#confirm').style.visibility = "hidden";
-            }, 0.25 * 1000);
-            setTimeout(function () {
-                document.querySelector('#block').style.opacity = "0";
-                document.querySelector('#block').style.transition = "opacity 2s linear";
+                document.querySelector('.playerhero').style.zIndex = "9";
                 setTimeout(function () {
-                    document.querySelector('.playerhero').style.zIndex = "9";
+                    document.querySelector(".opponenthero").style.visibility = "visible";
+                    document.querySelector(".opponenthero").classList.add("tutorialHoggerAnim");
                     setTimeout(function () {
-                        document.querySelector(".opponenthero").style.visibility = "visible";
-                        document.querySelector(".opponenthero").classList.add("tutorialHoggerAnim");
                         setTimeout(function () {
-                            setTimeout(function () {
-                                document.querySelector("#computerbubble").innerHTML = "...";
-                                document.querySelector("#computerbubble").style.visibility = "visible";
-                                document.querySelector('#computerbubble').classList.add("openMenuAnim");
-                            }, 1 * 1000);
-                            document.querySelector(".opponenthero").style.zIndex = "11";
-                            document.querySelector(".playerhero").style.zIndex = "9";
-                            setTimeout(function () {
-                                document.querySelector('#computerbubble').classList.add("easeOutAnim");
-                                document.querySelector('#computerbubble').classList.remove("openMenuAnim");
-                                setTimeout(function () {
-                                    document.querySelector("#computerbubble").style.visibility = "hidden";
-                                    document.querySelector('#computerbubble').classList.remove("easeOutAnim");
-                                    setTimeout(function () {
-                                        document.querySelector("#tutorialmenu").style.display = "block";
-                                        document.querySelector("#tutorialmenuContent").style.display = "block";
-                                        document.querySelector("#tutorialmenuContent").classList.add("openMenuAnim");
-                                    }, 1 * 1000);
-                                }, 0.25 * 1000);
-                            }, 3.5 * 1000);
-                            document.querySelector('.playerHeroHealth').style.visibility = "visible";
-                            document.querySelector('.playerHeroHealth').style.opacity = "1";
-                            document.querySelector('.playerHeroHealth').style.transition = "visibility 0.5s, opacity 0.5s linear";
-                            document.querySelector('.opposingHeroHealth').style.visibility = "visible";
-                            document.querySelector('.opposingHeroHealth').style.opacity = "1";
-                            document.querySelector('.opposingHeroHealth').style.transition = "visibility 0.5s, opacity 0.5s linear";
+                            document.querySelector("#computerbubble").innerHTML = "...";
+                            document.querySelector("#computerbubble").style.visibility = "visible";
+                            document.querySelector('#computerbubble').classList.add("openMenuAnim");
                         }, 1 * 1000);
-                    }, 0.925 * 1000);
-                }, 2 * 1000);
-            }, 8 * 1000);
-        }, 1 * 1000)
-    } else {
+                        document.querySelector(".opponenthero").style.zIndex = "11";
+                        document.querySelector(".playerhero").style.zIndex = "9";
+                        setTimeout(function () {
+                            document.querySelector('#computerbubble').classList.add("easeOutAnim");
+                            document.querySelector('#computerbubble').classList.remove("openMenuAnim");
+                            setTimeout(function () {
+                                document.querySelector("#computerbubble").style.visibility = "hidden";
+                                document.querySelector('#computerbubble').classList.remove("easeOutAnim");
+                                setTimeout(function () {
+                                    document.querySelector("#tutorialmenu").style.display = "block";
+                                    document.querySelector("#tutorialmenuContent").style.display = "block";
+                                    document.querySelector("#tutorialmenuContent").classList.add("openMenuAnim");
+                                }, 1 * 1000);
+                            }, 0.25 * 1000);
+                        }, 3.5 * 1000);
+                        document.querySelector('.playerHeroHealth').style.visibility = "visible";
+                        document.querySelector('.playerHeroHealth').style.opacity = "1";
+                        document.querySelector('.playerHeroHealth').style.transition = "visibility 0.5s, opacity 0.5s linear";
+                        document.querySelector('.opposingHeroHealth').style.visibility = "visible";
+                        document.querySelector('.opposingHeroHealth').style.opacity = "1";
+                        document.querySelector('.opposingHeroHealth').style.transition = "visibility 0.5s, opacity 0.5s linear";
+                    }, 1 * 1000);
+                }, 0.925 * 1000);
+            }, 2 * 1000);
+        }, 8 * 1000);
+    }, 1 * 1000);
+
+    /* when not in tutorial
         document.querySelector('#block').style.visibility = "hidden";
         document.querySelector('#block').style.opacity = "0";
         document.querySelector('#block').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
@@ -255,7 +254,7 @@ confirmbtn.onclick = function () {
             song.volume = 0.7;
             audioIsPlayed = true;
         }
-    }
+    */
 };
 
 // miscellaneous button (in options (press esc))
@@ -269,7 +268,6 @@ miscellaneousbtn.onclick = function () {
 
 // play button on click
 playbtn.onclick = function () {
-    isTutorial = false;
     isInGame = true;
     let cinematicvideo = document.getElementById("cinematicVideo");
     cinematicvideo.style.display = "none";
@@ -363,7 +361,6 @@ playbtn.onclick = function () {
 /* function tutorial called on tutorial button on click 
 and on page load if local storage hasPlayedTutorial == null */
 function tutorial() {
-    isTutorial = true;
     isInGame = true;
     // fade out the volume of the mainmenuOST
     let fadeout = setInterval(

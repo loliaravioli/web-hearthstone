@@ -6,11 +6,9 @@ let manaCost = null,
     playersTurn = new Boolean(false),
     alreadyMocked = new Boolean(false),
     gameIsWon = new Boolean(false),
-    isTutorial = new Boolean(false),
     isScreenShake = new Boolean(true),
     manaCapacity = 1,
     mana = manaCapacity,
-    maxOpponentCardsInPlay = 7,
     mockSnd = new Audio("src/media/sounds/mock.mp3"),
     jobsdoneSnd = new Audio("src/media/sounds/voiceovers/innkeeper_jobs_done.mp3"),
     playerturnSnd = new Audio("src/media/sounds/playerturn.mp3"),
@@ -29,8 +27,6 @@ function startGame(tutorial) {
     checkForRequiredMana();
 
     createManaCrystal();
-
-    isTutorial = tutorial;
 
     GAME.playerHandView.setAllCardsPlayable();
 
@@ -112,139 +108,8 @@ document.getElementById("endturn").addEventListener("click", function () {
     document.querySelector("#endturn").style.zIndex = "50";
     document.getElementById("gifhint").style.backgroundImage = "url('src/media/hints/attack.gif')";
     document.getElementById("texthint").innerText = "Click on an green glowing allied card then click on an enemy to attack.";
-    opponentTurn();
+    GAME.turnController.startOpponentTurn();
 });
-
-function opponentTurn() {
-    playersTurn = false;
-
-    GAME.playerHandView.setAllCardsUnplayable();
-
-    document.getElementById("playerheropower").style.boxShadow = "none";
-    document.body.style.cursor = "url(src/media/images/cursor/spectate.png) 10 2, auto";
-    document.getElementById("computerTurn").style.display = "block";
-    document.getElementById("endturn").style.backgroundColor = "grey";
-    document.getElementById("endturn").innerText = "ENEMY TURN";
-
-    if (!GAME.opponentBoard.isEmpty()) {
-        /* calls function defined in AI.js (determines what the computer 
-        attacks and with what minions) */
-        setTimeout(function () {
-            AI();
-        }, 1.25 * 1000)
-
-        // stops the AI from having more than 7 cards on the board at a time
-        setTimeout(function () {
-            let opponentCardsInPlay = GAME.opponentBoard.count();
-
-            if (opponentCardsInPlay != maxOpponentCardsInPlay) {
-                computerCardPlace();
-            }
-
-            setTimeout(function () {
-                playerTurn();
-            }, 1 * 1000)
-        }, 2.5 * 1000)
-    } else {
-        // places card if number of cards on board has not reached the max amount (10)
-        setTimeout(function () {
-            if (GAME.opponentBoard.count() != maxOpponentCardsInPlay) {
-                computerCardPlace();
-            }
-
-            // then calls the player turn function allowing the player to play his turn
-            setTimeout(function () {
-                playerTurn();
-            }, 1 * 1000)
-        }, 1.25 * 1000)
-    }
-}
-
-/* places a card onto the computers board whose mana is equal 
-to the player's mana capacity */
-function computerCardPlace() {
-    GAME.opponentBoardView.addCard(GAME.opponentDeck.drawCard());
-
-    // for (let i = 0; i < GAME.opponentDeck.count(); i++) {
-    //     if (GAME.opponentDeck.cards[i]['mana'] == manaCapacity) {
-    //         GAME.opponentBoard.insertCard(GAME.opponentDeck.cards[i]);
-    //         // let index = GAME.opponentDeck.cards.indexOf(i);
-    //         // cardplaceSnd.play();
-    //         break;
-    //         /* if the player's mana capacity is at the maxiumum (10) then 
-    //         plays the card at the top of the computer's deck */
-    //     } else if (manaCapacity == 10) {
-    //         GAME.opponentBoard.insertCard(GAME.opponentDeck.topCard());
-    //         break;
-    //     }
-    // }
-    // // removes the card that was placed from the deck
-    // GAME.opponentDeck.cards.splice(index, 1);
-}
-
-/* the player turn function allows the player to place cards and attack 
-computer minions increments the mana capcity if manacapcity is not at 
-the maximum (10) and displays the mana and manaCapacity in an element's
-innerHTML and checks what cards can played and if the player has the
-required mana to play the card for every card in the player's hand and
-if so makes the boxShadow css property green*/
-function playerTurn() {
-    playersTurn = true;
-
-    GAME.playerHandView.setAllCardsPlayable();
-
-    if (manaCapacity != 10) {
-        manaCapacity++;
-        createManaCrystal();
-    }
-
-    mana = manaCapacity;
-    manaElement.innerHTML = mana + "/" + manaCapacity;
-
-    let manaCrystals = document.getElementsByClassName("manabox");
-    for (let i = 0; i < manaCrystals.length; i++) {
-        manaCrystals[i].style.backgroundColor = "#3669c9";
-    }
-
-    playerturnSnd.play();
-    document.body.style.cursor = "url(src/media/images/cursor/cursor.png) 10 2, auto";
-    document.getElementById("playerheropower").style.boxShadow = "0px 2px 15px 12px #0FCC00";
-    document.getElementById("playerheropower").classList.add("canAttack");
-    document.getElementById("computerTurn").style.display = "none";
-    document.getElementById("endturn").style.backgroundColor = "#4ce322";
-    document.getElementById("endturn").innerText = "END TURN";
-
-    // mock's the user (dialogue) if it has been their turn for 30secs+
-    setTimeout(function () {
-        if (!playersTurn || alreadyMocked || gameIsWon || isTutorial) {
-            return;
-        }
-
-        alreadyMocked = true;
-        mockSnd.play();
-
-        setTimeout(function () {
-            document.querySelector("#computerbubble").innerText = "Go ahead. End\nyour turn, so that\nI can end you!";
-            document.querySelector("#computerbubble").style.visibility = "visible";
-            document.querySelector('#computerbubble').classList.add("openMenuAnim");
-
-            setTimeout(function () {
-                document.querySelector('#computerbubble').classList.add("easeOutAnim");
-                document.querySelector('#computerbubble').classList.remove("openMenuAnim");
-
-                setTimeout(function () {
-                    document.querySelector("#computerbubble").style.visibility = "hidden";
-                    document.querySelector('#computerbubble').classList.remove("easeOutAnim");
-                }, 0.25 * 1000);
-            }, 5 * 1000);
-        }, 0.25 * 1000);
-    }, 30 * 1000);
-
-    GAME.playerHandView.addCard(GAME.playerDeckView.drawCard());
-
-    checkForRequiredMana();
-    attack();
-}
 
 /* checks if the player has enough mana to play each card in their hand 
 and if so makes the border of the card green */

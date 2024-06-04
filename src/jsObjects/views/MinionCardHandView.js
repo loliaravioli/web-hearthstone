@@ -43,7 +43,7 @@ export class MinionCardHandView {
         playerCardFaceInHandDiv.appendChild(playerNameValueInHand);
         playerCardFaceInHandDiv.appendChild(tutorialHintValueInHand);
 
-        // if (isTutorial == true) {}
+        // only in tutorial
         tutorialHintValueInHand.innerText = 'Mana Cost\nAttack' + '                     ' + 'Health';
 
         playerInfoValueInHand.innerText = this.card.info;

@@ -127,11 +127,9 @@ function attack() {
                         if (document.querySelector('.opposingHeroHealth').innerText <= 0) {
                             gameIsWon = true;
                             document.querySelector("#endturn").style.zIndex = "1";
-                            if (isTutorial) {
-                                let hasPlayedTutorial = "true";
-                                let hasPlayedTutorial_serialized = JSON.stringify(hasPlayedTutorial);
-                                localStorage.setItem("hasPlayedTutorial", hasPlayedTutorial_serialized);
-                            }
+                            let hasPlayedTutorial = "true";
+                            let hasPlayedTutorial_serialized = JSON.stringify(hasPlayedTutorial);
+                            localStorage.setItem("hasPlayedTutorial", hasPlayedTutorial_serialized);
                             document.getElementById('block').style.opacity = "0";
                             document.getElementById('block').style.visibility = "visible";
                             setTimeout(function () {
@@ -189,37 +187,37 @@ function attack() {
 }
 
 function gameWon() {
-    if (isTutorial) {
-        (new Audio("src/media/sounds/victorytutorial.mp3")).play();
-        song.pause();
-    } else {
-        lichkingOST.pause();
-        let myGold = Number(localStorage.getItem('myGold'));
-        (new Audio("src/media/sounds/victory.mp3")).play();
-        myGold += 10; // number of gold earned per win
-        localStorage.setItem('myGold', myGold.toString());
-        // 20% or 1/5 chance of getting a pack on win
-        let chanceGetPack = Math.random();
-        if (chanceGetPack < 0.2) {
-            let myPacks = Number(localStorage.getItem('myPacks'));
-            myPacks++;
-            localStorage.setItem('myPacks', myPacks.toString());
-        }
+    (new Audio("src/media/sounds/victorytutorial.mp3")).play();
+    song.pause();
 
-        setTimeout(function () {
-            document.querySelector("#computerbubble").innerText = "I see... only\ndarkness\nbefore me...";
-            document.querySelector("#computerbubble").style.visibility = "visible";
-            document.querySelector('#computerbubble').classList.add("openMenuAnim");
-            setTimeout(function () {
-                document.querySelector('#computerbubble').classList.add("easeOutAnim");
-                document.querySelector('#computerbubble').classList.remove("openMenuAnim");
-                setTimeout(function () {
-                    document.querySelector("#computerbubble").style.visibility = "hidden";
-                    document.querySelector('#computerbubble').classList.remove("easeOutAnim");
-                }, 0.25 * 1000);
-            }, 5 * 1000);
-        }, 0.25 * 1000);
+    /* when not in tutorial
+    lichkingOST.pause();
+    let myGold = Number(localStorage.getItem('myGold'));
+    (new Audio("src/media/sounds/victory.mp3")).play();
+    myGold += 10; // number of gold earned per win
+    localStorage.setItem('myGold', myGold.toString());
+    // 20% or 1/5 chance of getting a pack on win
+    let chanceGetPack = Math.random();
+    if (chanceGetPack < 0.2) {
+        let myPacks = Number(localStorage.getItem('myPacks'));
+        myPacks++;
+        localStorage.setItem('myPacks', myPacks.toString());
     }
+
+    setTimeout(function () {
+        document.querySelector("#computerbubble").innerText = "I see... only\ndarkness\nbefore me...";
+        document.querySelector("#computerbubble").style.visibility = "visible";
+        document.querySelector('#computerbubble').classList.add("openMenuAnim");
+        setTimeout(function () {
+            document.querySelector('#computerbubble').classList.add("easeOutAnim");
+            document.querySelector('#computerbubble').classList.remove("openMenuAnim");
+            setTimeout(function () {
+                document.querySelector("#computerbubble").style.visibility = "hidden";
+                document.querySelector('#computerbubble').classList.remove("easeOutAnim");
+            }, 0.25 * 1000);
+        }, 5 * 1000);
+    }, 0.25 * 1000);
+    */
 
     // adjust position of player board to fix GUI
     GAME.opponentBoard.htmlElement.style.transform = "translateY(17.5%)";
@@ -245,16 +243,15 @@ function gameWon() {
                 setTimeout(function () {
                     location.reload();
                 }, 9 * 1000);
-                if (isTutorial) {
-                    document.getElementById('victoryhint').style.display = "block";
-                    document.getElementById('victoryhint').classList.add("openMenuAnim");
-                } else {
-                    setTimeout(function () {
-                        document.getElementById('victoryImg1').style.visibility = "hidden";
-                        document.getElementById('victoryImg1').style.opacity = "0";
-                        document.getElementById('victoryImg1').style.transition = "visibility 0s 2s, opacity 2s linear";
-                    }, 4 * 1000);
-                }
+                document.getElementById('victoryhint').style.display = "block";
+                document.getElementById('victoryhint').classList.add("openMenuAnim");
+
+                // when not in tutorial
+                // setTimeout(function () {
+                //     document.getElementById('victoryImg1').style.visibility = "hidden";
+                //     document.getElementById('victoryImg1').style.opacity = "0";
+                //     document.getElementById('victoryImg1').style.transition = "visibility 0s 2s, opacity 2s linear";
+                // }, 4 * 1000);
             }, 1 * 1000);
         }, 5 * 1000);
     }, 5 * 1000);
