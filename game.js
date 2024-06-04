@@ -12,6 +12,10 @@ import { HandPlayerView } from './src/jsObjects/views/HandPlayerView.js';
 
 class GAME {
     constructor() {
+        this.resetValues();
+    }
+
+    resetValues() {
         this.playerDeck = new Deck();
         this.opponentDeck = new Deck();
 
