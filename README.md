@@ -6,7 +6,7 @@ run npm install
 
 To-do List:
 
-- Get all card images and sound effects from. https://hearthsfx.github.io/cards/VANILLA
+- Get all card images and sound effects.
 
 - Implement proper turn-based gameplay after finishing the structure of basic minion combat. Most of the way there already, just need to do the onPlay/onDeath/etc. effects.
 
