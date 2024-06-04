@@ -24,6 +24,41 @@ const Typo = require('typo-js');
 const { Pool } = require('pg');
 const { debug } = require('console');
 
+
+
+
+
+
+// TODO: try using this instead of express?
+const { App } = require('uWebSockets.js');
+const { Server } = require('socket.io');
+
+const app = new App();
+const io = new Server();
+
+io.attachApp(app);
+
+io.on("connection", (socket) => {
+  // ...
+});
+
+app.listen(3000, (token) => {
+  if (!token) {
+    console.warn("port already in use");
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
 const app = express();
 const httpServer = require('http').createServer(app);
 const io = require('socket.io')(httpServer);
