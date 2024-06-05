@@ -1,3 +1,5 @@
+import GAME from '../../game.js';
+
 // TODO: wtf are these methods doing
 
 let openmenuSnd = new Audio("src/media/sounds/openmenu.mp3"),
@@ -8,16 +10,11 @@ let openmenuSnd = new Audio("src/media/sounds/openmenu.mp3"),
     shoponclickSnd = new Audio("src/media/sounds/shoponclick.mp3"),
     startTutorialSnd = new Audio("src/media/sounds/voiceovers/innkeeper_starttutorial.mp3"),
     battlebeginSnd = new Audio("src/media/sounds/voiceovers/innkeeper_tutorialbattle.mp3"),
-    jainathreatSnd = new Audio("src/media/sounds/voiceovers/jaina_tutorialbattle.mp3"),
     hasPlayedBattleBeginSnd = new Boolean(false),
     isInGame = new Boolean(false),
-    tutorialIntroRunning = new Boolean(false);
-// Initial volume of 0.20
-// Make sure it's a multiple of 0.05
-let vol = 0.5,
-    interval = 175; // 200ms interval
-// soundtrack's to be randomly selected in game
-let lichkingOST = new Audio("src/media/sounds/ost/knights_of_the_frozen_throne.mp3"),
+    tutorialIntroRunning = new Boolean(false),
+    vol = 0.5,
+    interval = 175,
     songs = [
         "src/media/sounds/ost/mulligan.mp3",
         "src/media/sounds/ost/bad_reputation.mp3",
@@ -25,51 +22,41 @@ let lichkingOST = new Audio("src/media/sounds/ost/knights_of_the_frozen_throne.m
         "src/media/sounds/ost/dont_let_your_guard_down.mp3",
         "src/media/sounds/ost/duel.mp3",
         "src/media/sounds/ost/the_forge.mp3"
-    ]
+    ],
+    audioIsPlayed = new Boolean(false);
 
-let item = songs[Math.floor(Math.random() * songs.length)];
-
-// converts the string into an audio element
-let song = new Audio(item);
-
-/* boolean to check if the audio is already playing to ensure multiple audio 
-files do not play at the same time when the end turn button is clicked */
-let audioIsPlayed = new Boolean(false)
+let song = new Audio(songs[Math.floor(Math.random() * songs.length)]);
 
 // plays a random song and sets the volume to 70% from the array defined above
-let volume = document.querySelector("#volume-control");
-volume.addEventListener("change", function (e) {
+document.getElementById('volume-control').addEventListener("change", function (e) {
     song.volume = e.currentTarget.value / 100;
 })
 
 document.addEventListener("keydown", function () {
     let x = event.keyCode || event.which;
-    if (x == 27) {
-        let game = document.getElementById("game"),
-            gamemenu = document.getElementById("gamemenu"),
-            gamemenuContent = document.getElementById("gamemenuContent");
-        if (gamemenuContent.style.display === "block") {
+    if (x == 27) { // esc key
+        if (document.getElementById("gamemenuContent").style.display === "block") {
             // hide options menu
             if (document.getElementById('optionsmenuContent').style.display === "block") {
                 document.getElementById('optionsmenu').style.display = "none";
-                document.getElementById('optionsmenuContent').style.display = "none";
-                document.getElementById('optionsmenuContent').classList.remove('openMenuAnim');
+                $('#optionsmenuContent').css({ 'display': 'none' })
+                    .removeClass('openMenuAnim');
             } else {
                 // show game
-                document.getElementById("gamemenuContent").classList.remove('openMenuAnim');
+                $('#gamemenuContent').removeClass('openMenuAnim')
+                    .css({ 'display': 'none' });
                 document.getElementById("gamemenu").style.display = "none";
-                document.getElementById("gamemenuContent").style.display = "none";
             }
         } else if (document.getElementById("shopmenu").style.display == "block") {
             document.getElementById("shopmenu").style.display = "none";
-            document.getElementById("shopmenuContent").style.display = "none";
-            document.getElementById("shopmenuContent").classList.remove("openMenuAnim");
+            $('#shopmenuContent').css({ 'display': 'none' })
+                .removeClass('openMenuAnim');
             document.getElementById("mainmenu").style.filter = "none";
         } else {
             // show game menu
             document.getElementById("gamemenu").style.display = "block";
-            document.getElementById("gamemenuContent").style.display = "block";
-            document.getElementById("gamemenuContent").classList.add('openMenuAnim');
+            $('#gamemenuContent').css({ 'display': 'block' })
+                .addClass('openMenuAnim');
             concedebtn.disabled = !isInGame;
             openmenuSnd.play();
         }
@@ -77,63 +64,37 @@ document.addEventListener("keydown", function () {
 })
 
 // on button hover play sound
-let concedebtn = document.querySelector('#concedebutton'),
-    optionsbtn = document.querySelector('#optionsbutton'),
-    quitbtn = document.querySelector('#quitbutton'),
-    resumebtn = document.querySelector('#resumebutton'),
-    miscellaneousbtn = document.querySelector('#miscellaneousbutton'),
-    confirmbtn = document.querySelector('#confirm'),
-    endturnbtn = document.getElementById("endturn"),
-    playbtn = document.querySelector('#playbutton'),
-    tutorialbtn = document.querySelector('#tutorialbutton'),
-    howtoplaybtn = document.querySelector('#howtoplaybutton'),
-    openpacksbtn = document.querySelector('#openpacksbutton'),
-    shopbtn = document.querySelector('#shopbutton'),
-    buybtn = document.querySelector('#buybutton'),
-    starttutorialbtn = document.querySelector('#starttutorialbutton'),
-    backfrompackbtn = document.querySelector('#backfrompackbtn'),
-    donepackbtn = document.querySelector('#donepackbutton');
-// skipcinematicbtn = document.querySelector('#skipcinematicbtn');
+let concedebtn = document.getElementById('concedebutton'),
+    optionsbtn = document.getElementById('optionsbutton'),
+    quitbtn = document.getElementById('quitbutton'),
+    resumebtn = document.getElementById('resumebutton'),
+    miscellaneousbtn = document.getElementById('miscellaneousbutton'),
+    confirmbtn = document.getElementById('confirm'),
+    endturnbtn = document.getElementById('endturn'),
+    playbtn = document.getElementById('playbutton'),
+    tutorialbtn = document.getElementById('tutorialbutton'),
+    howtoplaybtn = document.getElementById('howtoplaybutton'),
+    openpacksbtn = document.getElementById('openpacksbutton'),
+    shopbtn = document.getElementById('shopbutton'),
+    buybtn = document.getElementById('buybutton'),
+    starttutorialbtn = document.getElementById('starttutorialbutton'),
+    backfrompackbtn = document.getElementById('backfrompackbtn'),
+    donepackbtn = document.getElementById('donepackbutton');
+// skipcinematicbtn = document.getElementById('skipcinematicbtn');
 
-concedebtn.addEventListener('mouseover', function () {
-    menuhoverSnd.play();
-})
-optionsbtn.addEventListener('mouseover', function () {
-    menuhoverSnd.play();
-})
-quitbtn.addEventListener('mouseover', function () {
-    menuhoverSnd.play();
-})
-resumebtn.addEventListener('mouseover', function () {
-    menuhoverSnd.play();
-})
-miscellaneousbtn.addEventListener('mouseover', function () {
-    menuhoverSnd.play();
-})
-playbtn.addEventListener('mouseover', function () {
-    menuhoverSnd.play();
-})
-tutorialbtn.addEventListener('mouseover', function () {
-    menuhoverSnd.play();
-})
-howtoplaybtn.addEventListener('mouseover', function () {
-    menuhoverSnd.play();
-})
-openpacksbtn.addEventListener('mouseover', function () {
-    menuhoverSnd.play();
-})
-starttutorialbtn.addEventListener('mouseover', function () {
-    menuhoverSnd.play();
-})
-backfrompackbtn.addEventListener('mouseover', function () {
-    menuhoverSnd.play();
-})
-shopbtn.addEventListener('mouseover', function () {
-    shophoverSnd.play();
-})
-buybtn.addEventListener('mouseover', function () {
-    menuhoverSnd.play();
-})
+concedebtn.addEventListener('mouseover', menuhoverSnd.play());
+optionsbtn.addEventListener('mouseover', menuhoverSnd.play());
+quitbtn.addEventListener('mouseover', menuhoverSnd.play());
+resumebtn.addEventListener('mouseover', menuhoverSnd.play());
+miscellaneousbtn.addEventListener('mouseover', menuhoverSnd.play());
+playbtn.addEventListener('mouseover', menuhoverSnd.play());
+tutorialbtn.addEventListener('mouseover', menuhoverSnd.play());
+howtoplaybtn.addEventListener('mouseover', menuhoverSnd.play());
+openpacksbtn.addEventListener('mouseover', menuhoverSnd.play());
+starttutorialbtn.addEventListener('mouseover', menuhoverSnd.play());
+backfrompackbtn.addEventListener('mouseover', menuhoverSnd.play());
+shopbtn.addEventListener('mouseover', menuhoverSnd.play());
+buybtn.addEventListener('mouseover', menuhoverSnd.play());
 
 concedebtn.onclick = function () {
     openmenuSnd.play()
@@ -144,90 +105,98 @@ concedebtn.onclick = function () {
 optionsbtn.onclick = function () {
     openmenuSnd.play()
     document.getElementById('optionsmenu').style.display = "block";
-    document.getElementById('optionsmenuContent').style.display = "block";
-    document.getElementById('optionsmenuContent').classList.add('openMenuAnim');
+    $('#optionsmenuContent').css({ 'display': 'block' })
+        .addClass('openMenuAnim');
 };
 
 quitbtn.onclick = function () {
     openmenuSnd.play()
     document.getElementById('interactive');
-    document.getElementById('contents').style.visibility = "hidden";
-    document.getElementById('contents').style.opacity = "0";
-    document.getElementById('contents').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
+    $('#contents').css({
+        'visibility': 'hidden',
+        'opacity': 0,
+        'transition': 'visibility 0s 0.5s, opacity 0.5s linear'
+    });
     // may not work as can only close tabs with scripts that were opened with
     window.close();
 };
 
 resumebtn.onclick = function () {
     openmenuSnd.play()
-    document.getElementById("gamemenuContent").classList.remove('openMenuAnim');
+    $('#gamemenuContent').removeClass('openMenuAnim')
+        .css({ 'display': 'none' });
     document.getElementById("gamemenu").style.display = "none";
-    document.getElementById("gamemenuContent").style.display = "none";
 };
 
 confirmbtn.onclick = function () {
-    document.querySelector("#block").style.zIndex = "9";
-    document.querySelector('#triangle').style.visibility = "hidden";
-    document.querySelector('#triangle').style.opacity = "0";
-    document.querySelector('#triangle').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
-    document.querySelector('#hintbackbackground').style.visibility = "hidden";
-    document.querySelector('#hintbackbackground').style.opacity = "0";
-    document.querySelector('#hintbackbackground').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
-    document.querySelector('#hintbackground').style.visibility = "hidden";
-    document.querySelector('#hintbackground').style.opacity = "0";
-    document.querySelector('#hintbackground').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
-    document.querySelector('#hint').style.visibility = "hidden";
-    document.querySelector('#hint').style.opacity = "0";
-    document.querySelector('#hint').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
-    document.querySelector(".opponentHeroContainer").style.zIndex = "5";
-    document.querySelector(".playerHeroHealth").innerText = "30";
-    document.querySelector(".opponentHeroHealth").innerText = "10";
-    document.querySelector('#confirm').classList.remove("packHoverAnim");
-    document.querySelector("#confirm").classList.add("openPackAnim");
+    document.getElementById('block').style.zIndex = "9";
+    $('#triangle').css({
+        'visibility': 'hidden',
+        'opacity': 0,
+        'transition': 'visibility 0s 0.5s, opacity 0.5s linear'
+    });
+    $('#hintbackbackground').css({
+        'visibility': 'hidden',
+        'opacity': 0,
+        'transition': 'visibility 0s 0.5s, opacity 0.5s linear'
+    });
+    $('#hintbackground').css({
+        'visibility': 'hidden',
+        'opacity': 0,
+        'transition': 'visibility 0s 0.5s, opacity 0.5s linear'
+    });
+    $('#hint').css({
+        'visibility': 'hidden',
+        'opacity': 0,
+        'transition': 'visibility 0s 0.5s, opacity 0.5s linear'
+    });
+    document.getElementById('opponentHeroContainer').style.zIndex = "5";
+    document.getElementById('playerHeroHealth').innerText = "30";
+    document.getElementById('opponentHeroHealth').innerText = "10";
+    $('#confirm').removeClass('packHoverAnim')
+        .addClass('openPackAnim')
     endturnbtn.disabled = true;
     setTimeout(function () {
         startTutorialSnd.play();
         setTimeout(function () {
-            document.querySelector(".playerhero").style.visibility = "visible";
-            document.querySelector('.playerhero').classList.add("tutorialHeroAnim");
+            $('#playerHeroContainer').css({ 'visibility': 'visible' })
+                .addClass('tutorialHeroAnim');
             document.getElementById("game").classList.add("shakeScreenAnim");
-            document.querySelector('#confirm').style.visibility = "hidden";
+            document.getElementById('confirm').style.visibility = "hidden";
         }, 0.25 * 1000);
         setTimeout(function () {
-            document.querySelector('#block').style.opacity = "0";
-            document.querySelector('#block').style.transition = "opacity 2s linear";
+            $('#block').css({
+                'opacity': 0,
+                'transition': 'opacity 2s linear'
+            })
             setTimeout(function () {
-                document.querySelector('.playerhero').style.zIndex = "9";
+                document.getElementById('playerHeroContainer').style.zIndex = "9";
                 setTimeout(function () {
-                    document.querySelector(".opponentHeroContainer").style.visibility = "visible";
-                    document.querySelector(".opponentHeroContainer").classList.add("tutorialHoggerAnim");
+                    $('#opponentHeroContainer').css({ 'visibility': 'visible ' })
+                        .addClass('tutorialHoggerAnim');
                     setTimeout(function () {
                         setTimeout(function () {
-                            document.querySelector("#computerbubble").innerHTML = "...";
-                            document.querySelector("#computerbubble").style.visibility = "visible";
-                            document.querySelector('#computerbubble').classList.add("openMenuAnim");
+                            GAME.opponentDialogueView.setDialogueAudio('');
+                            GAME.opponentDialogueView.setDialogueText('...');
+                            GAME.opponentDialogueView.doDialogue();
                         }, 1 * 1000);
-                        document.querySelector(".opponentHeroContainer").style.zIndex = "11";
-                        document.querySelector(".playerhero").style.zIndex = "9";
+
                         setTimeout(function () {
-                            document.querySelector('#computerbubble').classList.add("easeOutAnim");
-                            document.querySelector('#computerbubble').classList.remove("openMenuAnim");
-                            setTimeout(function () {
-                                document.querySelector("#computerbubble").style.visibility = "hidden";
-                                document.querySelector('#computerbubble').classList.remove("easeOutAnim");
-                                setTimeout(function () {
-                                    document.querySelector("#tutorialmenu").style.display = "block";
-                                    document.querySelector("#tutorialmenuContent").style.display = "block";
-                                    document.querySelector("#tutorialmenuContent").classList.add("openMenuAnim");
-                                }, 1 * 1000);
-                            }, 0.25 * 1000);
-                        }, 3.5 * 1000);
-                        document.querySelector('.playerHeroHealth').style.visibility = "visible";
-                        document.querySelector('.playerHeroHealth').style.opacity = "1";
-                        document.querySelector('.playerHeroHealth').style.transition = "visibility 0.5s, opacity 0.5s linear";
-                        document.querySelector('.opponentHeroHealth').style.visibility = "visible";
-                        document.querySelector('.opponentHeroHealth').style.opacity = "1";
-                        document.querySelector('.opponentHeroHealth').style.transition = "visibility 0.5s, opacity 0.5s linear";
+                            document.getElementById('tutorialmenu').style.display = "block";
+                            $('#tutorialmenuContent').css({ 'display': 'block' })
+                                .addClass('openMenuAnim');
+                        }, 5 * 1000);
+
+                        $('#playerHeroHealth').css({
+                            'visibility': 'visible',
+                            'opacity': 1,
+                            'transition': 'visibility 0.5s, opacity 0.5s linear'
+                        });
+                        $('#opponentHeroHealth').css({
+                            'visibility': 'visible',
+                            'opacity': 1,
+                            'transition': 'visibility 0.5s, opacity 0.5s linear'
+                        });
                     }, 1 * 1000);
                 }, 0.925 * 1000);
             }, 2 * 1000);
@@ -247,7 +216,7 @@ confirmbtn.onclick = function () {
         document.querySelector('.opponentHeroHealth').style.visibility = "visible";
         document.querySelector('.opponentHeroHealth').style.opacity = "1";
         document.querySelector('.opponentHeroHealth').style.transition = "visibility 0.5s, opacity 0.5s linear";
-        document.querySelector(".playerhero").style.zIndex = "5";
+        document.querySelector(".playerHero").style.zIndex = "5";
         document.querySelector(".opponentHeroContainer").style.zIndex = "5";
         if (!audioIsPlayed) {
             lichkingOST.play();
@@ -269,30 +238,28 @@ miscellaneousbtn.onclick = function () {
 // play button on click
 playbtn.onclick = function () {
     isInGame = true;
-    let cinematicvideo = document.getElementById("cinematicVideo");
-    cinematicvideo.style.display = "none";
+    document.getElementById("cinematicVideo").style.display = "none";
     // document.getElementById("skipcinematicbtn").style.display = "none";
     document.getElementById("block").style.visibility = "visible";
     // fade out the volume of the mainmenuOST
-    let fadeout = setInterval(
-        function () {
-            // Reduce volume by 0.05 as long as it is above 0
-            // This works as long as you start with a multiple of 0.05!
-            if (vol > 0.05) {
-                vol -= 0.05;
-                mainmenuOST.volume = vol;
-            } else {
-                // Stop the setInterval when 0 is reached
-                clearInterval(fadeout);
-            }
-        }, interval);
+    let fadeout = setInterval(function () {
+        // Reduce volume by 0.05 as long as it is above 0
+        // This works as long as you start with a multiple of 0.05!
+        if (vol > 0.05) {
+            vol -= 0.05;
+            mainmenuOST.volume = vol;
+        } else {
+            // Stop the setInterval when 0 is reached
+            clearInterval(fadeout);
+        }
+    }, interval);
     menubtnsSnd.play();
     setTimeout(function () {
         mainmenuOST.pause();
     }, 1.75 * 1000);
     crowdSnd.pause();
-    document.getElementById('transitionblock').style.visibility = "visible";
-    document.getElementById('transitionblock').classList.add("fadeInAnim");
+    $('#transitionblock').css({ 'visibility': 'visible' })
+        .addClass('fadeInAnim');
     setTimeout(function () {
         document.getElementById('transitionblock').classList.add("fadeOutAnim");
         setTimeout(function () {
@@ -307,50 +274,56 @@ playbtn.onclick = function () {
         document.getElementById("opponentlabel").style.visibility = "visible";
         document.getElementById("vs").style.visibility = "visible";
         (new Audio("src/media/sounds/ongameload.mp3")).play();
-        document.querySelector('.playerhero').classList.add("onLoadPlayerAnim");
-        document.querySelector('.opponentHeroContainer').classList.add("onLoadComputerAnim");
+        document.getElementById('playerHeroContainer').classList.add("onLoadPlayerAnim");
+        document.getElementById('opponentHeroContainer').classList.add("onLoadComputerAnim");
         setTimeout(function () {
-            document.querySelector('#playerlabel').style.visibility = "hidden";
-            document.querySelector('#playerlabel').style.opacity = "0";
-            document.querySelector('#playerlabel').style.transition = "visibility 0s 0.1s, opacity 0.1s linear";
-            document.querySelector('#playerclasslabel').style.visibility = "hidden";
-            document.querySelector('#playerclasslabel').style.opacity = "0";
-            document.querySelector('#playerclasslabel').style.transition = "visibility 0s 0.1s, opacity 0.1s linear";
-            document.querySelector('#opponentlabel').style.visibility = "hidden";
-            document.querySelector('#opponentlabel').style.opacity = "0";
-            document.querySelector('#opponentlabel').style.transition = "visibility 0s 0.1s, opacity 0.1s linear";
+            $('#playerlabel').css({
+                'visibility': 'hidden',
+                'opacity': 0,
+                'transition': 'visibility 0s 0.1s, opacity 0.1s linear'
+            });
+            $('#playerclasslabel').css({
+                'visibility': 'hidden',
+                'opacity': 0,
+                'transition': 'visibility 0s 0.1s, opacity 0.1s linear'
+            });
+            $('#opponentlabel').css({
+                'visibility': 'hidden',
+                'opacity': 0,
+                'transition': 'visibility 0s 0.1s, opacity 0.1s linear'
+            });
         }, 5.25 * 1000);
         setTimeout(function () {
-            document.querySelector('#vs').style.visibility = "hidden";
-            document.querySelector('#vs').style.opacity = "0";
-            document.querySelector('#vs').style.transition = "visibility 0s 0.2s, opacity 0.2s linear";
+            $('#vs').css({
+                'visibility': 'hidden',
+                'opacity': 0,
+                'transition': 'visibility 0s 0.2s, opacity 0.2s linear'
+            });
             setTimeout(function () {
-                document.querySelector(".opponentHeroContainer").style.zIndex = "9";
+                document.getElementById('opponentHeroContainer').style.zIndex = "9";
                 setTimeout(function () {
-                    document.querySelector("#playerbubble").style.visibility = "visible";
-                    document.querySelector('#playerbubble').classList.add("openMenuAnim");
+                    $('#playerBubble').css({ 'visibility': 'visible' })
+                        .addClass('openMenuAnim');
                 }, 0.25 * 1000);
                 setTimeout(function () {
-                    document.querySelector('#playerbubble').classList.add("easeOutAnim");
-                    document.querySelector('#playerbubble').classList.remove("openMenuAnim");
+                    $('#playerBubble').addClass('easeOutAnim')
+                        .removeClass('openMenuAnim');
                     setTimeout(function () {
-                        document.querySelector("#playerbubble").style.visibility = "hidden";
+                        document.getElementById('playerBubble').style.visibility = "hidden";
                     }, 0.25 * 1000);
                     setTimeout(function () {
-                        document.querySelector("#computerbubble").style.visibility = "visible";
-                        document.querySelector('#computerbubble').classList.add("openMenuAnim");
+                        $('#opponentBubble').css({ 'visibility': 'visible' })
+                            .addClass('openMenuAnim');
                     }, 0.25 * 1000);
-                    document.querySelector(".opponentHeroContainer").style.zIndex = "11";
-                    document.querySelector(".playerhero").style.zIndex = "9";
                     setTimeout(function () {
-                        document.querySelector('#computerbubble').classList.add("easeOutAnim");
-                        document.querySelector('#computerbubble').classList.remove("openMenuAnim");
+                        $('#opponentBubble').addClass('easeOutAnim')
+                            .removeClass('openMenuAnim');
                         setTimeout(function () {
-                            document.querySelector("#computerbubble").style.visibility = "hidden";
-                            document.querySelector('#computerbubble').classList.remove("easeOutAnim");
+                            $('#opponentBubble').css({ 'visibility': 'hidden' })
+                                .removeClass('easeOutAnim');
                         }, 0.25 * 1000);
-                        document.querySelector(".opponentHeroContainer").style.zIndex = "9";
-                        document.querySelector('#confirm').style.display = "block";
+                        document.getElementById('opponentHeroContainer').style.zIndex = "9";
+                        document.getElementById('confirm').style.display = "block";
                     }, 5.5 * 1000);
                 }, 1.5 * 1000);
             }, 2 * 1000);
@@ -363,18 +336,17 @@ and on page load if local storage hasPlayedTutorial == null */
 function tutorial() {
     isInGame = true;
     // fade out the volume of the mainmenuOST
-    let fadeout = setInterval(
-        function () {
-            // Reduce volume by 0.05 as long as it is above 0
-            // This works as long as you start with a multiple of 0.05!
-            if (vol > 0.05) {
-                vol -= 0.05;
-                mainmenuOST.volume = vol;
-            } else {
-                // Stop the setInterval when 0 is reached
-                clearInterval(fadeout);
-            }
-        }, interval);
+    let fadeout = setInterval(function () {
+        // Reduce volume by 0.05 as long as it is above 0
+        // This works as long as you start with a multiple of 0.05!
+        if (vol > 0.05) {
+            vol -= 0.05;
+            mainmenuOST.volume = vol;
+        } else {
+            // Stop the setInterval when 0 is reached
+            clearInterval(fadeout);
+        }
+    }, interval);
 
     setTimeout(function () {
         mainmenuOST.pause();
@@ -387,44 +359,54 @@ function tutorial() {
     document.getElementById('mainmenu').style.visibility = "hidden";
     document.getElementById('contents').style.visibility = "visible";
 
-    document.querySelector('#confirm').style.display = "block";
-    document.querySelector('#confirm').classList.add("packHoverAnim");
-    document.querySelector('#confirm').innerText = "";
-    document.querySelector('#confirm').style.backgroundColor = "transparent";
-    document.querySelector('#confirm').style.border = "none";
-    document.querySelector('#confirm').style.width = "11%";
-    document.querySelector('#confirm').style.height = "25%";
-    document.querySelector('#confirm').style.top = "34%";
-    document.querySelector('#confirm').style.left = "44.7%";
-    document.querySelector('#confirm').style.transform = "rotate(-15deg)";
-    document.querySelector('#confirm').style.backgroundImage = "url(src/media/images/pack.png)";
+    $('#confirm').css({
+        'display': 'block',
+        'background-color': 'transparent',
+        'border': 'none',
+        'width': '11%',
+        'height': '25%',
+        'top': '34%',
+        'left': '44.7%',
+        'transform': 'rotate(-15deg)',
+        'background-image': 'url(src/media/images/pack.png)'
+    }).addClass('packHoverAnim')
+        .html('');
     setTimeout(function () {
-        if (tutorialIntroRunning == false) {
+        if (!tutorialIntroRunning) {
             tutorialIntroRunning = true;
             // document.getElementById("skipcinematicbtn").style.display = "none";
             introcinematic.style.display = "none";
-            document.querySelector(".playerhero").style.visibility = "hidden";
-            document.querySelector(".opponentHeroContainer").style.visibility = "hidden";
-            document.querySelector(".opponentHeroContainer").style.backgroundImage = "url(src/media/images/hogger.png)";
-            document.querySelector('#endturn').style.zIndex = "10";
-            document.querySelector(".playerhero").style.zIndex = "20";
-            document.querySelector(".opponentHeroContainer").style.zIndex = "5";
+            $('#opponentHeroContainer').css({
+                'visibility': 'hidden',
+                'z-index': 20
+            });
+
+            $('#opponentHeroContainer').css({
+                'visibility': 'hidden',
+                'background-image': 'url(src/media/images/hogger.png)',
+                'z-index': 5
+            });
+
             document.getElementById('transitionblock').style.visibility = "visible";
             document.getElementById("block").style.visibility = "visible";
-            document.querySelector('#endturn').style.zIndex = "9";
+            document.getElementById('endturn').style.zIndex = "9";
             setTimeout(function () {
-                document.getElementById('transitionblock').classList.add("fadeInAnim");
-                document.getElementById('transitionblock').classList.add("fadeOutAnim");
+                $('#transitionblock').addClass('fadeInAnim')
+                    .addClass('fadeOutAnim');
                 setTimeout(function () {
                     document.getElementById('transitionblock').style.visibility = "hidden";
-                    document.querySelector('#triangle').style.visibility = "visible";
-                    document.querySelector('#hintbackbackground').style.visibility = "visible";
-                    document.querySelector('#hintbackground').style.visibility = "visible";
-                    document.querySelector('#hint').style.visibility = "visible";
-                    document.querySelector('#triangle').classList.add("triangleOpenMenuAnim");
-                    document.querySelector('#hintbackbackground').classList.add("openMenuAnim");
-                    document.querySelector('#hintbackground').classList.add("openMenuAnim");
-                    document.querySelector('#hint').classList.add("openMenuAnim");
+
+                    $('#triangle').css({ 'visibility': 'visible' })
+                        .addClass('triangleOpenMenuAnim');
+
+                    $('#hintbackbackground').css({ 'visibility': 'visible' })
+                        .addClass('openMenuAnim');
+
+                    $('#hintbackground').css({ 'visibility': 'visible' })
+                        .addClass('openMenuAnim');
+
+                    $('#hint').css({ 'visibility': 'visible' })
+                        .addClass('openMenuAnim');
                 }, 1 * 1000);
             }, 1 * 1000);
         }
@@ -439,8 +421,8 @@ tutorialbtn.onclick = function () {
 
 howtoplaybtn.onclick = function () {
     menubtnsSnd.play();
-    document.querySelector("#mainmenu").style.display = "none";
-    document.querySelector("#howtoplay").style.display = "block";
+    document.getElementById('mainmenu').style.display = "none";
+    document.getElementById('howtoplay').style.display = "block";
 };
 
 openpacksbtn.onclick = function () {
@@ -465,9 +447,9 @@ openpacksbtn.onclick = function () {
 
     crowdSnd.pause();
     let packElements = document.getElementsByClassName("pack");
-    document.querySelector("#mainmenu").style.display = "none";
-    document.querySelector("#openpacks").style.display = "block";
-    document.querySelector("#pkcollisionbox").style.display = "block";
+    document.getElementById('mainmenu').style.display = "none";
+    document.getElementById('openpacks').style.display = "block";
+    document.getElementById('pkcollisionbox').style.display = "block";
 
     for (let i = 0; i < packElements.length; i++) {
         document.getElementsByClassName("pack")[i].style.display = "block";
@@ -483,8 +465,10 @@ openpacksbtn.onclick = function () {
 function shop() {
     shoponclickSnd.play();
     document.getElementById("shopmenu").style.display = "block";
-    document.getElementById("shopmenuContent").style.display = "block";
-    document.getElementById("shopmenuContent").classList.add("openMenuAnim");
+
+    $('#shopmenuContent').css({ 'display': 'block' })
+        .addClass('openMenuAnim');
+
     document.getElementById("mainmenu").style.filter = "blur(5px)";
 }
 
@@ -518,9 +502,9 @@ backfrompackbtn.onclick = function () {
     openmenuSnd.play();
     crowdSnd.play();
     let packElements = document.getElementsByClassName("pack");
-    document.querySelector("#mainmenu").style.display = "block";
-    document.querySelector("#openpacks").style.display = "none";
-    document.querySelector("#pkcollisionbox").style.display = "none";
+    document.getElementById('mainmenu').style.display = "block";
+    document.getElementById('openpacks').style.display = "none";
+    document.getElementById('pkcollisionbox').style.display = "none";
     for (let i = 0; i < packElements.length; i++) {
         document.getElementsByClassName("pack")[i].style.display = "none";
     }
@@ -529,13 +513,13 @@ backfrompackbtn.onclick = function () {
 // start tutorial button on click
 starttutorialbtn.onclick = function () {
     openmenuSnd.play();
-    document.querySelector('#endturn').style.zIndex = "1";
-    document.querySelector('#triangle').classList.remove("triangleOpenMenuAnim");
-    document.querySelector('#hintbackbackground').classList.remove("openMenuAnim");
-    document.querySelector('#hintbackground').classList.remove("openMenuAnim");
-    document.querySelector('#hint').classList.remove("openMenuAnim");
-    document.querySelector(".opponentHeroContainer").style.zIndex = "2";
-    document.querySelector(".playerhero").style.zIndex = "0";
+    document.getElementById('endturn').style.zIndex = "1";
+    document.getElementById('triangle').classList.remove("triangleOpenMenuAnim");
+    document.getElementById('hintbackbackground').classList.remove("openMenuAnim");
+    document.getElementById('hintbackground').classList.remove("openMenuAnim");
+    document.getElementById('hint').classList.remove("openMenuAnim");
+    document.getElementById('opponentHeroContainer').style.zIndex = "2";
+    document.getElementById('playerHeroContainer').style.zIndex = "0";
     document.getElementById("game").classList.remove("shakeScreenAnim");
     startTutorialSnd.addEventListener("ended", function () {
         if (hasPlayedBattleBeginSnd == false) {
@@ -548,175 +532,15 @@ starttutorialbtn.onclick = function () {
         battlebeginSnd.play();
     }
 
-    document.querySelector(".playerhero").style.zIndex = "8";
-    document.querySelector("#endturn").style.zIndex = "21";
-    document.querySelector("#tutorialmenuContent").classList.add("straightEaseOutAnim");
+    document.getElementById('playerHeroContainer').style.zIndex = "8";
+    document.getElementById('endturn').style.zIndex = "21";
+    document.getElementById('tutorialmenuContent').classList.add("straightEaseOutAnim");
     setTimeout(function () {
         battlebeginSnd.onended = function () {
-            jainathreatSnd.play();
-            document.querySelector("#playerbubble").innerHTML = "...";
-            document.querySelector("#playerbubble").style.visibility = "visible";
-            document.querySelector('#playerbubble').classList.add("openMenuAnim");
-            setTimeout(function () {
-                document.querySelector('#playerbubble').classList.add("easeOutAnim");
-                document.querySelector('#playerbubble').classList.remove("openMenuAnim");
-                setTimeout(function () {
-                    document.querySelector("#playerbubble").style.visibility = "hidden";
-                    document.querySelector('#playerbubble').classList.remove("easeOutAnim");
-                    setTimeout(function () {
-                        // start tutorial
-                        document.querySelector('#block').style.visibility = "hidden";
-                        document.getElementById("gifhint").style.display = "block";
-                        document.getElementById("texthint").style.display = "block";
-                        endturnbtn.disabled = false;
-                        setTimeout(function () {
-                            document.querySelector('#triangle').style.visibility = "visible";
-                            document.querySelector('#triangle').style.opacity = "1";
-                            document.querySelector('#triangle').style.transition = "none";
-                            document.querySelector('#triangle').style.top = "82.75%";
-                            document.querySelector('#triangle').style.left = "56%";
-                            document.querySelector('#hintbackbackground').style.visibility = "visible";
-                            document.querySelector('#hintbackbackground').style.opacity = "1";
-                            document.querySelector('#hintbackbackground').style.transition = "none";
-                            document.querySelector('#hintbackbackground').style.top = "78.8%";
-                            document.querySelector('#hintbackbackground').style.left = "58.5%";
-                            document.querySelector('#hintbackground').style.visibility = "visible";
-                            document.querySelector('#hintbackground').style.opacity = "1";
-                            document.querySelector('#hintbackground').style.transition = "none";
-                            document.querySelector('#hintbackground').style.top = "79%";
-                            document.querySelector('#hintbackground').style.left = "58.7%";
-                            document.querySelector('#hint').style.opacity = "1";
-                            document.querySelector('#hint').style.transition = "none";
-                            document.querySelector('#hint').style.visibility = "visible";
-                            document.querySelector('#hint').style.opacity = "1";
-                            document.querySelector('#hint').style.transition = "none";
-                            document.querySelector('#hint').style.top = "80%";
-                            document.querySelector('#hint').style.left = "59.25%";
-                            document.querySelector('#hintlabel').style.left = "10%";
-                            document.querySelector('#hintlabel').style.top = "17%";
-                            document.querySelector('#triangle').classList.add("triangleOpenMenuAnim");
-                            document.querySelector('#hintbackbackground').classList.add("openMenuAnim");
-                            document.querySelector('#hintbackground').classList.add("openMenuAnim");
-                            document.querySelector('#hint').classList.add("openMenuAnim");
-                            document.querySelector('#hintlabel').innerText = "If you run out of\nHealth, you lose.";
-                            setTimeout(function () {
-                                document.querySelector('#triangle').style.visibility = "hidden";
-                                document.querySelector('#triangle').style.opacity = "0";
-                                document.querySelector('#triangle').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
-                                document.querySelector('#hintbackbackground').style.visibility = "hidden";
-                                document.querySelector('#hintbackbackground').style.opacity = "0";
-                                document.querySelector('#hintbackbackground').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
-                                document.querySelector('#hintbackground').style.visibility = "hidden";
-                                document.querySelector('#hintbackground').style.opacity = "0";
-                                document.querySelector('#hintbackground').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
-                                document.querySelector('#hint').style.visibility = "hidden";
-                                document.querySelector('#hint').style.opacity = "0";
-                                document.querySelector('#hint').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
-                                document.querySelector('#triangle').classList.remove("triangleOpenMenuAnim");
-                                document.querySelector('#hintbackbackground').classList.remove("openMenuAnim");
-                                document.querySelector('#hintbackground').classList.remove("openMenuAnim");
-                                document.querySelector('#hint').classList.remove("openMenuAnim");
-                                setTimeout(function () {
-                                    setTimeout(function () {
-                                        document.querySelector('#triangle').style.visibility = "visible";
-                                        document.querySelector('#triangle').style.opacity = "1";
-                                        document.querySelector('#triangle').style.transition = "none";
-                                        document.querySelector('#triangle').style.top = "24.75%";
-                                        document.querySelector('#triangle').style.left = "56%";
-                                        document.querySelector('#hintbackbackground').style.visibility = "visible";
-                                        document.querySelector('#hintbackbackground').style.opacity = "1";
-                                        document.querySelector('#hintbackbackground').style.transition = "none";
-                                        document.querySelector('#hintbackbackground').style.top = "21.3%";
-                                        document.querySelector('#hintbackbackground').style.left = "58.5%";
-                                        document.querySelector('#hintbackground').style.visibility = "visible";
-                                        document.querySelector('#hintbackground').style.opacity = "1";
-                                        document.querySelector('#hintbackground').style.transition = "none";
-                                        document.querySelector('#hintbackground').style.top = "21.5%";
-                                        document.querySelector('#hintbackground').style.left = "58.7%";
-                                        document.querySelector('#hint').style.opacity = "1";
-                                        document.querySelector('#hint').style.transition = "none";
-                                        document.querySelector('#hint').style.visibility = "visible";
-                                        document.querySelector('#hint').style.opacity = "1";
-                                        document.querySelector('#hint').style.transition = "none";
-                                        document.querySelector('#hint').style.top = "22.5%";
-                                        document.querySelector('#hint').style.left = "59.25%";
-                                        document.querySelector('#hintlabel').style.left = "10%";
-                                        document.querySelector('#hintlabel').style.top = "17%";
-                                        document.querySelector('#triangle').classList.add("triangleOpenMenuAnim");
-                                        document.querySelector('#hintbackbackground').classList.add("openMenuAnim");
-                                        document.querySelector('#hintbackground').classList.add("openMenuAnim");
-                                        document.querySelector('#hint').classList.add("openMenuAnim");
-                                        document.querySelector('#hintlabel').style.width = "100%";
-                                        document.querySelector('#hintlabel').style.left = "0";
-                                        document.querySelector('#hintlabel').innerText = "When Hogger has\nno Health, you win.";
-                                        setTimeout(function () {
-                                            document.querySelector('#triangle').style.visibility = "hidden";
-                                            document.querySelector('#triangle').style.opacity = "0";
-                                            document.querySelector('#triangle').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
-                                            document.querySelector('#hintbackbackground').style.visibility = "hidden";
-                                            document.querySelector('#hintbackbackground').style.opacity = "0";
-                                            document.querySelector('#hintbackbackground').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
-                                            document.querySelector('#hintbackground').style.visibility = "hidden";
-                                            document.querySelector('#hintbackground').style.opacity = "0";
-                                            document.querySelector('#hintbackground').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
-                                            document.querySelector('#hint').style.visibility = "hidden";
-                                            document.querySelector('#hint').style.opacity = "0";
-                                            document.querySelector('#hint').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
-                                            setTimeout(function () {
-                                                document.querySelector('#triangle').style.visibility = "visible";
-                                                document.querySelector('#triangle').style.opacity = "1";
-                                                document.querySelector('#triangle').style.transition = "none";
-                                                document.querySelector('#triangle').style.top = "74%";
-                                                document.querySelector('#triangle').style.left = "63%";
-                                                document.querySelector('#hintbackbackground').style.visibility = "visible";
-                                                document.querySelector('#hintbackbackground').style.opacity = "1";
-                                                document.querySelector('#hintbackbackground').style.transition = "none";
-                                                document.querySelector('#hintbackbackground').style.top = "70.3%";
-                                                document.querySelector('#hintbackbackground').style.left = "64.9%";
-                                                document.querySelector('#hintbackground').style.visibility = "visible";
-                                                document.querySelector('#hintbackground').style.opacity = "1";
-                                                document.querySelector('#hintbackground').style.transition = "none";
-                                                document.querySelector('#hintbackground').style.top = "70.5%";
-                                                document.querySelector('#hintbackground').style.left = "65.1%";
-                                                document.querySelector('#hint').style.opacity = "1";
-                                                document.querySelector('#hint').style.transition = "none";
-                                                document.querySelector('#hint').style.visibility = "visible";
-                                                document.querySelector('#hint').style.opacity = "1";
-                                                document.querySelector('#hint').style.transition = "none";
-                                                document.querySelector('#hint').style.top = "71.5%";
-                                                document.querySelector('#hint').style.left = "65.7%";
-                                                document.querySelector('#hintlabel').style.left = "0%";
-                                                document.querySelector('#hintlabel').style.top = "17%";
-                                                document.querySelector('#triangle').classList.add("triangleOpenMenuAnim");
-                                                document.querySelector('#hintbackbackground').classList.add("openMenuAnim");
-                                                document.querySelector('#hintbackground').classList.add("openMenuAnim");
-                                                document.querySelector('#hint').classList.add("openMenuAnim");
-                                                document.querySelector('#hintlabel').style.width = "100%";
-                                                document.querySelector('#hintlabel').style.left = "0";
-                                                document.querySelector('#hintlabel').innerText = "Spend 2 mana to deal 1 damage to an opponent!";
-                                                setTimeout(function () {
-                                                    document.querySelector('#triangle').style.visibility = "hidden";
-                                                    document.querySelector('#triangle').style.opacity = "0";
-                                                    document.querySelector('#triangle').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
-                                                    document.querySelector('#hintbackbackground').style.visibility = "hidden";
-                                                    document.querySelector('#hintbackbackground').style.opacity = "0";
-                                                    document.querySelector('#hintbackbackground').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
-                                                    document.querySelector('#hintbackground').style.visibility = "hidden";
-                                                    document.querySelector('#hintbackground').style.opacity = "0";
-                                                    document.querySelector('#hintbackground').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
-                                                    document.querySelector('#hint').style.visibility = "hidden";
-                                                    document.querySelector('#hint').style.opacity = "0";
-                                                    document.querySelector('#hint').style.transition = "visibility 0s 0.5s, opacity 0.5s linear";
-                                                }, 4 * 1000)
-                                            }, 1 * 1000)
-                                        }, 4 * 1000)
-                                    }, 1 * 1000)
-                                }, 1 * 1000)
-                            }, 4 * 1000)
-                        }, 2 * 1000)
-                    }, 1 * 1000)
-                }, 0.25 * 1000);
-            }, 1 * 1000);
+            GAME.playerDialogueView.setDialogueAudio('src/media/sounds/voiceovers/jaina_tutorialbattle.mp3');
+            GAME.playerDialogueView.setDialogueText('...');
+            GAME.playerDialogueView.doDialogue();
+
             setTimeout(function () {
                 song.play();
             }, 1 * 1000)
@@ -755,11 +579,7 @@ donepackbtn.onclick = function () {
 
 const targetDiv = document.getElementById("fps");
 document.getElementById('togglefps').onclick = function () {
-    if (targetDiv.style.display !== "none") {
-        targetDiv.style.display = "none";
-    } else {
-        targetDiv.style.display = "block";
-    }
+    targetDiv.style.display = (targetDiv.style.display !== "none") ? "none" : 'block';
 };
 
 /* on page load prompts the user to click in order to start/play the game and is 
@@ -780,8 +600,7 @@ preventCORSbtn.onclick = function () {
         }, 0.55 * 1000);
         if (typeof crowdSnd.loop == 'boolean') {
             crowdSnd.loop = true;
-        }
-        else {
+        } else {
             crowdSnd.addEventListener('ended', function () {
                 this.currentTime = 0;
                 this.play();
@@ -791,8 +610,8 @@ preventCORSbtn.onclick = function () {
         crowdSnd.play();
         crowdSnd.volume = 0.5;
         document.querySelector('#blockmainmenu').style.display = "block";
-        document.getElementById('mainmenu').style.visibility = "visible";
-        document.getElementById('mainmenu').classList.add("zoomOutAnim");
+        $('#mainmenu').css({ 'visibility': 'visible' })
+            .addClass('zoomOutAnim');
         setTimeout(function () {
             document.querySelector('#blockmainmenu').style.display = "none";
             document.getElementById('mainmenu').classList.remove("zoomOutAnim");
@@ -804,28 +623,34 @@ preventCORSbtn.onclick = function () {
     let cinematicvideo = document.getElementById("cinematicVideo");
     cinematicvideo.pause();
     cinematicvideo.style.display = "none";
-    document.querySelector(".playerhero").style.visibility = "hidden";
-    document.querySelector(".opponentHeroContainer").style.visibility = "hidden";
-    document.querySelector(".opponentHeroContainer").style.backgroundImage = "url(src/media/images/hogger.png)";
-    document.querySelector('#endturn').style.zIndex = "10";
-    document.querySelector(".playerhero").style.zIndex = "20";
-    document.querySelector(".opponentHeroContainer").style.zIndex = "5";
+
+    $('#playerHeroContainer').css({
+        'visibility': 'hidden',
+        'z-index': 20
+    });
+
+    $('#opponentHeroContainer').css({
+        'visibility': 'hidden',
+        'background-image': 'url(src/media/images/hogger.png)',
+        'z-index': 5
+    });
+
     document.getElementById('transitionblock').style.visibility = "visible";
     document.getElementById("block").style.visibility = "visible";
     document.querySelector('#endturn').style.zIndex = "9";
     setTimeout(function () {
-        document.getElementById('transitionblock').classList.add("fadeInAnim");
-        document.getElementById('transitionblock').classList.add("fadeOutAnim");
+        $('#transitionblock').addClass('fadeInAnim')
+            .addClass('fadeOutAnim');
         setTimeout(function () {
             document.getElementById('transitionblock').style.visibility = "hidden";
-            document.querySelector('#triangle').style.visibility = "visible";
-            document.querySelector('#hintbackbackground').style.visibility = "visible";
-            document.querySelector('#hintbackground').style.visibility = "visible";
-            document.querySelector('#hint').style.visibility = "visible";
-            document.querySelector('#triangle').classList.add("triangleOpenMenuAnim");
-            document.querySelector('#hintbackbackground').classList.add("openMenuAnim");
-            document.querySelector('#hintbackground').classList.add("openMenuAnim");
-            document.querySelector('#hint').classList.add("openMenuAnim");
+            $('#triangle').css({ 'visibility': 'visible' })
+                .addClass('triangleOpenMenuAnim');
+            $('#hintbackbackground').css({ 'visibility': 'visible' })
+                .addClass('openMenuAnim');
+            $('#hintbackground').css({ 'visibility': 'visible' })
+                .addClass('openMenuAnim');
+            $('#hint').css({ 'visibility': 'visible' })
+                .addClass('openMenuAnim');
         }, 1 * 1000);
     }, 1 * 1000);
 }
@@ -836,11 +661,11 @@ preventCORSbtn.onclick = function () {
 // let cinematicvideo = document.getElementById("cinematicVideo");
 // cinematicvideo.pause();
 // cinematicvideo.style.display = "none";
-// document.querySelector(".playerhero").style.visibility = "hidden";
+// document.querySelector(".playerHero").style.visibility = "hidden";
 // document.querySelector(".opponentHeroContainer").style.visibility = "hidden";
 // document.querySelector(".opponentHeroContainer").style.backgroundImage = "url(src/media/images/hogger.png)";
 // document.querySelector('#endturn').style.zIndex = "10";
-// document.querySelector(".playerhero").style.zIndex = "20";
+// document.querySelector(".playerHero").style.zIndex = "20";
 // document.querySelector(".opponentHeroContainer").style.zIndex = "5";
 // document.getElementById('transitionblock').style.visibility = "visible";
 // document.getElementById("block").style.visibility = "visible";
@@ -864,19 +689,25 @@ preventCORSbtn.onclick = function () {
 
 // custom cursor when attacking with the use of svg
 const onMouseOuterMove = (e) => {
-    document.getElementById('outercursor').style.left = e.pageX + 'px';
-    document.getElementById('outercursor').style.top = e.pageY + 'px';
+    $('#outercursor').css({
+        'left': `${e.pageX}px`,
+        'top': `${e.pageY}px`
+    });
 }
 document.addEventListener('mousemove', onMouseOuterMove);
 
 const onMouseInnerMove = (e) => {
-    document.getElementById('innercursor').style.left = e.pageX + 'px';
-    document.getElementById('innercursor').style.top = e.pageY + 'px';
+    $('#innercursor').css({
+        'left': `${e.pageX}px`,
+        'top': `${e.pageY}px`
+    });
 }
 document.addEventListener('mousemove', onMouseInnerMove);
 
 const onMouseTriangleMove = (e) => {
-    document.getElementById('arrowcursor').style.left = e.pageX + 'px';
-    document.getElementById('arrowcursor').style.top = e.pageY + 'px';
+    $('#arrowcursor').css({
+        'left': `${e.pageX}px`,
+        'top': `${e.pageY}px`
+    });
 }
 document.addEventListener('mousemove', onMouseTriangleMove);

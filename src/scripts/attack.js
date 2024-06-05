@@ -4,7 +4,7 @@ import GAME from '../../game.js';
 class 'canAttack', when attacking the card is checked to see if the card has
 this class.*/
 function attack() {
-    document.getElementById("playerheropower").classList.add("canAttack");
+    document.getElementById("playerHeropower").classList.add("canAttack");
     let numOfChild = GAME.playerBoard.count();
     for (let i = 0; i < numOfChild; i++) {
         document.getElementsByClassName("player-cardinplay")[i].style.boxShadow = "0px 2px 15px 12px #0FCC00";
@@ -19,8 +19,8 @@ function attack() {
             if (currentAttacker == null) {
 
             } else if ((this.classList.contains('computer-cardinplay') || (this.id == 'opponentHero'))) {
-                GAME.playerBoard.htmlElement.style.zIndex = "2"
-                GAME.opponentBoard.htmlElement.style.zIndex = "1"
+                GAME.playerBoardView.getElement().style.zIndex = "2"
+                GAME.opponentBoardView.getElement().style.zIndex = "1"
                 let target = this.id,
                     currentAttackerElement = document.getElementById(currentAttacker),
                     targetElement = document.getElementById(target),
@@ -28,7 +28,7 @@ function attack() {
                     currentAttackerHealth = currentAttackerElement.children[1].children[0].innerHTML,
                     targetAttack = targetElement.children[0].children[0].innerHTML,
                     targetHealth = targetElement.children[1].children[0].innerHTML;
-                if (currentAttacker == "playerheropower") {
+                if (currentAttacker == "playerHeropower") {
                     mana -= 2;
                     manaElement.innerHTML = mana + "/" + manaCapacity;
                     checkForRequiredMana();
@@ -86,9 +86,11 @@ function attack() {
 
                 if (targetElement.id == 'opponentHero') {
                     document.querySelector("#computerdamagevalue").innerText = "-" + currentAttackerAttack;
-                    document.querySelector("#computerdamagecontainer").style.visibility = "visible";
-                    document.getElementById('computerdamagecontainer').style.opacity = "1";
-                    document.getElementById('computerdamagecontainer').style.transition = "none";
+                    $('#computerdamagecontainer').css({
+                        'visibility': 'visible',
+                        'opacity': 1,
+                        'transition': 'none'
+                    });
                     document.querySelector("#computerdamagelabel").classList.add("openMenuAnim");
                     document.querySelector("#computerdamagevalue").classList.add("openMenuAnim");
                     document.querySelector("#computerdamagelabel").classList.remove("fadeOutAnim");
@@ -99,21 +101,23 @@ function attack() {
                         document.querySelector("#computerdamagelabel").classList.remove("openMenuAnim");
                         document.querySelector("#computerdamagevalue").classList.remove("openMenuAnim");
                         setTimeout(function () {
-                            document.getElementById('computerdamagecontainer').style.visibility = "hidden";
-                            document.getElementById('computerdamagecontainer').style.opacity = "0";
+                            $('#computerdamagecontainer').css({
+                                'visibility': 'hidden',
+                                'opacity': 0
+                            });
                         }, 1 * 1000);
                     }, 2 * 1000);
                 }
 
                 currentAttackerElement.style.boxShadow = "none";
 
-                if (currentAttacker == "playerheropower") {
-                    document.getElementById("playerheropower").classList.remove("canAttack");
+                if (currentAttacker == "playerHeropower") {
+                    document.getElementById("playerHeropower").classList.remove("canAttack");
                 }
 
                 setTimeout(function () {
                     if (currentAttackerHealth <= 0) {
-                        if (document.querySelector('.playerHeroHealth').innerText <= 0) {
+                        if (document.getElementById('playerHeroHealth').innerText <= 0) {
                             alert("You've Lost!")
                             location.reload();
                         }
@@ -124,14 +128,15 @@ function attack() {
                     }
 
                     if (targetHealth <= 0) {
-                        if (document.querySelector('.opponentHeroHealth').innerText <= 0) {
+                        if (document.getElementById('opponentHeroHealth').innerText <= 0) {
                             gameIsWon = true;
                             document.querySelector("#endturn").style.zIndex = "1";
-                            let hasPlayedTutorial = "true";
-                            let hasPlayedTutorial_serialized = JSON.stringify(hasPlayedTutorial);
+                            let hasPlayedTutorial_serialized = JSON.stringify("true");
                             localStorage.setItem("hasPlayedTutorial", hasPlayedTutorial_serialized);
-                            document.getElementById('block').style.opacity = "0";
-                            document.getElementById('block').style.visibility = "visible";
+                            $('#block').css({
+                                'opacity': 0,
+                                'visibility': 'visible'
+                            });
                             setTimeout(function () {
                                 document.getElementById('fireworkCanvas').style.display = "block";
                                 document.getElementById('fireworkCanvas').classList.add("fadeInAnim");
@@ -205,24 +210,24 @@ function gameWon() {
     }
 
     setTimeout(function () {
-        document.querySelector("#computerbubble").innerText = "I see... only\ndarkness\nbefore me...";
-        document.querySelector("#computerbubble").style.visibility = "visible";
-        document.querySelector('#computerbubble').classList.add("openMenuAnim");
+        document.querySelector("#opponentBubble").innerText = "I see... only\ndarkness\nbefore me...";
+        document.querySelector("#opponentBubble").style.visibility = "visible";
+        document.querySelector('#opponentBubble').classList.add("openMenuAnim");
         setTimeout(function () {
-            document.querySelector('#computerbubble').classList.add("easeOutAnim");
-            document.querySelector('#computerbubble').classList.remove("openMenuAnim");
+            document.querySelector('#opponentBubble').classList.add("easeOutAnim");
+            document.querySelector('#opponentBubble').classList.remove("openMenuAnim");
             setTimeout(function () {
-                document.querySelector("#computerbubble").style.visibility = "hidden";
-                document.querySelector('#computerbubble').classList.remove("easeOutAnim");
+                document.querySelector("#opponentBubble").style.visibility = "hidden";
+                document.querySelector('#opponentBubble').classList.remove("easeOutAnim");
             }, 0.25 * 1000);
         }, 5 * 1000);
     }, 0.25 * 1000);
     */
 
     // adjust position of player board to fix GUI
-    GAME.opponentBoard.htmlElement.style.transform = "translateY(17.5%)";
+    GAME.opponentBoardView.getElement().style.transform = "translateY(17.5%)";
     setTimeout(function () {
-        document.querySelector(".opponentHeroContainer").style.display = "none";
+        document.getElementById('opponentHeroContainer').style.display = "none";
         if (isScreenShake) {
             document.getElementById("game").classList.remove("shakeScreenAnim");
             document.getElementById("game").classList.add("shakeScreenAnim");

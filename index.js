@@ -120,10 +120,10 @@ function checkForRequiredMana() {
     // }
 
     if (mana < 2) {
-        document.getElementById("playerheropower").style.boxShadow = "none";
-        document.getElementById("playerheropower").style.pointerEvents = "none";
+        document.getElementById("playerHeropower").style.boxShadow = "none";
+        document.getElementById("playerHeropower").style.pointerEvents = "none";
     } else {
-        document.getElementById("playerheropower").style.pointerEvents = "all";
+        document.getElementById("playerHeropower").style.pointerEvents = "all";
     }
 }
 

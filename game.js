@@ -1,6 +1,7 @@
 import { Deck } from './src/jsObjects/gameObjects/deck.js';
 import { Hand } from './src/jsObjects/gameObjects/hand.js';
 import { Board } from './src/jsObjects/gameObjects/board.js';
+
 import { AttackController } from './src/jsObjects/gameControllers/attackController.js';
 import { TurnController } from './src/jsObjects/gameControllers/turnController.js';
 
@@ -9,6 +10,8 @@ import { BoardPlayerView } from './src/jsObjects/views/BoardPlayerView.js';
 import { DeckOpponentView } from './src/jsObjects/views/DeckOpponentView.js';
 import { DeckPlayerView } from './src/jsObjects/views/DeckPlayerView.js';
 import { HandPlayerView } from './src/jsObjects/views/HandPlayerView.js';
+import { DialoguePlayerView } from './src/jsObjects/views/DialoguePlayerView.js';
+import { DialogueOpponentView } from './src/jsObjects/views/DialogueOpponentView.js';
 
 class GAME {
     constructor() {
@@ -30,6 +33,9 @@ class GAME {
 
         this.playerHand = new Hand();
         this.playerHandView = new HandPlayerView(this.playerHand);
+
+        this.playerDialogueView = new DialoguePlayerView();
+        this.opponentDialogueView = new DialogueOpponentView();
 
         this.attackController = new AttackController(this.playerBoardView, this.opponentBoardView);
         this.turnController = new TurnController();

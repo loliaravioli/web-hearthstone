@@ -589,12 +589,12 @@ head {
 		height: 125px;
 	}
 
-	.playerHeroHealth {
+	#playerHeroHealth {
 		left: 55%;
 		top: 123%;
 	}
 
-	.opponentHeroHealth {
+	#opponentHeroHealth {
 		left: 55%;
 		top: 74%;
 	}
@@ -658,11 +658,11 @@ head {
 		font-size: 25px;
 	}
 
-	#playerbubble {
+	#playerBubble {
 		font-size: 25px;
 	}
 
-	#computerbubble {
+	#opponentBubble {
 		font-size: 20px;
 	}
 
@@ -784,12 +784,12 @@ head {
 		height: 160px;
 	}
 
-	.playerHeroHealth {
+	#playerHeroHealth {
 		left: 55%;
 		top: 103%;
 	}
 
-	.opponentHeroHealth {
+	#opponentHeroHealth {
 		left: 55%;
 		top: 80%;
 	}
@@ -853,11 +853,11 @@ head {
 		font-size: 30px;
 	}
 
-	#playerbubble {
+	#playerBubble {
 		font-size: 35px;
 	}
 
-	#computerbubble {
+	#opponentBubble {
 		font-size: 30px;
 	}
 
@@ -972,11 +972,11 @@ head {
 	cursor: url(src/media/images/cursor/cursor.png) 10 2, auto;
 }
 
-.playerhero:hover {
+.playerHero:hover {
 	box-shadow: none;
 }
 
-.opponentHeroContainer:hover {
+#opponentHeroContainer:hover {
 	box-shadow: none;
 }
 
@@ -1014,7 +1014,7 @@ svg {
 	background-size: cover;
 }
 
-.playerhero {
+#playerHeroContainer {
 	position: absolute;
 	width: 11%;
 	height: 17%;
@@ -1027,7 +1027,7 @@ svg {
 	background-size: contain;
 }
 
-.playerheropower {
+.playerHeropower {
 	position: absolute;
 	width: 6%;
 	height: 13%;
@@ -1050,7 +1050,7 @@ svg {
 	user-select: none;
 }
 
-.opponentHeroContainer {
+#opponentHeroContainer {
 	position: absolute;
 	width: 11%;
 	height: 17%;
@@ -1070,13 +1070,13 @@ svg {
 	box-shadow: none !important;
 }
 
-#playerhero {
+#playerHero {
 	border: none !important;
 	width: 100% !important;
 	box-shadow: none !important;
 }
 
-#playerheropower {
+#playerHeropower {
 	border: none !important;
 	width: 100% !important;
 }
@@ -1342,7 +1342,7 @@ svg {
 	animation-iteration-count: infinite;
 }
 
-.opponentHeroHealth {
+#opponentHeroHealth {
 	position: absolute;
 	width: 1.75rem;
 	height: 2rem;
@@ -1364,7 +1364,7 @@ svg {
 	pointer-events: none;
 }
 
-.playerHeroHealth {
+#playerHeroHealth {
 	position: absolute;
 	width: 1.75rem;
 	height: 2rem;
@@ -2554,7 +2554,7 @@ svg {
 }
 
 /* Speech Bubbles*/
-#playerbubble {
+#playerBubble {
 	position: absolute;
 	left: 37%;
 	top: 52%;
@@ -2575,7 +2575,7 @@ svg {
 	pointer-events: none;
 }
 
-#playerbubble:after {
+#playerBubble:after {
 	content: '';
 	position: absolute;
 	display: block;
@@ -2590,7 +2590,7 @@ svg {
 	pointer-events: none;
 }
 
-#computerbubble {
+#opponentBubble {
 	position: absolute;
 	left: 37%;
 	top: 29%;
@@ -2611,7 +2611,7 @@ svg {
 	pointer-events: none;
 }
 
-#computerbubble:after {
+#opponentBubble:after {
 	content: '';
 	position: absolute;
 	display: block;

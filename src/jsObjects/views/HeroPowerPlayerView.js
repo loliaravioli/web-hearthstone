@@ -5,7 +5,7 @@ export class HeroPowerPlayerView {
     }
 
     getElement() {
-        return document.getElementById("playerheropower");
+        return document.getElementById("playerHeropower");
     }
 
     update() {

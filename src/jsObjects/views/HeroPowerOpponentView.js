@@ -5,7 +5,7 @@ export class HeroPowerOpponentView {
     }
 
     getElement() {
-        // return document.getElementById("playerheropower");
+        // return document.getElementById("playerHeropower");
     }
 
     drawCard() {

@@ -2,7 +2,7 @@ import GAME from '../../game.js';
 
 // attacks differently according to how many cards are currently in play
 function AI() {
-    const currentHeroHealth = document.getElementById('playerhero').children[1].innerText,
+    const currentHeroHealth = document.getElementById('playerHero').children[1].innerText,
         opponentCards = document.querySelectorAll('.computer-cardinplay'),
         numOfOpponentCards = GAME.opponentBoard.count(),
         alliedCards = document.querySelectorAll('.player-cardinplay'),
@@ -123,7 +123,7 @@ function AI() {
     }
 
     // checks if the player has lost
-    const newHeroHealth = document.getElementById('playerhero').children[1].innerText;
+    const newHeroHealth = document.getElementById('playerHero').children[1].innerText;
     if (newHeroHealth < currentHeroHealth) {
         checkForLoss();
     }
@@ -320,7 +320,7 @@ function findMaxPlayerHealth(largestValue) {
 }
 
 function checkForLoss() {
-    if (document.getElementById('playerhero').children[1].innerText <= 0) {
+    if (document.getElementById('playerHero').children[1].innerText <= 0) {
         playerHero.style.display = "none";
     }
 
@@ -339,7 +339,7 @@ function getSumOfAttack() {
         numOfOpponentCards = GAME.opponentBoard.count();
 
     let sumOfAttack = 0,
-        heroHealth = document.getElementById('playerhero').children[1].innerText;
+        heroHealth = document.getElementById('playerHero').children[1].innerText;
 
     for (let i = 0; i < numOfOpponentCards; i++) {
         sumOfAttack += parseInt(opponentCards[i].children[0].children[0].innerText);
@@ -373,7 +373,7 @@ function showDamageLabel(currentAttackerAttack) {
 // AI RELATED
 function noAlliedCards() {
     let sumOfAttack = getSumOfAttack();
-    document.getElementById('playerhero').children[1].innerText -= sumOfAttack;
+    document.getElementById('playerHero').children[1].innerText -= sumOfAttack;
     showDamageLabel(sumOfAttack);
 }
 
@@ -399,16 +399,16 @@ function oneAlliedCard() {
         healthModifier += 10;
     }
 
-    if (document.getElementById('playerhero').children[1].innerText <= healthModifier) {
+    if (document.getElementById('playerHero').children[1].innerText <= healthModifier) {
         for (let i = 0; i < numOfOpponentCards; i++) {
             let opponentAttack = parseInt(opponentCards[i].children[0].children[0].innerText),
-                heroHealth = document.getElementById('playerhero').children[1].innerText;
-            document.getElementById('playerhero').children[1].innerText = heroHealth - opponentAttack;
+                heroHealth = document.getElementById('playerHero').children[1].innerText;
+            document.getElementById('playerHero').children[1].innerText = heroHealth - opponentAttack;
             showDamageLabel(opponentAttack);
         }
     } else {
         // otherwise attacks the highest attack card on the board and attacks the hero with the other
-        let heroHealth = document.getElementById('playerhero').children[1].innerText,
+        let heroHealth = document.getElementById('playerHero').children[1].innerText,
             opponentAttack = parseInt(maxAttack.children[0].children[0].innerText),
             opponentHealth = maxAttack.children[1].children[0].innerText,
             alliedAttack = alliedCards[0].children[0].children[0].innerText,
@@ -430,9 +430,9 @@ function oneAlliedCard() {
             totalAttack += parseInt(opponentCards[i].children[0].children[0].innerText);
         }
 
-        heroHealth = document.getElementById('playerhero').children[1].innerText;
+        heroHealth = document.getElementById('playerHero').children[1].innerText;
         totalAttack -= opponentAttack;
-        document.getElementById('playerhero').children[1].innerText = heroHealth - totalAttack;
+        document.getElementById('playerHero').children[1].innerText = heroHealth - totalAttack;
         if (numOfOpponentCards >= 2) {
             showDamageLabel(totalAttack);
         }
@@ -491,11 +491,11 @@ function twoAlliedCards() {
                 break
             }
         }
-    } else if (document.getElementById('playerhero').children[1].innerText <= healthModifier) {
+    } else if (document.getElementById('playerHero').children[1].innerText <= healthModifier) {
         for (let i = 0; i < numOfOpponentCards; i++) {
             var opponentAttack = parseInt(opponentCards[i].children[0].children[0].innerText);
-            var heroHealth = document.getElementById('playerhero').children[1].innerText;
-            document.getElementById('playerhero').children[1].innerText = heroHealth - opponentAttack;
+            var heroHealth = document.getElementById('playerHero').children[1].innerText;
+            document.getElementById('playerHero').children[1].innerText = heroHealth - opponentAttack;
             showDamageLabel(opponentAttack);
         }
     } else {
@@ -569,7 +569,7 @@ function twoAlliedCards() {
             let sumOfAttack = getSumOfAttack();
             sumOfAttack -= opponentAttackSum;
             console.log(sumOfAttack)
-            document.getElementById('playerhero').children[1].innerText -= sumOfAttack;
+            document.getElementById('playerHero').children[1].innerText -= sumOfAttack;
             showDamageLabel(sumOfAttack);
         }
     }
@@ -612,11 +612,11 @@ function threeAlliedCards() {
                 break
             }
         }
-    } else if (document.getElementById('playerhero').children[1].innerText <= healthModifier) {
+    } else if (document.getElementById('playerHero').children[1].innerText <= healthModifier) {
         for (let i = 0; i < numOfOpponentCards; i++) {
             let opponentAttack = parseInt(opponentCards[i].children[0].children[0].innerText),
-                heroHealth = document.getElementById('playerhero').children[1].innerText;
-            document.getElementById('playerhero').children[1].innerText = heroHealth - opponentAttack;
+                heroHealth = document.getElementById('playerHero').children[1].innerText;
+            document.getElementById('playerHero').children[1].innerText = heroHealth - opponentAttack;
             showDamageLabel(opponentAttack);
         }
     } else {
@@ -699,7 +699,7 @@ function threeAlliedCards() {
             let sumOfAttack = getSumOfAttack();
             sumOfAttack -= opponentAttackSum;
             console.log(sumOfAttack)
-            document.getElementById('playerhero').children[1].innerText -= sumOfAttack;
+            document.getElementById('playerHero').children[1].innerText -= sumOfAttack;
             showDamageLabel(sumOfAttack);
         }
     }
@@ -742,12 +742,12 @@ function fourAlliedCards() {
                 break;
             }
         }
-    } else if (document.getElementById('playerhero').children[1].innerText <= healthModifier) {
+    } else if (document.getElementById('playerHero').children[1].innerText <= healthModifier) {
         for (let i = 0; i < numOfOpponentCards; i++) {
             let opponentAttack = parseInt(opponentCards[i].children[0].children[0].innerText),
-                heroHealth = document.getElementById('playerhero').children[1].innerText;
+                heroHealth = document.getElementById('playerHero').children[1].innerText;
 
-            document.getElementById('playerhero').children[1].innerText = heroHealth - opponentAttack;
+            document.getElementById('playerHero').children[1].innerText = heroHealth - opponentAttack;
             showDamageLabel(opponentAttack);
         }
     } else {
@@ -832,7 +832,7 @@ function fourAlliedCards() {
             let sumOfAttack = getSumOfAttack();
             sumOfAttack -= opponentAttackSum;
             console.log(sumOfAttack)
-            document.getElementById('playerhero').children[1].innerText -= sumOfAttack;
+            document.getElementById('playerHero').children[1].innerText -= sumOfAttack;
             showDamageLabel(sumOfAttack);
         }
     }
@@ -877,12 +877,12 @@ function fiveAlliedCards() {
             }
         }
     }
-    else if (document.getElementById('playerhero').children[1].innerText <= healthModifier) {
+    else if (document.getElementById('playerHero').children[1].innerText <= healthModifier) {
         for (let i = 0; i < numOfOpponentCards; i++) {
             let opponentAttack = parseInt(opponentCards[i].children[0].children[0].innerText),
-                heroHealth = document.getElementById('playerhero').children[1].innerText;
+                heroHealth = document.getElementById('playerHero').children[1].innerText;
 
-            document.getElementById('playerhero').children[1].innerText = heroHealth - opponentAttack;
+            document.getElementById('playerHero').children[1].innerText = heroHealth - opponentAttack;
             showDamageLabel(opponentAttack);
         }
     } else {
@@ -967,7 +967,7 @@ function fiveAlliedCards() {
             let sumOfAttack = getSumOfAttack();
             sumOfAttack -= opponentAttackSum;
             console.log(sumOfAttack)
-            document.getElementById('playerhero').children[1].innerText -= sumOfAttack;
+            document.getElementById('playerHero').children[1].innerText -= sumOfAttack;
             showDamageLabel(sumOfAttack);
         }
     }
@@ -1011,12 +1011,12 @@ function sixAlliedCards() {
                 break;
             }
         }
-    } else if (document.getElementById('playerhero').children[1].innerText <= healthModifier) {
+    } else if (document.getElementById('playerHero').children[1].innerText <= healthModifier) {
         for (let i = 0; i < numOfOpponentCards; i++) {
             let opponentAttack = parseInt(opponentCards[i].children[0].children[0].innerText),
-                heroHealth = document.getElementById('playerhero').children[1].innerText;
+                heroHealth = document.getElementById('playerHero').children[1].innerText;
 
-            document.getElementById('playerhero').children[1].innerText = heroHealth - opponentAttack;
+            document.getElementById('playerHero').children[1].innerText = heroHealth - opponentAttack;
             showDamageLabel(opponentAttack);
         }
     } else {
@@ -1101,7 +1101,7 @@ function sixAlliedCards() {
             let sumOfAttack = getSumOfAttack();
             sumOfAttack -= opponentAttackSum;
             console.log(sumOfAttack)
-            document.getElementById('playerhero').children[1].innerText -= sumOfAttack;
+            document.getElementById('playerHero').children[1].innerText -= sumOfAttack;
             showDamageLabel(sumOfAttack);
         }
     }
@@ -1147,12 +1147,12 @@ function sevenAlliedCards() {
 
             break;
         }
-    } else if (document.getElementById('playerhero').children[1].innerText <= healthModifier) {
+    } else if (document.getElementById('playerHero').children[1].innerText <= healthModifier) {
         for (let i = 0; i < numOfOpponentCards; i++) {
             let opponentAttack = parseInt(opponentCards[i].children[0].children[0].innerText),
-                heroHealth = document.getElementById('playerhero').children[1].innerText;
+                heroHealth = document.getElementById('playerHero').children[1].innerText;
 
-            document.getElementById('playerhero').children[1].innerText = heroHealth - opponentAttack;
+            document.getElementById('playerHero').children[1].innerText = heroHealth - opponentAttack;
             showDamageLabel(opponentAttack);
         }
     } else {

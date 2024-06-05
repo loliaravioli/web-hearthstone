@@ -26,8 +26,8 @@ export class TurnController {
 
         playerturnSnd.play();
         document.body.style.cursor = "url(src/media/images/cursor/cursor.png) 10 2, auto";
-        document.getElementById("playerheropower").style.boxShadow = "0px 2px 15px 12px #0FCC00";
-        document.getElementById("playerheropower").classList.add("canAttack");
+        document.getElementById("playerHeropower").style.boxShadow = "0px 2px 15px 12px #0FCC00";
+        document.getElementById("playerHeropower").classList.add("canAttack");
         document.getElementById("computerTurn").style.display = "none";
         document.getElementById("endturn").style.backgroundColor = "#4ce322";
         document.getElementById("endturn").innerText = "END TURN";
@@ -43,7 +43,7 @@ export class TurnController {
 
         GAME.playerHandView.setAllCardsUnplayable();
 
-        document.getElementById("playerheropower").style.boxShadow = "none";
+        document.getElementById("playerHeropower").style.boxShadow = "none";
         document.body.style.cursor = "url(src/media/images/cursor/spectate.png) 10 2, auto";
         document.getElementById("computerTurn").style.display = "block";
         document.getElementById("endturn").style.backgroundColor = "grey";
@@ -95,17 +95,17 @@ setTimeout(function () {
     mockSnd.play();
 
     setTimeout(function () {
-        document.querySelector("#computerbubble").innerText = "Go ahead. End\nyour turn, so that\nI can end you!";
-        document.querySelector("#computerbubble").style.visibility = "visible";
-        document.querySelector('#computerbubble').classList.add("openMenuAnim");
+        document.querySelector("#opponentBubble").innerText = "Go ahead. End\nyour turn, so that\nI can end you!";
+        document.querySelector("#opponentBubble").style.visibility = "visible";
+        document.querySelector('#opponentBubble').classList.add("openMenuAnim");
 
         setTimeout(function () {
-            document.querySelector('#computerbubble').classList.add("easeOutAnim");
-            document.querySelector('#computerbubble').classList.remove("openMenuAnim");
+            document.querySelector('#opponentBubble').classList.add("easeOutAnim");
+            document.querySelector('#opponentBubble').classList.remove("openMenuAnim");
 
             setTimeout(function () {
-                document.querySelector("#computerbubble").style.visibility = "hidden";
-                document.querySelector('#computerbubble').classList.remove("easeOutAnim");
+                document.querySelector("#opponentBubble").style.visibility = "hidden";
+                document.querySelector('#opponentBubble').classList.remove("easeOutAnim");
             }, 0.25 * 1000);
             
         }, 5 * 1000);
