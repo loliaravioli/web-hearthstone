@@ -130,22 +130,7 @@ resumebtn.onclick = function () {
 
 confirmbtn.onclick = function () {
     document.getElementById('block').style.zIndex = "9";
-    $('#triangle').css({
-        'visibility': 'hidden',
-        'opacity': 0,
-        'transition': 'visibility 0s 0.5s, opacity 0.5s linear'
-    });
-    $('#hintbackbackground').css({
-        'visibility': 'hidden',
-        'opacity': 0,
-        'transition': 'visibility 0s 0.5s, opacity 0.5s linear'
-    });
-    $('#hintbackground').css({
-        'visibility': 'hidden',
-        'opacity': 0,
-        'transition': 'visibility 0s 0.5s, opacity 0.5s linear'
-    });
-    $('#hint').css({
+    $('#triangle, #hintbackbackground, #hintbackground, #hint').css({
         'visibility': 'hidden',
         'opacity': 0,
         'transition': 'visibility 0s 0.5s, opacity 0.5s linear'
@@ -187,12 +172,7 @@ confirmbtn.onclick = function () {
                                 .addClass('openMenuAnim');
                         }, 5 * 1000);
 
-                        $('#playerHeroHealth').css({
-                            'visibility': 'visible',
-                            'opacity': 1,
-                            'transition': 'visibility 0.5s, opacity 0.5s linear'
-                        });
-                        $('#opponentHeroHealth').css({
+                        $('#playerHeroHealth, #opponentHeroHealth').css({
                             'visibility': 'visible',
                             'opacity': 1,
                             'transition': 'visibility 0.5s, opacity 0.5s linear'
@@ -235,6 +215,17 @@ miscellaneousbtn.onclick = function () {
     );
 };
 
+function fadeOutMainMenuOST() {
+    setInterval(function () {
+        if (vol > 0.05) {
+            vol -= 0.05;
+            mainmenuOST.volume = vol;
+        } else {
+            clearInterval(fadeout);
+        }
+    }, interval);
+}
+
 // play button on click
 playbtn.onclick = function () {
     isInGame = true;
@@ -242,111 +233,82 @@ playbtn.onclick = function () {
     // document.getElementById("skipcinematicbtn").style.display = "none";
     document.getElementById("block").style.visibility = "visible";
     // fade out the volume of the mainmenuOST
-    let fadeout = setInterval(function () {
-        // Reduce volume by 0.05 as long as it is above 0
-        // This works as long as you start with a multiple of 0.05!
-        if (vol > 0.05) {
-            vol -= 0.05;
-            mainmenuOST.volume = vol;
-        } else {
-            // Stop the setInterval when 0 is reached
-            clearInterval(fadeout);
-        }
-    }, interval);
+    fadeOutMainMenuOST();
     menubtnsSnd.play();
+
     setTimeout(function () {
         mainmenuOST.pause();
     }, 1.75 * 1000);
+
     crowdSnd.pause();
     $('#transitionblock').css({ 'visibility': 'visible' })
         .addClass('fadeInAnim');
+
     setTimeout(function () {
         document.getElementById('transitionblock').classList.add("fadeOutAnim");
-        setTimeout(function () {
-            document.getElementById('transitionblock').style.visibility = "hidden";
-        }, 1 * 1000);
     }, 1 * 1000);
-    document.getElementById('mainmenu').style.visibility = "hidden";
+
     setTimeout(function () {
-        document.getElementById('contents').style.visibility = "visible";
-        document.getElementById("playerlabel").style.visibility = "visible";
-        document.getElementById("playerclasslabel").style.visibility = "visible";
-        document.getElementById("opponentlabel").style.visibility = "visible";
-        document.getElementById("vs").style.visibility = "visible";
+        document.getElementById('transitionblock').style.visibility = "hidden";
+    }, 2 * 1000);
+
+    document.getElementById('mainmenu').style.visibility = "hidden";
+
+    setTimeout(function () {
+        $('#contents, #playerlabel, #playerclasslabel, #opponentlabel, #vs').css({ 'visibility': 'visible' });
         (new Audio("src/media/sounds/ongameload.mp3")).play();
         document.getElementById('playerHeroContainer').classList.add("onLoadPlayerAnim");
         document.getElementById('opponentHeroContainer').classList.add("onLoadComputerAnim");
-        setTimeout(function () {
-            $('#playerlabel').css({
-                'visibility': 'hidden',
-                'opacity': 0,
-                'transition': 'visibility 0s 0.1s, opacity 0.1s linear'
-            });
-            $('#playerclasslabel').css({
-                'visibility': 'hidden',
-                'opacity': 0,
-                'transition': 'visibility 0s 0.1s, opacity 0.1s linear'
-            });
-            $('#opponentlabel').css({
-                'visibility': 'hidden',
-                'opacity': 0,
-                'transition': 'visibility 0s 0.1s, opacity 0.1s linear'
-            });
-        }, 5.25 * 1000);
-        setTimeout(function () {
-            $('#vs').css({
-                'visibility': 'hidden',
-                'opacity': 0,
-                'transition': 'visibility 0s 0.2s, opacity 0.2s linear'
-            });
-            setTimeout(function () {
-                document.getElementById('opponentHeroContainer').style.zIndex = "9";
-                setTimeout(function () {
-                    $('#playerBubble').css({ 'visibility': 'visible' })
-                        .addClass('openMenuAnim');
-                }, 0.25 * 1000);
-                setTimeout(function () {
-                    $('#playerBubble').addClass('easeOutAnim')
-                        .removeClass('openMenuAnim');
-                    setTimeout(function () {
-                        document.getElementById('playerBubble').style.visibility = "hidden";
-                    }, 0.25 * 1000);
-                    setTimeout(function () {
-                        $('#opponentBubble').css({ 'visibility': 'visible' })
-                            .addClass('openMenuAnim');
-                    }, 0.25 * 1000);
-                    setTimeout(function () {
-                        $('#opponentBubble').addClass('easeOutAnim')
-                            .removeClass('openMenuAnim');
-                        setTimeout(function () {
-                            $('#opponentBubble').css({ 'visibility': 'hidden' })
-                                .removeClass('easeOutAnim');
-                        }, 0.25 * 1000);
-                        document.getElementById('opponentHeroContainer').style.zIndex = "9";
-                        document.getElementById('confirm').style.display = "block";
-                    }, 5.5 * 1000);
-                }, 1.5 * 1000);
-            }, 2 * 1000);
-        }, 6 * 1000);
+        document.getElementById('opponentHeroContainer').style.zIndex = "9";
+        $('#playerBubble').addClass('easeOutAnim')
+            .removeClass('openMenuAnim');
     }, 1 * 1000);
+
+    setTimeout(function () {
+        $('#playerlabel, #playerclasslabel, #opponentlabel').css({
+            'visibility': 'hidden',
+            'opacity': 0,
+            'transition': 'visibility 0s 0.1s, opacity 0.1s linear'
+        });
+    }, 6.25 * 1000);
+
+    setTimeout(function () {
+        $('#vs').css({
+            'visibility': 'hidden',
+            'opacity': 0,
+            'transition': 'visibility 0s 0.2s, opacity 0.2s linear'
+        });
+    }, 7 * 1000);
+
+    setTimeout(function () {
+        $('#playerBubble').css({ 'visibility': 'visible' })
+            .addClass('openMenuAnim');
+    }, 9.25 * 1000);
+
+
+    setTimeout(function () {
+        document.getElementById('playerBubble').style.visibility = "hidden";
+        $('#opponentBubble').css({ 'visibility': 'visible' })
+            .addClass('openMenuAnim');
+    }, 10.75 * 1000);
+
+    setTimeout(function () {
+        $('#opponentBubble').addClass('easeOutAnim')
+            .removeClass('openMenuAnim');
+        document.getElementById('opponentHeroContainer').style.zIndex = "9";
+        document.getElementById('confirm').style.display = "block";
+    }, 16 * 1000);
+
+    setTimeout(function () {
+        $('#opponentBubble').css({ 'visibility': 'hidden' })
+            .removeClass('easeOutAnim');
+    }, 16.25 * 1000);
 };
 
-/* function tutorial called on tutorial button on click 
-and on page load if local storage hasPlayedTutorial == null */
 function tutorial() {
     isInGame = true;
-    // fade out the volume of the mainmenuOST
-    let fadeout = setInterval(function () {
-        // Reduce volume by 0.05 as long as it is above 0
-        // This works as long as you start with a multiple of 0.05!
-        if (vol > 0.05) {
-            vol -= 0.05;
-            mainmenuOST.volume = vol;
-        } else {
-            // Stop the setInterval when 0 is reached
-            clearInterval(fadeout);
-        }
-    }, interval);
+
+    fadeOutMainMenuOST();
 
     setTimeout(function () {
         mainmenuOST.pause();
@@ -369,47 +331,40 @@ function tutorial() {
         'left': '44.7%',
         'transform': 'rotate(-15deg)',
         'background-image': 'url(src/media/images/pack.png)'
-    }).addClass('packHoverAnim')
-        .html('');
+    }).addClass('packHoverAnim').html('');
+
     setTimeout(function () {
-        if (!tutorialIntroRunning) {
-            tutorialIntroRunning = true;
-            // document.getElementById("skipcinematicbtn").style.display = "none";
-            introcinematic.style.display = "none";
-            $('#opponentHeroContainer').css({
-                'visibility': 'hidden',
-                'z-index': 20
-            });
+        if (tutorialIntroRunning) { return; }
 
-            $('#opponentHeroContainer').css({
-                'visibility': 'hidden',
-                'background-image': 'url(src/media/images/hogger.png)',
-                'z-index': 5
-            });
+        tutorialIntroRunning = true;
+        // document.getElementById("skipcinematicbtn").style.display = "none";
+        introcinematic.style.display = "none";
+        $('#opponentHeroContainer').css({
+            'visibility': 'hidden',
+            'z-index': 20
+        });
 
-            document.getElementById('transitionblock').style.visibility = "visible";
-            document.getElementById("block").style.visibility = "visible";
-            document.getElementById('endturn').style.zIndex = "9";
-            setTimeout(function () {
-                $('#transitionblock').addClass('fadeInAnim')
-                    .addClass('fadeOutAnim');
-                setTimeout(function () {
-                    document.getElementById('transitionblock').style.visibility = "hidden";
+        $('#opponentHeroContainer').css({
+            'visibility': 'hidden',
+            'background-image': 'url(src/media/images/hogger.png)',
+            'z-index': 5
+        });
 
-                    $('#triangle').css({ 'visibility': 'visible' })
-                        .addClass('triangleOpenMenuAnim');
+        $('#transitionblock, #block').css({ 'visibility': 'visible' });
+        document.getElementById('endturn').style.zIndex = "9";
 
-                    $('#hintbackbackground').css({ 'visibility': 'visible' })
-                        .addClass('openMenuAnim');
+        setTimeout(function () {
+            $('#transitionblock').addClass('fadeInAnim')
+                .addClass('fadeOutAnim');
+        }, 1 * 1000);
 
-                    $('#hintbackground').css({ 'visibility': 'visible' })
-                        .addClass('openMenuAnim');
-
-                    $('#hint').css({ 'visibility': 'visible' })
-                        .addClass('openMenuAnim');
-                }, 1 * 1000);
-            }, 1 * 1000);
-        }
+        setTimeout(function () {
+            document.getElementById('transitionblock').style.visibility = "hidden";
+            $('#triangle').css({ 'visibility': 'visible' })
+                .addClass('triangleOpenMenuAnim');
+            $('#hintbackbackground, #hintbackground, #hint').css({ 'visibility': 'visible' })
+                .addClass('openMenuAnim');
+        }, 2 * 1000);
     }, 48 * 1000);
 }
 
@@ -427,19 +382,8 @@ howtoplaybtn.onclick = function () {
 
 openpacksbtn.onclick = function () {
     openmenuSnd.play();
-    // fade out the volume of the mainmenuOST
-    let fadeout = setInterval(
-        function () {
-            // Reduce volume by 0.05 as long as it is above 0
-            // This works as long as you start with a multiple of 0.05!
-            if (vol > 0.05) {
-                vol -= 0.05;
-                mainmenuOST.volume = vol;
-            } else {
-                // Stop the setInterval when 0 is reached
-                clearInterval(fadeout);
-            }
-        }, interval);
+
+    fadeOutMainMenuOST();
 
     setTimeout(function () {
         mainmenuOST.pause();
@@ -448,21 +392,19 @@ openpacksbtn.onclick = function () {
     crowdSnd.pause();
     let packElements = document.getElementsByClassName("pack");
     document.getElementById('mainmenu').style.display = "none";
-    document.getElementById('openpacks').style.display = "block";
-    document.getElementById('pkcollisionbox').style.display = "block";
+    $('#openpacks, #pkcollisionbox').css({ 'display': 'block' });
 
     for (let i = 0; i < packElements.length; i++) {
         document.getElementsByClassName("pack")[i].style.display = "block";
     }
 
-    let myPacks = Number(localStorage.getItem('myPacks'));
-    if (myPacks >= 1) {
+    if (Number(localStorage.getItem('myPacks')) >= 1) {
         init();
     }
 };
 
 // shop function called on shop button on click
-function shop() {
+shopbtn.onclick = function shop() {
     shoponclickSnd.play();
     document.getElementById("shopmenu").style.display = "block";
 
@@ -471,11 +413,6 @@ function shop() {
 
     document.getElementById("mainmenu").style.filter = "blur(5px)";
 }
-
-// shop button on click calls the shop function
-shopbtn.onclick = function () {
-    shop();
-};
 
 buybtn.onclick = function () {
     openmenuSnd.play();
@@ -503,8 +440,7 @@ backfrompackbtn.onclick = function () {
     crowdSnd.play();
     let packElements = document.getElementsByClassName("pack");
     document.getElementById('mainmenu').style.display = "block";
-    document.getElementById('openpacks').style.display = "none";
-    document.getElementById('pkcollisionbox').style.display = "none";
+    $('#openpacks, #pkcollisionbox').css({ 'display': 'none' });
     for (let i = 0; i < packElements.length; i++) {
         document.getElementsByClassName("pack")[i].style.display = "none";
     }
@@ -515,9 +451,7 @@ starttutorialbtn.onclick = function () {
     openmenuSnd.play();
     document.getElementById('endturn').style.zIndex = "1";
     document.getElementById('triangle').classList.remove("triangleOpenMenuAnim");
-    document.getElementById('hintbackbackground').classList.remove("openMenuAnim");
-    document.getElementById('hintbackground').classList.remove("openMenuAnim");
-    document.getElementById('hint').classList.remove("openMenuAnim");
+    $('#hintbackbackground, #hintbackground, #hint').removeClass('openMenuAnim');
     document.getElementById('opponentHeroContainer').style.zIndex = "2";
     document.getElementById('playerHeroContainer').style.zIndex = "0";
     document.getElementById("game").classList.remove("shakeScreenAnim");
@@ -545,8 +479,7 @@ starttutorialbtn.onclick = function () {
                 song.play();
             }, 1 * 1000)
         }
-        document.querySelector("#tutorialmenuContent").style.display = "none";
-        document.querySelector("#tutorialmenu").style.display = "none";
+        $('#tutorialmenuContent, #tutorialmenu').css({ 'display': 'none' });
     }, 0.125 * 1000);
 };
 
@@ -582,15 +515,13 @@ document.getElementById('togglefps').onclick = function () {
     targetDiv.style.display = (targetDiv.style.display !== "none") ? "none" : 'block';
 };
 
-/* on page load prompts the user to click in order to start/play the game and is 
-done in order to prevent chrome and other browsers policy conflicts such as CORS */
-const preventCORSbtn = document.getElementById('preventCORS');
-preventCORSbtn.onclick = function () {
+document.getElementById('preventCORS').onclick = function () {
     document.getElementById('preventCORS').classList.add("fadeOutAnim");
     setTimeout(function () {
         document.getElementById('preventCORS').style.visibility = "hidden";
     }, 1 * 1000)
-    if (hasPlayedTutorial_deserailized === null) {
+
+    if (hasPlayedTutorial_deserailized == null) {
         tutorial();
     } else {
         mainmenuOST.play();
@@ -612,6 +543,7 @@ preventCORSbtn.onclick = function () {
         document.querySelector('#blockmainmenu').style.display = "block";
         $('#mainmenu').css({ 'visibility': 'visible' })
             .addClass('zoomOutAnim');
+
         setTimeout(function () {
             document.querySelector('#blockmainmenu').style.display = "none";
             document.getElementById('mainmenu').classList.remove("zoomOutAnim");
@@ -635,8 +567,7 @@ preventCORSbtn.onclick = function () {
         'z-index': 5
     });
 
-    document.getElementById('transitionblock').style.visibility = "visible";
-    document.getElementById("block").style.visibility = "visible";
+    $('#transitionblock, #block').css({ 'visibility': 'visible' });
     document.querySelector('#endturn').style.zIndex = "9";
     setTimeout(function () {
         $('#transitionblock').addClass('fadeInAnim')
@@ -645,11 +576,7 @@ preventCORSbtn.onclick = function () {
             document.getElementById('transitionblock').style.visibility = "hidden";
             $('#triangle').css({ 'visibility': 'visible' })
                 .addClass('triangleOpenMenuAnim');
-            $('#hintbackbackground').css({ 'visibility': 'visible' })
-                .addClass('openMenuAnim');
-            $('#hintbackground').css({ 'visibility': 'visible' })
-                .addClass('openMenuAnim');
-            $('#hint').css({ 'visibility': 'visible' })
+            $('#hintbackbackground, #hintbackground, #hint').css({ 'visibility': 'visible' })
                 .addClass('openMenuAnim');
         }, 1 * 1000);
     }, 1 * 1000);
