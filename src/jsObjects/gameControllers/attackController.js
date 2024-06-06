@@ -20,22 +20,25 @@ export class AttackController {
         if (event.target.classList.contains('player-cardinplay')) {
             this.attackerCard = event.target;
 
-            const rect = this.attackerCard.getBoundingClientRect();
-            const x = rect.left + (rect.width / 2),
+            const rect = this.attackerCard.getBoundingClientRect(),
+                x = rect.left + (rect.width / 2),
                 y = rect.top + (rect.height / 2);
 
-            document.getElementById('svg').style.display = 'block';
-            document.getElementById('innercursor').style.visibility = 'visible';
-            document.getElementById('outercursor').style.visibility = 'visible';
-            document.getElementById('arrowcursor').style.visibility = 'visible';
+            $('#svg').show();
+
+            $('#innercursor, #outercursor, #arrowcursor')
+                .css({ 'visibility': 'visible' });
+
             document.body.style.cursor = 'none';
 
             document.body.addEventListener('mousemove', (e) => {
-                const destX = e.clientX, destY = e.clientY;
-                const angleDeg = (Math.atan2(destY - y, destX - x) * 180 / Math.PI) + 90;
+                const destX = e.clientX,
+                    destY = e.clientY,
+                    angleDeg = (Math.atan2(destY - y, destX - x) * 180 / Math.PI) + 90;
                 // TODO: fix visual bug where this arrow briefly appears on the previous card it was on
                 $('#arrowcursor')
                     .css('transform', `rotate(${angleDeg}deg) translate(-50%,-110%)`);
+
                 $('#svgpath')
                     .attr('d', `M${destX},${destY} ${x},${y}`);
             });
@@ -66,12 +69,13 @@ export class AttackController {
 
     doAttack() {
         console.log(`${this.attackerCard.id} attacks ${this.targetCard.id}`);
+        
         const attackerViewIndex = this.attackerCard.dataset.boardIndex,
-            targetViewIndex = this.targetCard.dataset.boardIndex;
-        const attackerCardView = this.playerBoardView.card(attackerViewIndex);
-        const targetCardView = this.opponentBoardView.card(targetViewIndex);
-        const targetIsDead = targetCardView.applyDamage(attackerCardView.getAttack());
-        const attackerIsDead = attackerCardView.applyDamage(targetCardView.getAttack());
+            targetViewIndex = this.targetCard.dataset.boardIndex,
+            attackerCardView = this.playerBoardView.card(attackerViewIndex),
+            targetCardView = this.opponentBoardView.card(targetViewIndex),
+            targetIsDead = targetCardView.applyDamage(attackerCardView.getAttack()),
+            attackerIsDead = attackerCardView.applyDamage(targetCardView.getAttack());
 
         // instead of simply removing the cards here, have a separate function which kills minions
         // which is usable elsewhere
@@ -89,10 +93,11 @@ export class AttackController {
         this.attackerCard = null;
         this.targetCard = null;
 
-        document.getElementById('svg').style.display = 'none';
-        document.getElementById('innercursor').style.visibility = 'hidden';
-        document.getElementById('outercursor').style.visibility = 'hidden';
-        document.getElementById('arrowcursor').style.visibility = 'hidden';
+        $('#svg').hide();
+
+        $('#innercursor, #outercursor, #arrowcursor')
+            .css({ 'visibility': 'hidden' });
+
         document.body.style.cursor = 'url(src/media/images/cursor/cursor.png) 10 2, auto';
     }
 }

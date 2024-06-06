@@ -12,7 +12,7 @@ function startGame() {
         GAME.playerHandView.addCard(GAME.playerDeckView.drawCard());
     }
 
-    GAME.playerHandView.setAllCardsPlayable();
+    GAME.turnController.startPlayerTurn();
 }
 
 // certain events trigger every millisecond (e.g. onmousemove)
