@@ -42,7 +42,7 @@ export class HandPlayerView {
     }
 
     update() {
-        this.getElement().replaceChildren();
+        $('.card').remove();
         this.cardViews = [];
 
         let currentIndex = 0;
@@ -53,16 +53,6 @@ export class HandPlayerView {
             currentIndex++;
         });
 
-        $('.card').draggable({
-            containment: 'window',
-            revert: function (valid) {
-                GAME.playerBoardView.removePlaceholder();
-                return !valid;
-            }, drag: throttle(function (event, ui) { // TODO: fix glitch where placeholder slot will remain even after dropping card
-                if (!ui.helper.data('hovering-board')) { return; }
-                GAME.playerBoardView.generatePlaceholder(ui.helper.offset().left + (ui.helper.width() / 2));
-            }, 50)
-        });
     }
 }
 

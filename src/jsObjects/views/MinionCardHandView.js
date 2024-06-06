@@ -1,3 +1,5 @@
+import GAME from '../../../game.js';
+
 export class MinionCardHandView {
     constructor(card, handIndex) {
         this.card = card;
@@ -60,6 +62,20 @@ export class MinionCardHandView {
 
         this.getElement().style.pointerEvents = this.card.isPlayable ? 'all' : 'none';
         this.getElement().children[0].children[4].style.border = `solid 4px ${this.card.isPlayable ? '#0FCC00' : 'rgb(56, 56, 56)'}`;
+
+        if(this.card.isPlayable) {
+            $(this.getElement().id).draggable({
+                containment: 'window',
+                revert: function (valid) {
+                    GAME.playerBoardView.removePlaceholder();
+                    return !valid;
+                },
+                drag: throttle(function (event, ui) { // TODO: fix glitch where placeholder slot will remain even after dropping card
+                    if (!ui.helper.data('hovering-board')) { return; }
+                    GAME.playerBoardView.generatePlaceholder(ui.helper.offset().left + (ui.helper.width() / 2));
+                }, 50)
+            });
+        }
     }
 
     setPlayable(isPlayable) {
