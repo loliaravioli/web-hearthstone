@@ -56,5 +56,21 @@ export class BoardPlayerView extends AbstractBoardView {
             this.cardViews.push(view);
             this.getElement().appendChild(view.getElement());
         }
+
+        $(this.divID).droppable({
+            accept: '.card',
+            drop: (event, ui) => {
+                ui.helper.data('hovering-board', false);
+                const droppedCard = ui.draggable;
+                GAME.playerBoardView.addCard(GAME.playerHandView.getCard(droppedCard.data('handIndex')));
+                GAME.playerHandView.removeCard(droppedCard.data('handIndex'));
+                $('#gifhint, #texthint').css({ 'display': 'none' });
+                this.update;
+            }, over: function (event, ui) {
+                ui.helper.data('hovering-board', true);
+            }, out: function (event, ui) {
+                ui.helper.data('hovering-board', false);
+            },
+        });
     }
 }

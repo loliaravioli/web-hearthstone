@@ -4,6 +4,7 @@
 export class TurnController {
     constructor() {
         this.playersTurn = false;
+        this.playerTurnSound = new Audio("src/media/sounds/playerturn.mp3");
     }
 
     startPlayerTurn() {
@@ -11,10 +12,7 @@ export class TurnController {
 
         GAME.playerHandView.setAllCardsPlayable();
 
-        if (manaCapacity != 10) {
-            manaCapacity++;
-            createManaCrystal();
-        }
+        GAME.playerManaView.newTurn();
 
         mana = manaCapacity;
         manaElement.innerHTML = `${mana}/${manaCapacity}`;
@@ -24,7 +22,7 @@ export class TurnController {
             manaCrystals[i].style.backgroundColor = "#3669c9";
         }
 
-        playerturnSnd.play();
+        this.playerTurnSound.play();
         document.body.style.cursor = "url(src/media/images/cursor/cursor.png) 10 2, auto";
         document.getElementById("playerHeropower").style.boxShadow = "0px 2px 15px 12px #0FCC00";
         document.getElementById("playerHeropower").classList.add("canAttack");
@@ -87,12 +85,9 @@ export class TurnController {
 /*
 // mock's the user (dialogue) if it has been their turn for 30secs+
 setTimeout(function () {
-    if (!this.playersTurn || alreadyMocked || gameIsWon) {
+    if (!this.playersTurn || gameIsWon) {
         return;
     }
-
-    alreadyMocked = true;
-    mockSnd.play();
 
     setTimeout(function () {
         document.querySelector("#opponentBubble").innerText = "Go ahead. End\nyour turn, so that\nI can end you!";

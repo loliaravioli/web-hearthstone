@@ -29,8 +29,8 @@ function attack() {
                     targetAttack = targetElement.children[0].children[0].innerHTML,
                     targetHealth = targetElement.children[1].children[0].innerHTML;
                 if (currentAttacker == "playerHeropower") {
-                    mana -= 2;
-                    manaElement.innerHTML = mana + "/" + manaCapacity;
+                    GAME.playerManaView.depleteMana(2);
+                    manaElement.innerHTML = GAME.playerManaView.getCurrentMana() + "/" + manaCapacity;
                     checkForRequiredMana();
                     updateManaGUI();
                     setTimeout(function () {
@@ -162,7 +162,7 @@ function attack() {
                 body.style.cursor = "url(src/media/images/cursor/cursor.png) 10 2, auto";
                 currentAttackerElement.classList.remove("canAttack");
 
-                if (hand.cardCount() == 0 || mana == 0) {
+                if (hand.cardCount() == 0 || GAME.playerManaView.getCurrentMana() == 0) {
                     for (let i = 0; i < GAME.playerBoard.count(); i++) {
                         if (GAME.playerBoard.htmlElement.children[i].classList.contains("canAttack")) {
                             break;
