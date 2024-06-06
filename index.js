@@ -15,37 +15,6 @@ function startGame() {
     GAME.turnController.startPlayerTurn();
 }
 
-// certain events trigger every millisecond (e.g. onmousemove)
-// use this method to make them only trigger every x milliseconds to improve performance
-function throttle(func, limit) {
-    let lastFunc;
-    let lastRan;
-    return function (...args) {
-        if (!lastRan) {
-            func.apply(this, args);
-            lastRan = Date.now();
-        } else {
-            clearTimeout(lastFunc);
-            lastFunc = setTimeout(function () {
-                if ((Date.now() - lastRan) >= limit) {
-                    func.apply(this, args);
-                    lastRan = Date.now();
-                }
-            }, limit - (Date.now() - lastRan));
-        }
-    };
-}
-
-document.getElementById("endturn").addEventListener("click", function () {
-    (new Audio("src/media/sounds/endturn.mp3")).play();
-    document.querySelector("#endturn").style.zIndex = "50";
-    document.getElementById("gifhint").style.backgroundImage = "url('src/media/hints/attack.gif')";
-    document.getElementById("texthint").innerText = "Click on an green glowing allied card then click on an enemy to attack.";
-    GAME.turnController.startOpponentTurn();
-});
-
-startGame();
-
 // disable and enable screen shakes (options menu)
 document.getElementById('togglescreenshake').onclick = function () {
     isScreenShake = !isScreenShake;
@@ -68,3 +37,5 @@ function fadeOutInMusic() {
         }, 0.25 * 1000);
     }, 0.25 * 1000);
 }
+
+startGame();

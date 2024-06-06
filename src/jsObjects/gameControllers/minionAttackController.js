@@ -1,4 +1,4 @@
-export class AttackController {
+export class MinionAttackController {
     constructor(playerBoardView, opponentBoardView) {
         this.playerBoardView = playerBoardView;
         this.opponentBoardView = opponentBoardView;
@@ -69,7 +69,7 @@ export class AttackController {
 
     doAttack() {
         console.log(`${this.attackerCard.id} attacks ${this.targetCard.id}`);
-        
+
         const attackerViewIndex = this.attackerCard.dataset.boardIndex,
             targetViewIndex = this.targetCard.dataset.boardIndex,
             attackerCardView = this.playerBoardView.card(attackerViewIndex),

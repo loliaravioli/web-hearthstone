@@ -3,7 +3,7 @@ import { Hand } from './src/jsObjects/gameObjects/hand.js';
 import { Board } from './src/jsObjects/gameObjects/board.js';
 import { Mana } from './src/jsObjects/gameObjects/mana.js';
 
-import { AttackController } from './src/jsObjects/gameControllers/attackController.js';
+import { MinionAttackController } from './src/jsObjects/gameControllers/minionAttackController.js';
 import { TurnController } from './src/jsObjects/gameControllers/turnController.js';
 
 import { BoardOpponentView } from './src/jsObjects/views/BoardOpponentView.js';
@@ -46,7 +46,7 @@ class GAME {
         this.playerManaView = new ManaPlayerView(this.playerMana);
         this.opponentManaView = new ManaOpponentView(this.playerMana);
 
-        this.attackController = new AttackController(this.playerBoardView, this.opponentBoardView);
+        this.minionAttackController = new MinionAttackController(this.playerBoardView, this.opponentBoardView);
         this.turnController = new TurnController();
     }
 }

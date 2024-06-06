@@ -664,3 +664,11 @@ const onMouseTriangleMove = (e) => {
         });
 }
 document.addEventListener('mousemove', onMouseTriangleMove);
+
+document.getElementById("endturn").addEventListener("click", function () {
+    (new Audio("src/media/sounds/endturn.mp3")).play();
+    document.getElementById("endturn").style.zIndex = "50";
+    document.getElementById("gifhint").style.backgroundImage = "url('src/media/hints/attack.gif')";
+    document.getElementById("texthint").innerText = "Click on an green glowing allied card then click on an enemy to attack.";
+    GAME.turnController.startOpponentTurn();
+});
