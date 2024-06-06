@@ -34,8 +34,10 @@ export class AttackController {
                 const destX = e.clientX, destY = e.clientY;
                 const angleDeg = (Math.atan2(destY - y, destX - x) * 180 / Math.PI) + 90;
                 // TODO: fix visual bug where this arrow briefly appears on the previous card it was on
-                $('#arrowcursor').css('transform', `rotate(${angleDeg}deg) translate(-50%,-110%)`);
-                $('#svgpath').attr('d', `M${destX},${destY} ${x},${y}`);
+                $('#arrowcursor')
+                    .css('transform', `rotate(${angleDeg}deg) translate(-50%,-110%)`);
+                $('#svgpath')
+                    .attr('d', `M${destX},${destY} ${x},${y}`);
             });
         }
     }
@@ -78,7 +80,7 @@ export class AttackController {
             this.opponentBoardView.killCard(targetViewIndex);
         }
 
-        if(attackerIsDead) {
+        if (attackerIsDead) {
             this.playerBoardView.killCard(attackerViewIndex);
         }
     }

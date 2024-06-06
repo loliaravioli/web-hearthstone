@@ -32,16 +32,19 @@ export class DialoguePlayerView {
     }
 
     openBubble() {
-        $('#playerBubble').html(this.dialogueText)
+        $('#playerBubble')
+            .html(this.dialogueText)
             .css({ 'visibility': 'visible' })
             .addClass('openMenuAnim');
     }
 
     closeBubble() {
-        $('#playerBubble').addClass('easeOutAnim')
+        $('#playerBubble')
+            .addClass('easeOutAnim')
             .removeClass('openMenuAnim');
         setTimeout(function () {
-            $('#playerBubble').css({ 'visibility': 'hidden' })
+            $('#playerBubble')
+                .css({ 'visibility': 'hidden' })
                 .removeClass('easeOutAnim');
         }, 0.25 * 1000);
     }

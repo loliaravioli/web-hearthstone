@@ -7,7 +7,7 @@ export class ManaPlayerView {
     }
 
     getElement() {
-        // return document.querySelector('.player-deck');
+        return document.getElementById('manacontainer');
     }
 
     newTurn() {
@@ -25,16 +25,30 @@ export class ManaPlayerView {
         this.update();
     }
 
-    getCurrentMana() {
+    currentMana() {
         return this.mana.currentMana;
     }
 
     update() {
-        // let manaCrystals = document.getElementsByClassName("manabox");
-        // for (let i = 0; i < this.mana.currentMana; i++) {
-        //     manaCrystals[manaCrystals.length - i].style.backgroundColor = "black";
-        // }
+        $('.manabox').remove();
+        for (let i = 0; i < this.mana.currentMana; i++) {
+            const manacrystal = document.createElement('div');
+            manacrystal.classList.add('manabox');
+            manacrystal.style.backgroundColor = 'black';
+            this.getElement().appendChild(manacrystal);
+        }
+        
+        for (let i = this.mana.currentMana; i < this.mana.manaCap; i++) {
+            const manacrystal = document.createElement('div');
+            manacrystal.classList.add('manabox');
+            manacrystal.style.backgroundColor = '#3669c9';
+            this.getElement().appendChild(manacrystal);
+        }
 
-        GAME.playerHandView.update(); // update the "playable" status of cards in hand when mana changes
+        document.getElementById('mana').innerHTML = this.currentMana() + "/" + this.mana.manaCap;
+        
+        // update the "playable" status of cards and hero power when mana changes
+        GAME.playerHandView.update();
+        // GAME.playerHeroPowerView.update();
     }
 }

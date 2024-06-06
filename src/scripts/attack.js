@@ -30,9 +30,6 @@ function attack() {
                     targetHealth = targetElement.children[1].children[0].innerHTML;
                 if (currentAttacker == "playerHeropower") {
                     GAME.playerManaView.depleteMana(2);
-                    manaElement.innerHTML = GAME.playerManaView.getCurrentMana() + "/" + manaCapacity;
-                    checkForRequiredMana();
-                    updateManaGUI();
                     setTimeout(function () {
                         currentAttackerHealth -= targetAttack;
                         targetHealth -= currentAttackerAttack;
@@ -77,7 +74,7 @@ function attack() {
                     targetElement.children[1].children[0].innerHTML = targetHealth;
                 }
 
-                if ((currentAttackerAttack >= 5) && (isScreenShake == true)) {
+                if (currentAttackerAttack >= 5 && isScreenShake) {
                     document.getElementById("game").classList.add("bigHitAnim");
                     setTimeout(function () {
                         document.getElementById("game").classList.remove("bigHitAnim");
@@ -86,25 +83,25 @@ function attack() {
 
                 if (targetElement.id == 'opponentHero') {
                     document.querySelector("#computerdamagevalue").innerText = "-" + currentAttackerAttack;
-                    $('#computerdamagecontainer').css({
-                        'visibility': 'visible',
-                        'opacity': 1,
-                        'transition': 'none'
-                    });
-                    document.querySelector("#computerdamagelabel").classList.add("openMenuAnim");
-                    document.querySelector("#computerdamagevalue").classList.add("openMenuAnim");
-                    document.querySelector("#computerdamagelabel").classList.remove("fadeOutAnim");
-                    document.querySelector("#computerdamagevalue").classList.remove("fadeOutAnim");
+                    $('#computerdamagecontainer')
+                        .css({
+                            'visibility': 'visible',
+                            'opacity': 1,
+                            'transition': 'none'
+                        });
+                    $('#computerdamagelabel, #computerdamagevalue')
+                        .addClass('openMenuAnim')
+                        .removeClass('fadeOutAnim');
                     setTimeout(function () {
-                        document.querySelector("#computerdamagelabel").classList.add("fadeOutAnim");
-                        document.querySelector("#computerdamagevalue").classList.add("fadeOutAnim");
-                        document.querySelector("#computerdamagelabel").classList.remove("openMenuAnim");
-                        document.querySelector("#computerdamagevalue").classList.remove("openMenuAnim");
+                        $('#computerdamagelabel, #computerdamagevalue')
+                            .addClass('fadeOutAnim')
+                            .removeClass('openMenuAnim');
                         setTimeout(function () {
-                            $('#computerdamagecontainer').css({
-                                'visibility': 'hidden',
-                                'opacity': 0
-                            });
+                            $('#computerdamagecontainer')
+                                .css({
+                                    'visibility': 'hidden',
+                                    'opacity': 0
+                                });
                         }, 1 * 1000);
                     }, 2 * 1000);
                 }
@@ -131,15 +128,16 @@ function attack() {
                         if (document.getElementById('opponentHeroHealth').innerText <= 0) {
                             gameIsWon = true;
                             document.querySelector("#endturn").style.zIndex = "1";
-                            let hasPlayedTutorial_serialized = JSON.stringify("true");
-                            localStorage.setItem("hasPlayedTutorial", hasPlayedTutorial_serialized);
-                            $('#block').css({
-                                'opacity': 0,
-                                'visibility': 'visible'
-                            });
+                            localStorage.setItem("hasPlayedTutorial", JSON.stringify("true"));
+                            $('#block')
+                                .css({
+                                    'opacity': 0,
+                                    'visibility': 'visible'
+                                });
                             setTimeout(function () {
-                                document.getElementById('fireworkCanvas').style.display = "block";
-                                document.getElementById('fireworkCanvas').classList.add("fadeInAnim");
+                                $('#fireworkCanvas')
+                                    .show()
+                                    .addClass('fadeInAnim');
                             }, 3 * 1000);
                             gameWon();
                         } else {
@@ -152,29 +150,28 @@ function attack() {
                     }
                 }, 0.25 * 1000);
 
-                let currentAttackersElement = document.getElementById(currentAttacker);
                 currentAttacker = null;
                 canAttack = false;
                 svg.style.display = "none";
-                document.getElementById("innercursor").style.visibility = "hidden";
-                document.getElementById("outercursor").style.visibility = "hidden";
-                document.getElementById("arrowcursor").style.visibility = "hidden";
+                $('#innercursor, #outercursor, #arrowcursor')
+                    .css({ 'visibility': 'hidden' });
                 body.style.cursor = "url(src/media/images/cursor/cursor.png) 10 2, auto";
                 currentAttackerElement.classList.remove("canAttack");
 
-                if (hand.cardCount() == 0 || GAME.playerManaView.getCurrentMana() == 0) {
-                    for (let i = 0; i < GAME.playerBoard.count(); i++) {
-                        if (GAME.playerBoard.htmlElement.children[i].classList.contains("canAttack")) {
-                            break;
-                        }
+                // check if there's any cards left to play or attack with and play the "job's done" sound if not
+                // if (hand.cardCount() == 0 || GAME.playerManaView.currentMana() == 0) {
+                //     for (let i = 0; i < GAME.playerBoard.count(); i++) {
+                //         // if (GAME.playerBoard.htmlElement.children[i].classList.contains("canAttack")) {
+                //         //     break;
+                //         // }
 
-                        if ((i == oldNumOfChild - 1) && (gameIsWon == false)) {
-                            jobsdoneSnd.play();
-                        }
-                    }
-                }
+                //         if ((i == oldNumOfChild - 1) && (gameIsWon == false)) {
+                //             jobsdoneSnd.play();
+                //         }
+                //     }
+                // }
 
-                if (currentAttackersElement.classList.contains('player-cardinplay')) {
+                if (document.getElementById(currentAttacker).classList.contains('player-cardinplay')) {
                     if (currentAttackerAttack >= 5) {
                         (new Audio("src/media/sounds/bigattack.mp3")).play();
                     } else {
@@ -227,29 +224,33 @@ function gameWon() {
     // adjust position of player board to fix GUI
     GAME.opponentBoardView.getElement().style.transform = "translateY(17.5%)";
     setTimeout(function () {
-        document.getElementById('opponentHeroContainer').style.display = "none";
-        if (isScreenShake) {
-            document.getElementById("game").classList.remove("shakeScreenAnim");
-            document.getElementById("game").classList.add("shakeScreenAnim");
-        }
+        $('#opponentHeroContainer').hide();
+        if (!isScreenShake) { return; }
+
+        $('#game')
+            .removeClass('shakeScreenAnim')
+            .addClass('shakeScreenAnim');
     }, 750);
 
     setTimeout(function () {
         document.getElementById("game").style.filter = "blur(5px)";
         document.getElementById('block').style.visibility = "hidden";
-        document.getElementById("victory").style.display = "block";
-        document.getElementById("victoryImg1").classList.add("openMenuAnim");
-        document.getElementById("victoryImg2").classList.add("openMenuAnim");
-        document.getElementById("victorylabel").classList.add("openMenuAnim");
+        $('#victory').show();
+        $('#victoryImg1, #victoryImg2, #victorylabel')
+            .addClass('openMenuAnim');
+
         setTimeout(function () {
             document.getElementById('fireworkCanvas').classList.add("fadeOutAnim");
             setTimeout(function () {
-                document.getElementById('fireworkCanvas').style.display = "none";
+                $('#fireworkCanvas').hide();
+
                 setTimeout(function () {
                     location.reload();
                 }, 9 * 1000);
-                document.getElementById('victoryhint').style.display = "block";
-                document.getElementById('victoryhint').classList.add("openMenuAnim");
+
+                $('#victoryhint')
+                    .show()
+                    .addClass('openMenuAnim');
 
                 // when not in tutorial
                 // setTimeout(function () {

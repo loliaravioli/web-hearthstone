@@ -32,16 +32,19 @@ export class DialogueOpponentView {
     }
 
     openBubble() {
-        $('#opponentBubble').html(this.dialogueText)
+        $('#opponentBubble')
+            .html(this.dialogueText)
             .css({ 'visibility': 'visible' })
             .addClass('openMenuAnim');
     }
 
     closeBubble() {
-        $('#opponentBubble').addClass('easeOutAnim')
+        $('#opponentBubble')
+            .addClass('easeOutAnim')
             .removeClass('openMenuAnim');
         setTimeout(function () {
-            $('#opponentBubble').css({ 'visibility': 'hidden' })
+            $('#opponentBubble')
+                .css({ 'visibility': 'hidden' })
                 .removeClass('easeOutAnim');
         }, 0.25 * 1000);
     }

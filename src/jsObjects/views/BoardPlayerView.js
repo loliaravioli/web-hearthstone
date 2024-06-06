@@ -64,7 +64,8 @@ export class BoardPlayerView extends AbstractBoardView {
                 const droppedCard = ui.draggable;
                 GAME.playerBoardView.addCard(GAME.playerHandView.getCard(droppedCard.data('handIndex')));
                 GAME.playerHandView.removeCard(droppedCard.data('handIndex'));
-                $('#gifhint, #texthint').css({ 'display': 'none' });
+                $('#gifhint, #texthint')
+                    .css({ 'display': 'none' });
                 this.update;
             }, over: function (event, ui) {
                 ui.helper.data('hovering-board', true);

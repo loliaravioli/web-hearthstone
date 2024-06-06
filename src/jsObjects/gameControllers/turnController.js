@@ -1,5 +1,4 @@
 // TODO: create separate functionality specifically for AI
-// TODO: create separate object for mana
 
 export class TurnController {
     constructor() {
@@ -14,14 +13,6 @@ export class TurnController {
 
         GAME.playerManaView.newTurn();
 
-        mana = manaCapacity;
-        manaElement.innerHTML = `${mana}/${manaCapacity}`;
-
-        let manaCrystals = document.getElementsByClassName("manabox");
-        for (let i = 0; i < manaCrystals.length; i++) {
-            manaCrystals[i].style.backgroundColor = "#3669c9";
-        }
-
         this.playerTurnSound.play();
         document.body.style.cursor = "url(src/media/images/cursor/cursor.png) 10 2, auto";
         document.getElementById("playerHeropower").style.boxShadow = "0px 2px 15px 12px #0FCC00";
@@ -31,8 +22,7 @@ export class TurnController {
         document.getElementById("endturn").innerText = "END TURN";
 
         GAME.playerHandView.addCard(GAME.playerDeckView.drawCard());
-
-        checkForRequiredMana();
+        
         attack();
     }
 
