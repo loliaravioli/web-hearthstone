@@ -1,3 +1,5 @@
+import GAME from '../../../game.js';
+
 // TODO: create separate functionality specifically for AI
 
 export class TurnController {

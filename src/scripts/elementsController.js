@@ -1,6 +1,6 @@
 import GAME from '../../game.js';
 
-let openmenuSnd = new Audio("src/media/sounds/openmenu.mp3"),
+const openmenuSnd = new Audio("src/media/sounds/openmenu.mp3"),
     menubtnsSnd = new Audio("src/media/sounds/menubtnpress.mp3"),
     purchaseSnd = new Audio("src/media/sounds/purchase.mp3"),
     menuhoverSnd = new Audio("src/media/sounds/menuselect.mp3"),
@@ -8,11 +8,6 @@ let openmenuSnd = new Audio("src/media/sounds/openmenu.mp3"),
     shoponclickSnd = new Audio("src/media/sounds/shoponclick.mp3"),
     startTutorialSnd = new Audio("src/media/sounds/voiceovers/innkeeper_starttutorial.mp3"),
     battlebeginSnd = new Audio("src/media/sounds/voiceovers/innkeeper_tutorialbattle.mp3"),
-    hasPlayedBattleBeginSnd = new Boolean(false),
-    isInGame = new Boolean(false),
-    tutorialIntroRunning = new Boolean(false),
-    vol = 0.5,
-    interval = 175,
     songs = [
         "src/media/sounds/ost/mulligan.mp3",
         "src/media/sounds/ost/bad_reputation.mp3",
@@ -20,52 +15,16 @@ let openmenuSnd = new Audio("src/media/sounds/openmenu.mp3"),
         "src/media/sounds/ost/dont_let_your_guard_down.mp3",
         "src/media/sounds/ost/duel.mp3",
         "src/media/sounds/ost/the_forge.mp3"
-    ];
+    ],
+    song = new Audio(songs[Math.floor(Math.random() * songs.length)]);
 
-let song = new Audio(songs[Math.floor(Math.random() * songs.length)]);
+let hasPlayedBattleBeginSnd = new Boolean(false),
+    isInGame = new Boolean(false),
+    tutorialIntroRunning = new Boolean(false),
+    vol = 0.5,
+    interval = 175;
 
-// plays a random song and sets the volume to 70% from the array defined above
-document.getElementById('volume-control').addEventListener("change", function (e) {
-    song.volume = e.currentTarget.value / 100;
-})
-
-document.addEventListener("keydown", function (e) {
-    if (e.key !== 'Escape') { return; }
-
-    if (document.getElementById("gamemenuContent").style.display === "block") {
-        if (document.getElementById('optionsmenuContent').style.display === "block") { // hide options menu
-            $('#optionsmenu').hide();
-            $('#optionsmenuContent').hide()
-                .removeClass('openMenuAnim');
-        } else { // show game
-            $('#gamemenuContent')
-                .removeClass('openMenuAnim')
-                .hide();
-                $('#gamemenu').hide();
-        }
-    } else if (document.getElementById("shopmenu").style.display == "block") {
-        $('#shopmenu').hide();
-        $('#shopmenuContent')
-            .hide()
-            .removeClass('openMenuAnim');
-        document.getElementById("mainmenu").style.filter = "none";
-    } else { // show game menu
-        $('#gamemenu').show();
-        $('#gamemenuContent')
-            .show()
-            .addClass('openMenuAnim');
-        concedebtn.disabled = !isInGame;
-        openmenuSnd.play();
-    }
-})
-
-// on button hover play sound
-let concedebtn = document.getElementById('concedebutton'),
-    optionsbtn = document.getElementById('optionsbutton'),
-    quitbtn = document.getElementById('quitbutton'),
-    resumebtn = document.getElementById('resumebutton'),
-    miscellaneousbtn = document.getElementById('miscellaneousbutton'),
-    confirmbtn = document.getElementById('confirm'),
+let confirmbtn = document.getElementById('confirm'),
     endturnbtn = document.getElementById('endturn'),
     playbtn = document.getElementById('playbutton'),
     tutorialbtn = document.getElementById('tutorialbutton'),
@@ -78,49 +37,12 @@ let concedebtn = document.getElementById('concedebutton'),
     donepackbtn = document.getElementById('donepackbutton');
 // skipcinematicbtn = document.getElementById('skipcinematicbtn');
 
-[concedebtn, optionsbtn, quitbtn,
-    resumebtn, miscellaneousbtn, playbtn,
-    tutorialbtn, howtoplaybtn, openpacksbtn,
-    starttutorialbtn, backfrompackbtn, shopbtn,
-    buybtn].forEach(i => {
+[playbtn, tutorialbtn, howtoplaybtn, openpacksbtn,
+    starttutorialbtn, backfrompackbtn, shopbtn, buybtn]
+    .forEach(i => {
         if (!i) { return; }
         i.addEventListener('mouseover', () => menuhoverSnd.play());
     });
-
-concedebtn.onclick = function () {
-    openmenuSnd.play()
-    alert("You've Lost!")
-    location.reload();
-};
-
-optionsbtn.onclick = function () {
-    openmenuSnd.play();
-    $('#optionsmenu').show();
-    $('#optionsmenuContent')
-        .show()
-        .addClass('openMenuAnim');
-};
-
-quitbtn.onclick = function () {
-    openmenuSnd.play()
-    document.getElementById('interactive');
-    $('#contents')
-        .css({
-            'visibility': 'hidden',
-            'opacity': 0,
-            'transition': 'visibility 0s 0.5s, opacity 0.5s linear'
-        });
-    // may not work as can only close tabs with scripts that were opened with
-    window.close();
-};
-
-resumebtn.onclick = function () {
-    openmenuSnd.play()
-    $('#gamemenuContent')
-        .removeClass('openMenuAnim')
-        .hide();
-    $('#gamemenu').hide();
-};
 
 confirmbtn.onclick = function () {
     document.getElementById('block').style.zIndex = "9";
@@ -210,17 +132,8 @@ confirmbtn.onclick = function () {
     */
 };
 
-// miscellaneous button (in options (press esc))
-miscellaneousbtn.onclick = function () {
-    openmenuSnd.play();
-    window.open(
-        'https://playhearthstone.com/en-gb',
-        '_blank'
-    );
-};
-
 function fadeOutMainMenuOST() {
-    setInterval(function () {
+    let fadeout = setInterval(function () {
         if (vol > 0.05) {
             vol -= 0.05;
             mainmenuOST.volume = vol;
@@ -458,8 +371,7 @@ backfrompackbtn.onclick = function () {
     crowdSnd.play();
     let packElements = document.getElementsByClassName("pack");
     $('#mainmenu').show();
-    $('#openpacks, #pkcollisionbox')
-        .hide();
+    $('#openpacks, #pkcollisionbox').hide();
     for (let i = 0; i < packElements.length; i++) {
         document.getElementsByClassName("pack")[i].style.display = "none";
     }
@@ -498,8 +410,7 @@ starttutorialbtn.onclick = function () {
                 song.play();
             }, 1 * 1000)
         }
-        $('#tutorialmenuContent, #tutorialmenu')
-            .hide();
+        $('#tutorialmenuContent, #tutorialmenu').hide();
     }, 0.125 * 1000);
 };
 

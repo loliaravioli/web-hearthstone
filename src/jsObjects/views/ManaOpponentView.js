@@ -3,4 +3,8 @@ export class ManaOpponentView {
         this.mana = mana;
         this.update();
     }
+
+    update() {
+        
+    }
 }

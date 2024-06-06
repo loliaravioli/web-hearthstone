@@ -166,7 +166,7 @@ function attack() {
                 //         // }
 
                 //         if ((i == oldNumOfChild - 1) && (gameIsWon == false)) {
-                //             jobsdoneSnd.play();
+                //             (new Audio("src/media/sounds/voiceovers/innkeeper_jobs_done.mp3")).play();
                 //         }
                 //     }
                 // }

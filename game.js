@@ -18,7 +18,32 @@ import { ManaOpponentView } from './src/jsObjects/views/ManaOpponentView.js';
 
 class GAME {
     constructor() {
-        this.resetValues();
+        this.playerDeck = null;
+        this.opponentDeck = null;
+
+        this.playerDeckView = null;
+        this.opponentDeckView = null;
+
+        this.playerBoard = null;
+        this.opponentBoard = null;
+
+        this.playerBoardView = null;
+        this.opponentBoardView = null;
+
+        this.playerHand = null;
+        this.playerHandView = null;
+
+        this.playerDialogueView = null;
+        this.opponentDialogueView = null;
+
+        this.playerMana = null;
+        this.opponentMana = null;
+
+        this.playerManaView = null;
+        this.opponentManaView = null;
+
+        this.minionAttackController = null;
+        this.turnController = null;
     }
 
     resetValues() {
