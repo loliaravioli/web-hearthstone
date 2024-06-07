@@ -1,6 +1,8 @@
 import GAME from '../../game.js';
 
-const openmenuSnd = new Audio("src/media/sounds/openmenu.mp3"),
+const mainmenuOST = new Audio("src/media/sounds/ost/mainmenu.mp3"),
+    crowdSnd = new Audio("src/media/sounds/crowd.mp3"),
+    openmenuSnd = new Audio("src/media/sounds/openmenu.mp3"),
     menubtnsSnd = new Audio("src/media/sounds/menubtnpress.mp3"),
     purchaseSnd = new Audio("src/media/sounds/purchase.mp3"),
     menuhoverSnd = new Audio("src/media/sounds/menuselect.mp3"),
@@ -420,9 +422,16 @@ document.getElementById('togglefps').onclick = function () {
 };
 
 document.getElementById('preventCORS').onclick = function () {
-    document.getElementById('preventCORS').classList.add("fadeOutAnim");
+    const introLines = [
+        "src/media/sounds/voiceovers/innkeeper_1.mp3",
+        "src/media/sounds/voiceovers/innkeeper_2.mp3",
+        "src/media/sounds/voiceovers/innkeeper_3.mp3"
+    ], introLine = introLines[Math.floor(Math.random() * introLines.length)];
+    (new Audio(introLine)).play();
+
+    $('#preventCORS').addClass('fadeOutAnim');
     setTimeout(function () {
-        document.getElementById('preventCORS').style.visibility = "hidden";
+        $('#preventCORS').css({ 'visibility': 'hidden' });
     }, 1 * 1000)
 
     tutorial();
