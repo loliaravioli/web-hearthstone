@@ -9,30 +9,24 @@ body {
 	font-family: BelweBdBTBold;
 	overflow: hidden;
 	position: fixed;
+	background-color: black;
 }
 
-body {
+body,
+button:hover,
+button:active {
 	cursor: url(src/media/images/cursor/cursor.png) 10 2, auto;
-	background-color: black;
 }
 
 body:active {
 	cursor: url(src/media/images/cursor/click.png) 10 2, auto;
 }
 
-button:hover {
-	cursor: url(src/media/images/cursor/cursor.png) 10 2, auto;
-}
-
-button:active {
-	cursor: url(src/media/images/cursor/cursor.png) 10 2, auto;
-}
-
 head {
 	z-index: 500;
 }
 
-.bg-image {
+#bg-image {
 	width: 100%;
 	height: 100%;
 	position: absolute;
@@ -53,25 +47,7 @@ head {
 	src: url(src/fonts/BelweBdBTBold.ttf);
 }
 
-#load {
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	z-index: 1000000;
-	font-size: 35px;
-	text-align: center;
-	user-select: none;
-	color: white;
-	background-image: url(src/media/images/loading.gif) !important;
-	background-size: contain;
-	background-repeat: no-repeat;
-	background-position: center;
-}
-
+#load,
 #preventCORS {
 	width: 100%;
 	height: 100%;
@@ -80,13 +56,23 @@ head {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background-color: black;
+	z-index: 1000000;
 	color: white;
 	font-size: 40px;
-	visibility: hidden;
 	text-align: center;
 	user-select: none;
-	z-index: 1000000;
+}
+
+#load {
+	background-image: url(src/media/images/loading.gif) !important;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+#preventCORS {
+	background-color: black;
+	visibility: hidden;
 }
 
 #computerTurn {
@@ -103,7 +89,7 @@ head {
 }
 
 /* In Game */
-.cards {
+#playerCards {
 	bottom: 75px;
 	display: flex;
 	height: 100px;
@@ -116,7 +102,7 @@ head {
 	z-index: 9;
 }
 
-.enemycards {
+#enemycards {
 	top: -26px;
 	display: flex;
 	width: 60%;
@@ -129,34 +115,34 @@ head {
 	z-index: 5;
 }
 
-.card {
+.card,
+.enemycard {
+	width: 100px;
 	height: 150px;
 	position: relative;
-	width: 100px;
+	user-select: none;
+}
+
+.card {
 	border-radius: 8px;
 	float: left;
-	-webkit-touch-callout: none;
-	/* iOS Safari */
-	-webkit-user-select: none;
-	/* Safari */
-	-khtml-user-select: none;
-	/* Konqueror HTML */
-	-moz-user-select: none;
-	/* Old versions of Firefox */
-	-ms-user-select: none;
-	/* Internet Explorer/Edge */
-	user-select: none;
-	/* Non-prefixed version, currently
-                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.enemycard {
+	margin: -15px;
+	background-image: url(src/media/images/frostcardback.png);
+	background-repeat: no-repeat;
+	background-size: contain;
 }
 
 .card--placeholder {
 	visibility: hidden;
 }
 
-.card .cardtutorialhint {
+/* .card,
+.cardtutorialhint {
 	display: none;
-}
+} */
 
 .card:hover .cardtutorialhint {
 	display: block;
@@ -172,29 +158,6 @@ head {
 		1px -1px 0 #000,
 		-1px 1px 0 #000,
 		1px 1px 0 #000;
-}
-
-.enemycard {
-	width: 100px;
-	height: 160px;
-	margin: -15px;
-	position: relative;
-	background-image: url(src/media/images/frostcardback.png);
-	background-repeat: no-repeat;
-	background-size: contain;
-	-webkit-touch-callout: none;
-	/* iOS Safari */
-	-webkit-user-select: none;
-	/* Safari */
-	-khtml-user-select: none;
-	/* Konqueror HTML */
-	-moz-user-select: none;
-	/* Old versions of Firefox */
-	-ms-user-select: none;
-	/* Internet Explorer/Edge */
-	user-select: none;
-	/* Non-prefixed version, currently
-                                  supported by Chrome, Edge, Opera and Firefox */
 }
 
 .card:after {
@@ -245,291 +208,63 @@ head {
 	top: 0;
 }
 
-#innercursor {
+#innercursor,
+#outercursor,
+#arrowcursor {
 	position: absolute;
 	transform: translate(-50%, -50%);
+	pointer-events: none;
+	visibility: hidden;
+}
+
+#innercursor {
 	height: 20px;
 	width: 20px;
 	border-radius: 50%;
 	border: 4px solid #e82e12;
-	pointer-events: none;
-	visibility: hidden;
 	z-index: 100;
 }
 
 #outercursor {
-	position: absolute;
-	transform: translate(-50%, -50%);
 	height: 75px;
 	width: 75px;
 	border-radius: 50%;
 	border: 16px solid #e82e12;
-	pointer-events: none;
-	visibility: hidden;
 	z-index: 100;
 }
 
 #arrowcursor {
 	width: 0;
 	height: 0;
-	position: absolute;
-	transform: translate(-50%, -50%);
 	transform-origin: 0% 0%;
 	border-left: 30px solid transparent;
 	border-right: 30px solid transparent;
 	border-bottom: 30px solid #e82e12;
-	pointer-events: none;
-	visibility: hidden;
 	z-index: 101;
 }
 
-.card:nth-child(1) .card-face {
+.card .card-face {
 	box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(255, 153, 153, 0.75);
 	transform: translateY(5px);
 }
 
-.card:nth-child(1) .card-face .card-label {
+.card .card-face .card-label {
 	color: rgba(219, 0, 0, 1);
 	text-shadow: -0.025em 0.025em 0 rgba(255, 128, 128, 1);
 }
 
-.card:nth-child(1):hover .card-face {
+.card:hover .card-face {
 	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 2px rgba(255, 153, 153, 0.75);
 	transform: translateY(-130px) rotate(0deg) scale(2);
 	transition-duration: 0ms;
 	z-index: 5;
 }
 
-.card:nth-child(1):hover .card-face:after {
+.card:hover .card-face:after {
 	animation: fade 250ms ease-out forwards;
 }
 
-.card:nth-child(1):hover:after {
-	top: -175px;
-}
-
-.card:nth-child(2) .card-face {
-	box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(255, 153, 214, 0.75);
-	transform: translateY(5px);
-}
-
-.card:nth-child(2) .card-face .card-label {
-	color: rgba(219, 0, 132, 1);
-	text-shadow: -0.025em 0.025em 0 rgba(255, 128, 204, 1);
-}
-
-.card:nth-child(2):hover .card-face {
-	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 2px rgba(255, 153, 214, 0.75);
-	transform: translateY(-130px) rotate(0deg) scale(2);
-	transition-duration: 0ms;
-	z-index: 5;
-}
-
-.card:nth-child(2):hover .card-face:after {
-	animation: fade 250ms ease-out forwards;
-}
-
-.card:nth-child(2):hover:after {
-	top: -175px;
-}
-
-.card:nth-child(3) .card-face {
-	box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(235, 153, 255, 0.75);
-	transform: translateY(5px);
-}
-
-.card:nth-child(3) .card-face .card-label {
-	color: rgba(175, 0, 219, 1);
-	text-shadow: -0.025em 0.025em 0 rgba(230, 128, 255, 1);
-}
-
-.card:nth-child(3):hover .card-face {
-	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 2px rgba(235, 153, 255, 0.75);
-	transform: translateY(-130px) rotate(0deg) scale(2);
-	transition-duration: 0ms;
-	z-index: 5;
-}
-
-.card:nth-child(3):hover .card-face:after {
-	animation: fade 250ms ease-out forwards;
-}
-
-.card:nth-child(3):hover:after {
-	top: -175px;
-}
-
-.card:nth-child(4) .card-face {
-	box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(173, 153, 255, 0.75);
-	transform: translateY(5px);
-}
-
-.card:nth-child(4) .card-face .card-label {
-	color: rgba(44, 0, 219, 1);
-	text-shadow: -0.025em 0.025em 0 rgba(153, 128, 255, 1);
-}
-
-.card:nth-child(4):hover .card-face {
-	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 2px rgba(173, 153, 255, 0.75);
-	transform: translateY(-130px) rotate(0deg) scale(2);
-	transition-duration: 0ms;
-	z-index: 5;
-}
-
-.card:nth-child(4):hover .card-face:after {
-	animation: fade 250ms ease-out forwards;
-}
-
-.card:nth-child(4):hover:after {
-	top: -175px;
-}
-
-.card:nth-child(5) .card-face {
-	box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(153, 194, 255, 0.75);
-	transform: translateY(5px);
-}
-
-.card:nth-child(5) .card-face .card-label {
-	color: rgba(0, 88, 219, 1);
-	text-shadow: -0.025em 0.025em 0 rgba(128, 179, 255, 1);
-}
-
-.card:nth-child(5):hover .card-face {
-	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 2px rgba(153, 194, 255, 0.75);
-	transform: translateY(-130px) rotate(0deg) scale(2);
-	transition-duration: 0ms;
-	z-index: 5;
-}
-
-.card:nth-child(5):hover .card-face:after {
-	animation: fade 250ms ease-out forwards;
-}
-
-.card:nth-child(5):hover:after {
-	top: -175px;
-}
-
-.card:nth-child(6) .card-face {
-	box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(153, 255, 255, 0.75);
-	transform: translateY(5px);
-}
-
-.card:nth-child(6) .card-face .card-label {
-	color: rgba(0, 219, 219, 1);
-	text-shadow: -0.025em 0.025em 0 rgba(128, 255, 255, 1);
-}
-
-.card:nth-child(6):hover .card-face {
-	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 2px rgba(153, 255, 255, 0.75);
-	transform: translateY(-130px) rotate(0deg) scale(2);
-	transition-duration: 0ms;
-	z-index: 5;
-}
-
-.card:nth-child(6):hover .card-face:after {
-	animation: fade 250ms ease-out forwards;
-}
-
-.card:nth-child(6):hover:after {
-	top: -175px;
-}
-
-.card:nth-child(7) .card-face {
-	box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(153, 255, 194, 0.75);
-	transform: translateY(5px);
-}
-
-.card:nth-child(7) .card-face .card-label {
-	color: rgba(0, 219, 88, 1);
-	text-shadow: -0.025em 0.025em 0 rgba(128, 255, 179, 1);
-}
-
-.card:nth-child(7):hover .card-face {
-	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 2px rgba(153, 255, 194, 0.75);
-	transform: translateY(-130px) rotate(0deg) scale(2);
-	transition-duration: 0ms;
-	z-index: 5;
-}
-
-.card:nth-child(7):hover .card-face:after {
-	animation: fade 250ms ease-out forwards;
-}
-
-.card:nth-child(7):hover:after {
-	top: -175px;
-}
-
-.card:nth-child(8) .card-face {
-	box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(173, 255, 153, 0.75);
-	transform: translateY(5px);
-}
-
-.card:nth-child(8) .card-face .card-label {
-	color: rgba(44, 219, 0, 1);
-	text-shadow: -0.025em 0.025em 0 rgba(153, 255, 128, 1);
-}
-
-.card:nth-child(8):hover .card-face {
-	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 2px rgba(173, 255, 153, 0.75);
-	transform: translateY(-130px) rotate(0deg) scale(2);
-	transition-duration: 0ms;
-	z-index: 5;
-}
-
-.card:nth-child(8):hover .card-face:after {
-	animation: fade 250ms ease-out forwards;
-}
-
-.card:nth-child(8):hover:after {
-	top: -175px;
-}
-
-.card:nth-child(9) .card-face {
-	box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(235, 255, 153, 0.75);
-	transform: translateY(5px);
-}
-
-.card:nth-child(9) .card-face .card-label {
-	color: rgba(175, 219, 0, 1);
-	text-shadow: -0.025em 0.025em 0 rgba(230, 255, 128, 1);
-}
-
-.card:nth-child(9):hover .card-face {
-	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 2px rgba(235, 255, 153, 0.75);
-	transform: translateY(-130px) rotate(0deg) scale(2);
-	transition-duration: 0ms;
-	z-index: 5;
-}
-
-.card:nth-child(9):hover .card-face:after {
-	animation: fade 250ms ease-out forwards;
-}
-
-.card:nth-child(9):hover:after {
-	top: -175px;
-}
-
-.card:nth-child(10) .card-face {
-	box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(255, 214, 153, 0.75);
-	transform: translateY(5px);
-}
-
-.card:nth-child(10) .card-face .card-label {
-	color: rgba(219, 132, 0, 1);
-	text-shadow: -0.025em 0.025em 0 rgba(255, 204, 128, 1);
-}
-
-.card:nth-child(10):hover .card-face {
-	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 2px rgba(255, 214, 153, 0.75);
-	transform: translateY(-130px) rotate(0deg) scale(2);
-	transition-duration: 0ms;
-	z-index: 5;
-}
-
-.card:nth-child(10):hover .card-face:after {
-	animation: fade 250ms ease-out forwards;
-}
-
-.card:nth-child(10):hover:after {
+.card:hover:after {
 	top: -175px;
 }
 
@@ -559,10 +294,6 @@ head {
 
 	gap: 24px;
 }
-
-#board--player {}
-
-#board--opponent {}
 
 .cardinplay {
 	position: relative;
@@ -1015,17 +746,25 @@ svg {
 	background-size: cover;
 }
 
-#playerHeroContainer {
+#playerHeroContainer,
+#opponentHeroContainer {
 	position: absolute;
 	width: 11%;
 	height: 17%;
 	left: 46.75%;
-	top: 67.75%;
 	z-index: 20;
-	background-image: url(src/media/images/jaina_proudmoore.gif);
 	background-repeat: no-repeat;
-	/* Do not repeat the image */
 	background-size: contain;
+}
+
+#playerHeroContainer {
+	top: 67.75%;
+	background-image: url(src/media/images/jaina_proudmoore.gif);
+}
+
+#opponentHeroContainer {
+	top: 9.75%;
+	background-image: url(src/media/images/lich_king.png);
 }
 
 .playerHeropower {
@@ -1041,39 +780,17 @@ svg {
 	background-size: contain;
 }
 
-.heroPowerAttack {
-	font-size: 0px;
-	user-select: none;
-}
-
+.heroPowerAttack,
 .heroPowerHealth {
 	font-size: 0px;
 	user-select: none;
 }
 
-#opponentHeroContainer {
-	position: absolute;
-	width: 11%;
-	height: 17%;
-	left: 46.75%;
-	top: 9.75%;
-	z-index: 11;
-	background-image: url(src/media/images/lich_king.png);
-	background-repeat: no-repeat;
-	/* Do not repeat the image */
-	background-size: contain;
-}
-
+#playerHero,
 #opponentHero {
 	border: none !important;
 	width: 100% !important;
 	height: 100% !important;
-	box-shadow: none !important;
-}
-
-#playerHero {
-	border: none !important;
-	width: 100% !important;
 	box-shadow: none !important;
 }
 
@@ -1082,37 +799,13 @@ svg {
 	width: 100% !important;
 }
 
-.attackValue {
-	position: absolute;
-	width: 1.75rem;
-	height: 2rem;
-	margin: 0 auto;
-	padding-left: 0.5rem;
-	border-top-right-radius: 0.5vw;
-	border-bottom-left-radius: 0.5vw;
-	transition: border 0.3s ease, box-shadow 0.3s ease;
-	background-size: cover;
-	font-weight: bold;
-	letter-spacing: -0.025em;
-	color: white;
-	text-shadow:
-		-1px -1px 0 #000,
-		1px -1px 0 #000,
-		-1px 1px 0 #000,
-		1px 1px 0 #000;
-	user-select: none;
-	z-index: 10;
-
-}
-
+.attackValue,
 .healthValue {
 	position: absolute;
 	width: 1.75rem;
 	height: 2rem;
 	margin: 0 auto;
 	padding-left: 0.5rem;
-	border-bottom-right-radius: 0.5vw;
-	border-top-left-radius: 0.5vw;
 	transition: border 0.3s ease, box-shadow 0.3s ease;
 	background-size: cover;
 	font-weight: bold;
@@ -1123,9 +816,19 @@ svg {
 		1px -1px 0 #000,
 		-1px 1px 0 #000,
 		1px 1px 0 #000;
-	transform: rotate(45deg);
 	user-select: none;
 	z-index: 10;
+}
+
+.attackValue {
+	border-top-right-radius: 0.5vw;
+	border-bottom-left-radius: 0.5vw;
+}
+
+.healthValue {
+	border-bottom-right-radius: 0.5vw;
+	border-top-left-radius: 0.5vw;
+	transform: rotate(45deg);
 }
 
 .attackValueBackground {
@@ -1146,17 +849,15 @@ svg {
 	border: 3px solid rgba(50, 36, 33, 255);
 }
 
-.cardAttackValue {
-	float: left;
+.cardAttackValue,
+.cardHealthValue {
 	width: 1.3rem;
 	height: 1rem;
 	position: absolute;
 	bottom: 0;
-	left: 0;
 	margin: 0 auto;
 	transition: border 0.3s ease, box-shadow 0.3s ease;
-	background: linear-gradient(-135deg, rgba(255, 214, 153, 1), rgba(218, 135, 11, 1));
-	box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(255, 214, 153, 0.75);
+	box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(255, 153, 153, 0.75);
 	background-size: cover;
 	font-size: 15px;
 	font-weight: bold;
@@ -1169,27 +870,16 @@ svg {
 	z-index: 5;
 }
 
+.cardAttackValue {
+	float: left;
+	left: 0;
+	background: linear-gradient(-135deg, rgba(255, 214, 153, 1), rgba(218, 135, 11, 1));
+}
+
 .cardHealthValue {
 	float: right;
-	width: 1.3rem;
-	height: 1rem;
-	position: absolute;
-	bottom: 0;
 	right: 0;
-	margin: 0 auto;
-	transition: border 0.3s ease, box-shadow 0.3s ease;
 	background: linear-gradient(-135deg, rgba(255, 153, 153, 1), rgba(218, 11, 11, 1));
-	box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 2px rgba(255, 153, 153, 0.75);
-	background-size: cover;
-	font-size: 15px;
-	font-weight: bold;
-	letter-spacing: -0.025em;
-	color: white;
-	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-	text-shadow: -0.025em 0.025em 0 black;
-	text-align: center;
-	user-select: none;
-	z-index: 5;
 }
 
 .cardManaValue {
@@ -1258,18 +948,7 @@ svg {
 	font-size: 27px;
 	font-weight: bold;
 	letter-spacing: -0.025em;
-	-webkit-touch-callout: none;
-	/* iOS Safari */
-	-webkit-user-select: none;
-	/* Safari */
-	-khtml-user-select: none;
-	/* Konqueror HTML *c/
-	-moz-user-select: none; /* Old versions of Firefox */
-	-ms-user-select: none;
-	/* Internet Explorer/Edge */
 	user-select: none;
-	/* Non-prefixed version, currently
-                                  supported by Chrome, Edge, Opera and Firefox */
 }
 
 .player-deck {
@@ -1343,29 +1022,8 @@ svg {
 	animation-iteration-count: infinite;
 }
 
+#playerHeroHealth,
 #opponentHeroHealth {
-	position: absolute;
-	width: 1.75rem;
-	height: 2rem;
-	margin: 0 auto;
-	padding-left: 0.5rem;
-	transition: border 0.3s ease, box-shadow 0.3s ease;
-	background-size: cover;
-	font-size: 40px;
-	font-weight: bold;
-	letter-spacing: -0.025em;
-	color: white;
-	text-shadow:
-		-1px -1px 0 #000,
-		1px -1px 0 #000,
-		-1px 1px 0 #000,
-		1px 1px 0 #000;
-	user-select: none;
-	visibility: hidden;
-	pointer-events: none;
-}
-
-#playerHeroHealth {
 	position: absolute;
 	width: 1.75rem;
 	height: 2rem;
@@ -1495,7 +1153,8 @@ svg {
 }
 
 /*cover up extra shadows*/
-.manabox span {
+.manabox,
+span {
 	display: block;
 	position: absolute;
 	top: 0.8660254037844386px;
@@ -2289,7 +1948,8 @@ svg {
 	outline: none;
 }
 
-#tutorialbutton:hover {
+#tutorialbutton:hover,
+#howtoplaybutton:hover {
 	background-color: #fffeea;
 }
 
@@ -2322,10 +1982,6 @@ svg {
 	user-select: none;
 	z-index: 20;
 	outline: none;
-}
-
-#howtoplaybutton:hover {
-	background-color: #fffeea;
 }
 
 #goldborder9 {
@@ -2467,28 +2123,25 @@ svg {
 	visibility: hidden;
 }
 
-#leftsideblock {
-	width: 5%;
-	height: 100%;
+#leftsideblock,
+#rightsideblock {
 	position: absolute;
 	top: 0;
-	left: 0;
 	bottom: 0;
+	height: 100%;
 	background-color: black;
-	z-index: 100000000000;
+	z-index: 1000000000000;
 	pointer-events: none;
+}
+
+#leftsideblock {
+	width: 5%;
+	left: 0;
 }
 
 #rightsideblock {
 	width: 12%;
-	height: 100%;
-	position: absolute;
-	top: 0;
-	bottom: 0;
 	right: 0;
-	background-color: black;
-	z-index: 1000000000000;
-	pointer-events: none;
 }
 
 #transitionblock {
@@ -2530,35 +2183,32 @@ svg {
 	display: none;
 }
 
-#victoryImg1 {
-	width: 17%;
-	height: 30%;
-	position: absolute;
-	top: 23%;
-	left: 43.75%;
-	background-image: url(src/media/images/jaina_proudmoore.gif);
-	background-size: contain;
-	background-repeat: no-repeat;
-	z-index: 13;
-}
-
+#victoryImg1,
 #victoryImg2 {
 	width: 17%;
 	height: 30%;
 	position: absolute;
 	top: 23%;
 	left: 43.75%;
-	background-image: url(src/media/images/lich_king.png);
 	background-size: contain;
 	background-repeat: no-repeat;
+}
+
+#victoryImg1 {
+	background-image: url(src/media/images/jaina_proudmoore.gif);
+	z-index: 13;
+}
+
+#victoryImg2 {
+	background-image: url(src/media/images/lich_king.png);
 	z-index: 12;
 }
 
 /* Speech Bubbles*/
-#playerBubble {
+#playerBubble,
+#opponentBubble {
 	position: absolute;
 	left: 37%;
-	top: 52%;
 	padding-top: 2.5px;
 	padding-bottom: 2.5px;
 	background: linear-gradient(0deg, #dbd4cc 5%, #ffffff 100%);
@@ -2576,55 +2226,36 @@ svg {
 	pointer-events: none;
 }
 
-#playerBubble:after {
-	content: '';
-	position: absolute;
-	display: block;
-	width: 0;
-	z-index: 20;
-	border-style: solid;
-	border-color: white transparent;
-	border-width: 24px 15px 0;
-	bottom: -24px;
-	left: 73%;
-	margin-left: -15px;
-	pointer-events: none;
+#playerBubble {
+	top: 52%;
 }
 
 #opponentBubble {
-	position: absolute;
-	left: 37%;
 	top: 29%;
-	padding-top: 2.5px;
-	padding-bottom: 2.5px;
-	background: linear-gradient(0deg, #dbd4cc 5%, #ffffff 100%);
-	color: #000000;
-	font-family: Arial;
-	line-height: 35px;
-	box-shadow: 0px 1px 0px 5px #000000;
-	text-align: center;
-	width: 15%;
-	height: 13%;
-	border-radius: 50px;
-	visibility: hidden;
-	z-index: 20;
-	user-select: none;
-	pointer-events: none;
 }
 
+#playerBubble:after,
 #opponentBubble:after {
 	content: '';
 	position: absolute;
 	display: block;
 	width: 0;
 	z-index: 20;
-	border-style: solid;
-	border-color: white transparent;
-	border-width: 0 15px 18px;
-	top: -18px;
 	left: 73%;
 	margin-left: -15px;
+	border-style: solid;
+	border-color: white transparent;
 	pointer-events: none;
+}
+
+#playerBubble:after {
+	border-width: 24px 15px 0;
+	bottom: -24px;
+}
+
+#opponentBubble:after {
+	border-width: 0 15px 18px;
+	top: -18px;
 }
 
 #time {
@@ -2639,32 +2270,8 @@ svg {
 	user-select: none;
 }
 
-#playerlabel {
-	position: absolute;
-	color: white;
-	text-shadow:
-		-1px -1px 0 #000,
-		1px -1px 0 #000,
-		-1px 1px 0 #000,
-		1px 1px 0 #000;
-	z-index: 50;
-	visibility: hidden;
-	user-select: none;
-}
-
-#playerclasslabel {
-	position: absolute;
-	color: white;
-	text-shadow:
-		-1px -1px 0 #000,
-		1px -1px 0 #000,
-		-1px 1px 0 #000,
-		1px 1px 0 #000;
-	z-index: 50;
-	user-select: none;
-	visibility: hidden;
-}
-
+#playerlabel,
+#playerclasslabel,
 #opponentlabel {
 	position: absolute;
 	color: white;
@@ -2826,10 +2433,9 @@ svg {
 	text-shadow: 2px 3px 10px rgba(166, 100, 10, 255);
 }
 
-#playerdamagevalue {
+#playerdamagevalue,
+#computerdamagevalue {
 	position: absolute;
-	top: 73%;
-	left: 49.5%;
 	text-shadow:
 		-1px -1px 0 #000,
 		1px -1px 0 #000,
@@ -2842,20 +2448,14 @@ svg {
 	user-select: none;
 }
 
+#playerdamagevalue {
+	top: 73%;
+	left: 49.5%;
+}
+
 #computerdamagevalue {
-	position: absolute;
 	top: 15%;
 	left: 49.5%;
-	text-shadow:
-		-1px -1px 0 #000,
-		1px -1px 0 #000,
-		-1px 1px 0 #000,
-		1px 1px 0 #000;
-	font-size: 45px;
-	color: white;
-	z-index: 100;
-	transform: rotate(-15deg);
-	user-select: none;
 }
 
 /* Tutorial */
@@ -3512,23 +3112,7 @@ svg {
 	transform: translate(50px, 50px) scale(1.25);
 }
 
-.notransition:nth-child(1):hover {
-	transform: none !important;
-}
-
-.notransition:nth-child(2):hover {
-	transform: none !important;
-}
-
-.notransition:nth-child(3):hover {
-	transform: none !important;
-}
-
-.notransition:nth-child(4):hover {
-	transform: none !important;
-}
-
-.notransition:nth-child(5):hover {
+.notransition:hover {
 	transform: none !important;
 }
 
@@ -3657,35 +3241,4 @@ svg {
 	background-repeat: no-repeat;
 	display: none;
 	z-index: 25;
-}
-
-#cinematicVideo {
-	top: 0px;
-	left: 50%;
-	transform: translateX(-50%);
-	position: absolute;
-	width: auto;
-	height: 100%;
-	z-index: 9999;
-}
-
-#skipcinematicbtn {
-	width: 8%;
-	height: 4%;
-	position: absolute;
-	right: -1.75%;
-	bottom: .5%;
-	background-color: transparent;
-	outline: none;
-	border: none;
-	color: white;
-	font-size: 25px;
-	transition: all .5s ease;
-	transform: scale(1);
-	z-index: 1000000000000;
-	font-family: BelweBdBTBold;
-}
-
-#skipcinematicbtn:hover {
-	transform: scale(1.25) perspective(1px)
 }

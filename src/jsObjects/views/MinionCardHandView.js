@@ -1,5 +1,3 @@
-import GAME from '../../../game.js';
-
 export class MinionCardHandView {
     constructor(card, handIndex) {
         this.card = card;

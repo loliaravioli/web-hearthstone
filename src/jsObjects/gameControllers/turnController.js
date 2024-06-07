@@ -28,7 +28,7 @@ export class TurnController {
             .css({ 'background-color': '#4ce322' })
             .html('END TURN');
 
-        GAME.playerDrawCard();
+        GAME.cardDrawController.playerDrawCard();
     }
 
     startOpponentTurn() {

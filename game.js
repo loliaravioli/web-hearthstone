@@ -5,6 +5,7 @@ import { Mana } from './src/jsObjects/gameObjects/mana.js';
 
 import { MinionAttackController } from './src/jsObjects/gameControllers/minionAttackController.js';
 import { TurnController } from './src/jsObjects/gameControllers/turnController.js';
+import { CardDrawController } from './src/jsObjects/gameControllers/cardDrawController.js';
 
 import { BoardOpponentView } from './src/jsObjects/views/BoardOpponentView.js';
 import { BoardPlayerView } from './src/jsObjects/views/BoardPlayerView.js';
@@ -45,6 +46,7 @@ class GAME {
 
         this.minionAttackController = null;
         this.turnController = null;
+        this.cardDrawController = null;
     }
 
     resetValues() {
@@ -76,24 +78,7 @@ class GAME {
 
         this.minionAttackController = new MinionAttackController(this.playerBoardView, this.opponentBoardView);
         this.turnController = new TurnController();
-    }
-
-    playerDrawCard() {
-        const c = this.playerDeckView.drawCard();
-        if(this.playerHandView.count() < 10) {
-            this.playerHandView.addCard(c);
-        } else {
-            // burn card from overdrawing
-        }
-    }
-
-    opponentDrawCard() {
-        const c = this.opponentDeckView.drawCard();
-        if(this.playerHandView.count() < 10) {
-            this.opponentHandView.addCard();
-        } else {
-            // burn card from overdrawing
-        }
+        this.cardDrawController = new CardDrawController();
     }
 }
 

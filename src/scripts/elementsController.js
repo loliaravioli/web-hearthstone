@@ -28,9 +28,9 @@ const mainmenuOST = new Audio("src/media/sounds/ost/mainmenu.mp3"),
     howtoplaybtn = document.getElementById('howtoplaybutton'),
     openpacksbtn = document.getElementById('openpacksbutton'),
     shopbtn = document.getElementById('shopbutton'),
-    starttutorialbtn = document.getElementById('starttutorialbutton'),
-    backfrompackbtn = document.getElementById('backfrompackbtn'),
-    donepackbtn = document.getElementById('donepackbutton');
+    starttutorialbtn = document.getElementById('starttutorialbutton');
+    // backfrompackbtn = document.getElementById('backfrompackbtn'),
+    // donepackbtn = document.getElementById('donepackbutton');
 
 let hasPlayedBattleBeginSnd = new Boolean(false),
     isInGame = new Boolean(false),
@@ -39,7 +39,7 @@ let hasPlayedBattleBeginSnd = new Boolean(false),
     interval = 175;
 
 [playbtn, tutorialbtn, howtoplaybtn, openpacksbtn,
-    starttutorialbtn, backfrompackbtn, shopbtn]
+    starttutorialbtn/*, backfrompackbtn*/, shopbtn]
     .forEach(i => {
         if (!i) { return; }
         i.addEventListener('mouseover', () => menuhoverSnd.play());
@@ -339,16 +339,16 @@ shopbtn.onclick = function shop() {
     document.getElementById("mainmenu").style.filter = "blur(5px)";
 }
 
-backfrompackbtn.onclick = function () {
-    openmenuSnd.play();
-    crowdSnd.play();
-    let packElements = document.getElementsByClassName("pack");
-    $('#mainmenu').show();
-    $('#openpacks, #pkcollisionbox').hide();
-    for (let i = 0; i < packElements.length; i++) {
-        document.getElementsByClassName("pack")[i].style.display = "none";
-    }
-};
+// backfrompackbtn.onclick = function () {
+//     openmenuSnd.play();
+//     crowdSnd.play();
+//     let packElements = document.getElementsByClassName("pack");
+//     $('#mainmenu').show();
+//     $('#openpacks, #pkcollisionbox').hide();
+//     for (let i = 0; i < packElements.length; i++) {
+//         document.getElementsByClassName("pack")[i].style.display = "none";
+//     }
+// };
 
 starttutorialbtn.onclick = function () {
     openmenuSnd.play();
@@ -379,11 +379,12 @@ starttutorialbtn.onclick = function () {
             $('#block').hide();
 
             GAME.playerDialogueView.setDialogueAudio('src/media/sounds/voiceovers/jaina_tutorialbattle.mp3');
-            GAME.playerDialogueView.setDialogueText('...');
+            GAME.playerDialogueView.setDialogueText('Bring it on!');
             GAME.playerDialogueView.doDialogue();
 
             for (let i = 0; i < 3; i++) {
-                GAME.playerDrawCard();
+                GAME.cardDrawController.opponentDrawCard();
+                GAME.cardDrawController.playerDrawCard();
             }
 
             GAME.turnController.startPlayerTurn();
@@ -398,25 +399,25 @@ starttutorialbtn.onclick = function () {
     }, 0.125 * 1000);
 };
 
-donepackbtn.onclick = function () {
-    document.getElementById('openpacks').classList.remove("openPackShakeScreenAnim");
-    for (let i = 0; i < document.getElementsByClassName("pack").length; i++) {
-        document.getElementsByClassName("pack")[i].style.display = "none";
-    }
+// donepackbtn.onclick = function () {
+//     document.getElementById('openpacks').classList.remove("openPackShakeScreenAnim");
+//     for (let i = 0; i < document.getElementsByClassName("pack").length; i++) {
+//         document.getElementsByClassName("pack")[i].style.display = "none";
+//     }
 
-    for (let i = 0; i < document.getElementsByClassName("pack").length; i++) {
-        document.getElementsByClassName("pack")[i].style.display = "block";
-    }
+//     for (let i = 0; i < document.getElementsByClassName("pack").length; i++) {
+//         document.getElementsByClassName("pack")[i].style.display = "block";
+//     }
 
-    donepackbtn.style.display = "none";
-    document.getElementById("openpacks").style.filter = "none";
-    document.getElementById("backfrompackbtn").disabled = false;
-    $('#containerOpenPack').hide();
-    elementsToRemove = document.querySelectorAll(".flip-card");
-    for (let i = 0; i < 5; i++) {
-        elementsToRemove[i].remove();
-    }
-}
+//     donepackbtn.style.display = "none";
+//     document.getElementById("openpacks").style.filter = "none";
+//     // document.getElementById("backfrompackbtn").disabled = false;
+//     $('#containerOpenPack').hide();
+//     elementsToRemove = document.querySelectorAll(".flip-card");
+//     for (let i = 0; i < 5; i++) {
+//         elementsToRemove[i].remove();
+//     }
+// }
 
 document.getElementById('togglefps').onclick = function () {
     fpsDiv.style.display = (fpsDiv.style.display !== "none") ? "none" : 'block';

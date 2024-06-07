@@ -9,7 +9,7 @@ export class HandPlayerView {
     }
 
     getElement() {
-        return document.querySelector('.cards');
+        return document.getElementById('playerCards');
     }
 
     count() {
@@ -20,9 +20,17 @@ export class HandPlayerView {
         return this.hand.getCard(index);
     }
 
-    addCard(card) {
+    addCard(card, animation) {
         this.hand.addCard(card);
-        this.update();
+        // this.update();
+
+        const view = new MinionCardHandView(card, this.count());
+        view.setPlayable(true); // FOR DEBUGGING
+        this.cardViews.push(view);
+        this.getElement().appendChild(view.getElement());
+        view.getElement().offsetHeight;
+        view.getElement().classList.add(animation);
+        view.getElement().offsetHeight;
     }
 
     removeCard(index) {
