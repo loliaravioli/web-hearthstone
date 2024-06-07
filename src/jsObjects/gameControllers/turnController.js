@@ -1,4 +1,5 @@
 import GAME from '../../../game.js';
+import { AI } from '../../scripts/AI.js';
 
 // TODO: create separate functionality specifically for AI
 
@@ -12,8 +13,6 @@ export class TurnController {
         this.playersTurn = true;
 
         this.playerTurnSound.play();
-
-        GAME.playerHandView.setAllCardsPlayable();
 
         GAME.playerManaView.newTurn();
 

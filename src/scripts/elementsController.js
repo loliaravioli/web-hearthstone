@@ -1,5 +1,6 @@
 import GAME from '../../game.js';
 
+let playedIntroLine = false;
 const mainmenuOST = new Audio("src/media/sounds/ost/mainmenu.mp3"),
     crowdSnd = new Audio("src/media/sounds/crowd.mp3"),
     openmenuSnd = new Audio("src/media/sounds/openmenu.mp3"),
@@ -422,12 +423,15 @@ document.getElementById('togglefps').onclick = function () {
 };
 
 document.getElementById('preventCORS').onclick = function () {
-    const introLines = [
-        "src/media/sounds/voiceovers/innkeeper_1.mp3",
-        "src/media/sounds/voiceovers/innkeeper_2.mp3",
-        "src/media/sounds/voiceovers/innkeeper_3.mp3"
-    ], introLine = introLines[Math.floor(Math.random() * introLines.length)];
-    (new Audio(introLine)).play();
+    if (!playedIntroLine) {
+        const introLines = [
+            "src/media/sounds/voiceovers/innkeeper_1.mp3",
+            "src/media/sounds/voiceovers/innkeeper_2.mp3",
+            "src/media/sounds/voiceovers/innkeeper_3.mp3"
+        ], introLine = introLines[Math.floor(Math.random() * introLines.length)];
+        (new Audio(introLine)).play();
+        playedIntroLine = true;
+    }
 
     $('#preventCORS').addClass('fadeOutAnim');
     setTimeout(function () {

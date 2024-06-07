@@ -30,14 +30,6 @@ export class HandPlayerView {
         this.update();
     }
 
-    setAllCardsPlayable() { // debug method
-        this.cardViews.forEach(i => {
-            i.setPlayable(true);
-        });
-
-        this.update();
-    }
-
     setAllCardsUnplayable() {
         this.cardViews.forEach(i => {
             i.setPlayable(false);
@@ -50,13 +42,12 @@ export class HandPlayerView {
         $('.card').remove();
         this.cardViews = [];
 
-        let currentIndex = 0;
-        this.hand.cards.forEach(i => {
-            const view = new MinionCardHandView(i, currentIndex);
+        for (let i = 0; i < this.hand.count(); i++) {
+            const view = new MinionCardHandView(this.hand.cards[i], i);
+            view.setPlayable(true); // FOR DEBUGGING
             this.cardViews.push(view);
             this.getElement().appendChild(view.getElement());
-            currentIndex++;
-        });
+        }
 
         // if (this.card.isPlayable) {
         $('.card').draggable({

@@ -81,7 +81,7 @@ class GAME {
     playerDrawCard() {
         const c = this.playerDeckView.drawCard();
         if(this.playerHandView.count() < 10) {
-            this.playerHandView.addCard();
+            this.playerHandView.addCard(c);
         } else {
             // burn card from overdrawing
         }
