@@ -13,6 +13,37 @@ export class MinionAttackController {
         this.opponentBoardView.getElement().addEventListener('mouseup', (e) => this.onDrop(e));
 
         document.body.addEventListener('mouseup', (e) => this.onMouseUp(e));
+
+
+        // TODO: maybe need to move the code below elsewhere
+        // it will also be used for spells and hero powers
+        const onMouseOuterMove = (e) => {
+            $('#outercursor')
+                .css({
+                    'left': `${e.pageX}px`,
+                    'top': `${e.pageY}px`
+                });
+        }
+
+        const onMouseInnerMove = (e) => {
+            $('#innercursor')
+                .css({
+                    'left': `${e.pageX}px`,
+                    'top': `${e.pageY}px`
+                });
+        }
+
+        const onMouseTriangleMove = (e) => {
+            $('#arrowcursor')
+                .css({
+                    'left': `${e.pageX}px`,
+                    'top': `${e.pageY}px`
+                });
+        }
+        
+        document.addEventListener('mousemove', onMouseOuterMove);
+        document.addEventListener('mousemove', onMouseInnerMove);
+        document.addEventListener('mousemove', onMouseTriangleMove);
     }
 
     onDragStart(event) {

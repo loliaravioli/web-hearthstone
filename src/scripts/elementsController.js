@@ -16,7 +16,19 @@ const openmenuSnd = new Audio("src/media/sounds/openmenu.mp3"),
         "src/media/sounds/ost/duel.mp3",
         "src/media/sounds/ost/the_forge.mp3"
     ],
-    song = new Audio(songs[Math.floor(Math.random() * songs.length)]);
+    song = new Audio(songs[Math.floor(Math.random() * songs.length)]),
+    fpsDiv = document.getElementById("fps"),
+    confirmbtn = document.getElementById('confirm'),
+    endturnbtn = document.getElementById('endturn'),
+    playbtn = document.getElementById('playbutton'),
+    tutorialbtn = document.getElementById('tutorialbutton'),
+    howtoplaybtn = document.getElementById('howtoplaybutton'),
+    openpacksbtn = document.getElementById('openpacksbutton'),
+    shopbtn = document.getElementById('shopbutton'),
+    starttutorialbtn = document.getElementById('starttutorialbutton'),
+    backfrompackbtn = document.getElementById('backfrompackbtn'),
+    donepackbtn = document.getElementById('donepackbutton');
+// skipcinematicbtn = document.getElementById('skipcinematicbtn');
 
 let hasPlayedBattleBeginSnd = new Boolean(false),
     isInGame = new Boolean(false),
@@ -24,21 +36,8 @@ let hasPlayedBattleBeginSnd = new Boolean(false),
     vol = 0.5,
     interval = 175;
 
-let confirmbtn = document.getElementById('confirm'),
-    endturnbtn = document.getElementById('endturn'),
-    playbtn = document.getElementById('playbutton'),
-    tutorialbtn = document.getElementById('tutorialbutton'),
-    howtoplaybtn = document.getElementById('howtoplaybutton'),
-    openpacksbtn = document.getElementById('openpacksbutton'),
-    shopbtn = document.getElementById('shopbutton'),
-    buybtn = document.getElementById('buybutton'),
-    starttutorialbtn = document.getElementById('starttutorialbutton'),
-    backfrompackbtn = document.getElementById('backfrompackbtn'),
-    donepackbtn = document.getElementById('donepackbutton');
-// skipcinematicbtn = document.getElementById('skipcinematicbtn');
-
 [playbtn, tutorialbtn, howtoplaybtn, openpacksbtn,
-    starttutorialbtn, backfrompackbtn, shopbtn, buybtn]
+    starttutorialbtn, backfrompackbtn, shopbtn]
     .forEach(i => {
         if (!i) { return; }
         i.addEventListener('mouseover', () => menuhoverSnd.play());
@@ -146,7 +145,7 @@ function fadeOutMainMenuOST() {
 playbtn.onclick = function () {
     isInGame = true;
     $('#cinematicVideo').hide();
-    // document.getElementById("skipcinematicbtn").style.display = "none";
+    // $('#skipcinematicbtn').hide();
     document.getElementById("block").style.visibility = "visible";
 
     fadeOutMainMenuOST();
@@ -233,6 +232,8 @@ playbtn.onclick = function () {
 function tutorial() {
     isInGame = true;
 
+    GAME.resetValues();
+
     fadeOutMainMenuOST();
 
     setTimeout(function () {
@@ -240,9 +241,8 @@ function tutorial() {
     }, 1 * 1750);
 
     crowdSnd.pause();
-    let introcinematic = document.getElementById("cinematicVideo");
     // introcinematic.play();
-    introcinematic.style.display = "none";
+    $('#cinematicVideo').hide();
     document.getElementById('mainmenu').style.visibility = "hidden";
     document.getElementById('contents').style.visibility = "visible";
 
@@ -263,8 +263,8 @@ function tutorial() {
         if (tutorialIntroRunning) { return; }
 
         tutorialIntroRunning = true;
-        // document.getElementById("skipcinematicbtn").style.display = "none";
-        introcinematic.style.display = "none";
+        // $('#skipcinematicbtn').hide();
+        $('#cinematicVideo').hide();
         $('#opponentHeroContainer')
             .css({
                 'visibility': 'hidden',
@@ -329,10 +329,6 @@ openpacksbtn.onclick = function () {
     for (let i = 0; i < packElements.length; i++) {
         document.getElementsByClassName("pack")[i].style.display = "block";
     }
-
-    if (Number(localStorage.getItem('myPacks')) >= 1) {
-        init();
-    }
 };
 
 shopbtn.onclick = function shop() {
@@ -345,26 +341,6 @@ shopbtn.onclick = function shop() {
 
     document.getElementById("mainmenu").style.filter = "blur(5px)";
 }
-
-buybtn.onclick = function () {
-    openmenuSnd.play();
-    let myGold = Number(localStorage.getItem('myGold'));
-    myGold -= 100;
-    if (myGold >= 0) {
-        setTimeout(function () {
-            purchaseSnd.play();
-        }, 150)
-        createPack();
-        let myPacks = Number(localStorage.getItem('myPacks'));
-        myPacks++;
-        localStorage.setItem('myGold', myGold.toString());
-        localStorage.setItem('myPacks', myPacks.toString());
-        document.getElementById("myGold").innerText = myGold + "🪙";
-        document.getElementById("myPacks").innerText = myPacks;
-    } else {
-        myGold += 100;
-    }
-};
 
 backfrompackbtn.onclick = function () {
     openmenuSnd.play();
@@ -400,11 +376,18 @@ starttutorialbtn.onclick = function () {
     document.getElementById('playerHeroContainer').style.zIndex = "8";
     document.getElementById('endturn').style.zIndex = "21";
     document.getElementById('tutorialmenuContent').classList.add("straightEaseOutAnim");
+
     setTimeout(function () {
         battlebeginSnd.onended = function () {
             GAME.playerDialogueView.setDialogueAudio('src/media/sounds/voiceovers/jaina_tutorialbattle.mp3');
             GAME.playerDialogueView.setDialogueText('...');
             GAME.playerDialogueView.doDialogue();
+
+            for (let i = 0; i < 5; i++) { // TODO: define specific function for drawing cards
+                GAME.playerHandView.addCard(GAME.playerDeckView.drawCard());
+            }
+
+            GAME.turnController.startPlayerTurn();
 
             setTimeout(function () {
                 song.play();
@@ -424,10 +407,6 @@ donepackbtn.onclick = function () {
         document.getElementsByClassName("pack")[i].style.display = "block";
     }
 
-    if (Number(localStorage.getItem('myPacks')) >= 1) {
-        init();
-    }
-
     donepackbtn.style.display = "none";
     document.getElementById("openpacks").style.filter = "none";
     document.getElementById("backfrompackbtn").disabled = false;
@@ -438,9 +417,8 @@ donepackbtn.onclick = function () {
     }
 }
 
-const targetDiv = document.getElementById("fps");
 document.getElementById('togglefps').onclick = function () {
-    targetDiv.style.display = (targetDiv.style.display !== "none") ? "none" : 'block';
+    fpsDiv.style.display = (fpsDiv.style.display !== "none") ? "none" : 'block';
 };
 
 document.getElementById('preventCORS').onclick = function () {
@@ -452,38 +430,36 @@ document.getElementById('preventCORS').onclick = function () {
     if (hasPlayedTutorial_deserailized == null) {
         tutorial();
     } else {
-        mainmenuOST.play();
-        mainmenuOST.volume = 0.7;
-        setTimeout(function () {
-            voiceover.play();
-        }, 0.55 * 1000);
-        if (typeof crowdSnd.loop == 'boolean') {
-            crowdSnd.loop = true;
-        } else {
-            crowdSnd.addEventListener('ended', function () {
-                this.currentTime = 0;
-                this.play();
-            }, false);
-        }
+        // mainmenuOST.play();
+        // mainmenuOST.volume = 0.7;
+        // setTimeout(function () {
+        //     voiceover.play();
+        // }, 0.55 * 1000);
+        // if (typeof crowdSnd.loop == 'boolean') {
+        //     crowdSnd.loop = true;
+        // } else {
+        //     crowdSnd.addEventListener('ended', function () {
+        //         this.play();
+        //     }, false);
+        // }
 
-        crowdSnd.play();
-        crowdSnd.volume = 0.5;
-        $('#blockmainmenu').show();
-        $('#mainmenu')
-            .css({ 'visibility': 'visible' })
-            .addClass('zoomOutAnim');
+        // crowdSnd.play();
+        // crowdSnd.volume = 0.5;
+        // $('#blockmainmenu').show();
+        // $('#mainmenu')
+        //     .css({ 'visibility': 'visible' })
+        //     .addClass('zoomOutAnim');
 
-        setTimeout(function () {
-            document.querySelector('#blockmainmenu').style.display = "none";
-            document.getElementById('mainmenu').classList.remove("zoomOutAnim");
-        }, 4 * 1000);
+        // setTimeout(function () {
+        //     $('#blockmainmenu').hide();
+        //     document.getElementById('mainmenu').classList.remove("zoomOutAnim");
+        // }, 4 * 1000);
     }
 
     tutorialIntroRunning = true;
-    // document.getElementById("skipcinematicbtn").style.display = "none";
-    let cinematicvideo = document.getElementById("cinematicVideo");
-    cinematicvideo.pause();
-    cinematicvideo.style.display = "none";
+    // $('#skipcinematicbtn').hide();
+    document.getElementById('cinematicVideo').pause();
+    $('#cinematicVideo').hide();
 
     $('#playerHeroContainer')
         .css({
@@ -500,21 +476,23 @@ document.getElementById('preventCORS').onclick = function () {
 
     $('#transitionblock, #block')
         .css({ 'visibility': 'visible' });
+
     document.querySelector('#endturn').style.zIndex = "9";
+
     setTimeout(function () {
         $('#transitionblock')
-            .addClass('fadeInAnim')
-            .addClass('fadeOutAnim');
-        setTimeout(function () {
-            document.getElementById('transitionblock').style.visibility = "hidden";
-            $('#triangle')
-                .css({ 'visibility': 'visible' })
-                .addClass('triangleOpenMenuAnim');
-            $('#hintbackbackground, #hintbackground, #hint')
-                .css({ 'visibility': 'visible' })
-                .addClass('openMenuAnim');
-        }, 1 * 1000);
+            .addClass('fadeInAnim, fadeOutAnim');
     }, 1 * 1000);
+
+    setTimeout(function () {
+        document.getElementById('transitionblock').style.visibility = "hidden";
+        $('#triangle')
+            .css({ 'visibility': 'visible' })
+            .addClass('triangleOpenMenuAnim');
+        $('#hintbackbackground, #hintbackground, #hint')
+            .css({ 'visibility': 'visible' })
+            .addClass('openMenuAnim');
+    }, 2 * 1000);
 }
 // button to skip the cinematic for the tutorial
 // skipcinematicbtn.onclick = function () {
@@ -548,33 +526,6 @@ document.getElementById('preventCORS').onclick = function () {
 //     }, 1 * 1000);
 // }, 1 * 1000);
 // };
-
-const onMouseOuterMove = (e) => {
-    $('#outercursor')
-        .css({
-            'left': `${e.pageX}px`,
-            'top': `${e.pageY}px`
-        });
-}
-document.addEventListener('mousemove', onMouseOuterMove);
-
-const onMouseInnerMove = (e) => {
-    $('#innercursor')
-        .css({
-            'left': `${e.pageX}px`,
-            'top': `${e.pageY}px`
-        });
-}
-document.addEventListener('mousemove', onMouseInnerMove);
-
-const onMouseTriangleMove = (e) => {
-    $('#arrowcursor')
-        .css({
-            'left': `${e.pageX}px`,
-            'top': `${e.pageY}px`
-        });
-}
-document.addEventListener('mousemove', onMouseTriangleMove);
 
 document.getElementById("endturn").addEventListener("click", function () {
     (new Audio("src/media/sounds/endturn.mp3")).play();

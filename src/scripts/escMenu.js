@@ -6,12 +6,19 @@ const concedeButton = document.getElementById('concedebutton'),
     menuHoverSound = new Audio("src/media/sounds/menuselect.mp3"),
     openMenuSound = new Audio("src/media/sounds/openmenu.mp3");
 
+let isScreenShake = new Boolean(true);
+
 [concedeButton, optionsButton, quitButton,
     resumeButton, miscellaneousButton].forEach(i => {
         if (!i) { return; }
         i.addEventListener('mouseover', () => menuHoverSound.play());
         i.onclick = () => openMenuSound.play();
     });
+
+document.getElementById('togglescreenshake').onclick = function () {
+    isScreenShake = !isScreenShake;
+    console.log("Screen Shaking has been set to " + isScreenShake);
+};
 
 document.getElementById('volume-control').addEventListener("change", function (e) {
     song.volume = e.currentTarget.value / 100;

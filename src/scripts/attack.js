@@ -128,7 +128,6 @@ function attack() {
                         if (document.getElementById('opponentHeroHealth').innerText <= 0) {
                             gameIsWon = true;
                             document.querySelector("#endturn").style.zIndex = "1";
-                            localStorage.setItem("hasPlayedTutorial", JSON.stringify("true"));
                             $('#block')
                                 .css({
                                     'opacity': 0,
@@ -191,35 +190,6 @@ function attack() {
 function gameWon() {
     (new Audio("src/media/sounds/victorytutorial.mp3")).play();
     song.pause();
-
-    /* when not in tutorial
-    lichkingOST.pause();
-    let myGold = Number(localStorage.getItem('myGold'));
-    (new Audio("src/media/sounds/victory.mp3")).play();
-    myGold += 10; // number of gold earned per win
-    localStorage.setItem('myGold', myGold.toString());
-    // 20% or 1/5 chance of getting a pack on win
-    let chanceGetPack = Math.random();
-    if (chanceGetPack < 0.2) {
-        let myPacks = Number(localStorage.getItem('myPacks'));
-        myPacks++;
-        localStorage.setItem('myPacks', myPacks.toString());
-    }
-
-    setTimeout(function () {
-        document.querySelector("#opponentBubble").innerText = "I see... only\ndarkness\nbefore me...";
-        document.querySelector("#opponentBubble").style.visibility = "visible";
-        document.querySelector('#opponentBubble').classList.add("openMenuAnim");
-        setTimeout(function () {
-            document.querySelector('#opponentBubble').classList.add("easeOutAnim");
-            document.querySelector('#opponentBubble').classList.remove("openMenuAnim");
-            setTimeout(function () {
-                document.querySelector("#opponentBubble").style.visibility = "hidden";
-                document.querySelector('#opponentBubble').classList.remove("easeOutAnim");
-            }, 0.25 * 1000);
-        }, 5 * 1000);
-    }, 0.25 * 1000);
-    */
 
     // adjust position of player board to fix GUI
     GAME.opponentBoardView.getElement().style.transform = "translateY(17.5%)";

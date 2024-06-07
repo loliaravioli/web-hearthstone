@@ -7,7 +7,6 @@ export class AbstractCard {
         this.baseMana = 0;
 
         this.info = '';
-        this.image = '';
         this.name = '???';
         this.rarity = RARITY.COMMON;
 

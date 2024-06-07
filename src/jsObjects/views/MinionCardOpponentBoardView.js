@@ -31,7 +31,7 @@ export class MinionCardOpponentBoardView extends AbstractMinionBoardView {
         cardDiv.appendChild(healthValueBackground);
         healthValueBackground.appendChild(healthValue);
 
-        cardDiv.style.backgroundImage = "url('src/media/images/cardimages/" + this.card.image + "')";
+        cardDiv.style.backgroundImage = "url('src/media/images/cardImages/" + this.card.constructor.name + ".jpg')";
 
         return cardDiv;
     }

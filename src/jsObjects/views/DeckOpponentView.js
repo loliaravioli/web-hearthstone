@@ -16,6 +16,6 @@ export class DeckOpponentView {
     
     update() {
         this.getElement().innerText = this.deck.count();
-        this.getElement().style.display = (this.deck.isEmpty()) ? "none" : "block";
+        this.getElement().style.display = (this.deck.isEmpty()) ? 'none' : 'block';
     }
 }

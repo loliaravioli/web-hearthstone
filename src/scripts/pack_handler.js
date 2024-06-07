@@ -16,9 +16,10 @@ function createPack() {
 	imgpack.classList.add("pack-image");
 	imgpack.src = "src/media/images/pack.png";
 	imgpack.setAttribute('draggable', false);
+
 	packs.appendChild(packPack);
 	packPack.appendChild(imgpack);
-	return packPack
+	return packPack;
 }
 
 // creates a common card element
@@ -31,15 +32,14 @@ function createCommonCard() {
 		imgFlipCard = document.createElement("IMG");
 
 	imgFlipCard.src = "src/media/images/legendcardback.png";
-	flipCard.classList.add("flip-card");
-	flipCard.classList.add("flip-card-common");
+	flipCard.classList.add("flip-card, flip-card-common");
 	innerFlipCard.classList.add("flip-card-inner");
 	frontFlipCard.classList.add("flip-card-front");
-	backFlipCard.classList.add("card-face");
-	backFlipCard.classList.add("flip-card-back");
+	backFlipCard.classList.add("card-face, flip-card-back");
 	backFlipCard.innerHTML = "This feature has not yet been developed!";
 	imgFlipCard.style.width = "100%";
 	imgFlipCard.style.height = "100%";
+
 	containerDiv.appendChild(flipCard);
 	flipCard.appendChild(innerFlipCard);
 	innerFlipCard.appendChild(frontFlipCard);
@@ -71,7 +71,7 @@ function createCommonCard() {
 			break;
 	}
 
-	return flipCard
+	return flipCard;
 }
 
 // creates a rare card element
@@ -84,15 +84,14 @@ function createRareCard() {
 		imgFlipCard = document.createElement("IMG");
 
 	imgFlipCard.src = "src/media/images/legendcardback.png";
-	flipCard.classList.add("flip-card");
-	flipCard.classList.add("flip-card-rare");
+	flipCard.classList.add("flip-card, flip-card-rare");
 	innerFlipCard.classList.add("flip-card-inner");
 	frontFlipCard.classList.add("flip-card-front");
-	backFlipCard.classList.add("card-face");
-	backFlipCard.classList.add("flip-card-back");
+	backFlipCard.classList.add("card-face, flip-card-back");
 	backFlipCard.innerHTML = "This feature has not yet been developed!";
 	imgFlipCard.style.width = "100%";
 	imgFlipCard.style.height = "100%";
+
 	containerDiv.appendChild(flipCard);
 	flipCard.appendChild(innerFlipCard);
 	innerFlipCard.appendChild(frontFlipCard);
@@ -124,7 +123,7 @@ function createRareCard() {
 			break;
 	}
 
-	return flipCard
+	return flipCard;
 }
 // creates a epic card element
 function createEpicCard() {
@@ -136,15 +135,14 @@ function createEpicCard() {
 
 		imgFlipCard = document.createElement("IMG");
 	imgFlipCard.src = "src/media/images/legendcardback.png";
-	flipCard.classList.add("flip-card");
-	flipCard.classList.add("flip-card-epic");
+	flipCard.classList.add("flip-card, flip-card-epic");
 	innerFlipCard.classList.add("flip-card-inner");
 	frontFlipCard.classList.add("flip-card-front");
-	backFlipCard.classList.add("card-face");
-	backFlipCard.classList.add("flip-card-back");
+	backFlipCard.classList.add("card-face, flip-card-back");
 	backFlipCard.innerHTML = "This feature has not yet been developed!";
 	imgFlipCard.style.width = "100%";
 	imgFlipCard.style.height = "100%";
+
 	containerDiv.appendChild(flipCard);
 	flipCard.appendChild(innerFlipCard);
 	innerFlipCard.appendChild(frontFlipCard);
@@ -176,7 +174,7 @@ function createEpicCard() {
 			break;
 	}
 
-	return flipCard
+	return flipCard;
 }
 
 // creates a legendary card element
@@ -189,15 +187,14 @@ function createLegendaryCard() {
 		imgFlipCard = document.createElement("IMG");
 
 	imgFlipCard.src = "src/media/images/legendcardback.png";
-	flipCard.classList.add("flip-card");
-	flipCard.classList.add("flip-card-legendary");
+	flipCard.classList.add("flip-card, flip-card-legendary");
 	innerFlipCard.classList.add("flip-card-inner");
 	frontFlipCard.classList.add("flip-card-front");
-	backFlipCard.classList.add("card-face");
-	backFlipCard.classList.add("flip-card-back");
+	backFlipCard.classList.add("card-face, flip-card-back");
 	backFlipCard.innerHTML = "This feature has not yet been developed!";
 	imgFlipCard.style.width = "100%";
 	imgFlipCard.style.height = "100%";
+	
 	containerDiv.appendChild(flipCard);
 	flipCard.appendChild(innerFlipCard);
 	innerFlipCard.appendChild(frontFlipCard);
@@ -229,7 +226,7 @@ function createLegendaryCard() {
 			break;
 	}
 
-	return flipCard
+	return flipCard;
 }
 
 let collision = new Boolean(false),
@@ -308,17 +305,15 @@ function init() {
 
 	whooshvol = 0;
 	whooshvoltarget = 0;
-	whoosh = new Audio();
+	whoosh = new Audio('src/media/sounds/whoosh.ogg');
 	whoosh.addEventListener('canplaythrough', audioload);
-	whoosh.src = 'src/media/sounds/whoosh.ogg';
 	whoosh.volume = 0;
 	whoosh.loop = true;
 
 	majestyvol = 0;
 	majestyvoltarget = 0;
-	majesty = new Audio();
+	majesty = new Audio('src/media/sounds/majesty.ogg');
 	majesty.addEventListener('canplaythrough', audioload);
-	majesty.src = 'src/media/sounds/majesty.ogg';
 	majesty.volume = 0;
 	majesty.loop = true;
 }
@@ -351,8 +346,7 @@ function onmouseup() {
 	let packElem = document.querySelector('.pack'),
 		aRect = pkcollisionbox.getBoundingClientRect(),
 		bRect = packElem.getBoundingClientRect();
-	if (
-		((aRect.top + aRect.height) < (bRect.top)) ||
+	if (((aRect.top + aRect.height) < (bRect.top)) ||
 		(aRect.top > (bRect.top + bRect.height)) ||
 		((aRect.left + aRect.width) < bRect.left) ||
 		(aRect.left > (bRect.left + bRect.width))) {
@@ -363,23 +357,27 @@ function onmouseup() {
 			= fourthPass
 			= fifthPass
 			= new Boolean(false);
-		let myPacks = Number(localStorage.getItem('myPacks'));
+		//let myPacks = Number(localStorage.getItem('myPacks'));
+		let myPacks = 0;
 		collision = false;
 		openpackSnd.play();
 		packElem.remove();
 		document.getElementById("backfrompackbtn").disabled = true;
 		myPacks -= 1;
-		localStorage.setItem('myPacks', myPacks.toString());
+		// localStorage.setItem('myPacks', myPacks.toString());
 		document.getElementById("myPacks").innerText = myPacks;
-		document.getElementById('packOpenAnimElem').style.display = "block";
-		document.getElementById('packOpenAnimElem').classList.add("packOpenAnim");
+		$('#packOpenAnimElem')
+			.show()
+			.addClass('packOpenAnim');
 
 		setTimeout(function () {
-			document.getElementById('packOpenAnimElem').classList.remove("packOpenAnim");
-			document.getElementById('packOpenAnimElem').style.display = "none";
-			document.getElementById('openpacks').classList.add("openPackShakeScreenAnim");
-			document.getElementById("openpacks").style.filter = "blur(5px)";
-			document.getElementById("containerOpenPack").style.display = "block";
+			$('#packOpenAnimElem')
+				.hide()
+				.removeClass('packOpenAnim');
+			$('#openpacks')
+				.addClass('openPackShakeScreenAnim')
+				.css({ 'filter': 'blur(5px)' });
+			$('#containerOpenPack').show();
 			let numOfCardsInPack = 4; // 4 plus guaranteed 1 rare card
 			alreadyHasRare = false;
 			for (let i = 0; i < numOfCardsInPack; i++) {
@@ -467,8 +465,8 @@ function onmouseup() {
 							fifthPass = true;
 						}
 
-						if ((firstPass == true) && (secondPass == true) && (thirdPass == true) && (fourthPass == true) && (fifthPass == true)) {
-							document.getElementById("donepackbutton").style.display = "block";
+						if (firstPass && secondPass && thirdPass && fourthPass && fifthPass) {
+							$('#donepackbutton').show();
 						}
 					}
 					document.getElementsByClassName("flip-card")[i].classList.add("notransition");
@@ -483,12 +481,14 @@ function onmousemove(e) {
 	mx = e.pageX;
 	my = e.pageY;
 }
+
 /* when the window is resized change the ww and wh 
 variables to the new window width and height */
 function onresize() {
 	ww = window.innerWidth;
 	wh = window.innerHeight;
 }
+
 // function to loop
 function loop() {
 	requestAnimationFrame(loop)
