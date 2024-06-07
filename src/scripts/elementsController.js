@@ -379,8 +379,8 @@ starttutorialbtn.onclick = function () {
             GAME.playerDialogueView.setDialogueText('...');
             GAME.playerDialogueView.doDialogue();
 
-            for (let i = 0; i < 5; i++) { // TODO: define specific function for drawing cards
-                GAME.playerHandView.addCard(GAME.playerDeckView.drawCard());
+            for (let i = 0; i < 3; i++) {
+                GAME.playerDrawCard();
             }
 
             GAME.turnController.startPlayerTurn();

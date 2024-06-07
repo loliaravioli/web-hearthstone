@@ -1,7 +1,6 @@
 import GAME from '../../game.js';
 
-// attacks differently according to how many cards are currently in play
-function AI() {
+export function AI() {
     const currentHeroHealth = document.getElementById('playerHero').children[1].innerText,
         opponentCards = document.querySelectorAll('.computer-cardinplay'),
         numOfOpponentCards = GAME.opponentBoard.count(),

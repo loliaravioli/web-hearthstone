@@ -12,6 +12,10 @@ export class HandPlayerView {
         return document.querySelector('.cards');
     }
 
+    count() {
+        return this.hand.count();
+    }
+
     getCard(index) {
         return this.hand.getCard(index);
     }

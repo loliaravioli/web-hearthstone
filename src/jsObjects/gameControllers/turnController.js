@@ -29,9 +29,7 @@ export class TurnController {
             .css({ 'background-color': '#4ce322' })
             .html('END TURN');
 
-        GAME.playerHandView.addCard(GAME.playerDeckView.drawCard());
-
-        // attack();
+        GAME.playerDrawCard();
     }
 
     startOpponentTurn() {
@@ -49,31 +47,6 @@ export class TurnController {
             .css({ 'background-color': 'grey' })
             .html('ENEMY TURN');
 
-        if (GAME.opponentBoard.isEmpty()) {
-            // places card if number of cards on board has not reached the max amount (10)
-            setTimeout(() => {
-                if (GAME.opponentBoard.count() <= 7) {
-                    GAME.opponentBoardView.addCard(GAME.opponentDeck.drawCard());
-                }
-
-                // then calls the player turn function allowing the player to play his turn
-                setTimeout(() => {
-                    this.startPlayerTurn()
-                }, 1 * 1000);
-            }, 1.25 * 1000);
-        } else {
-            setTimeout(AI(), 1.25 * 1000);
-
-            // stops the AI from having more than 7 cards on the board at a time
-            setTimeout(() => {
-                if (GAME.opponentBoard.count() <= 7) {
-                    GAME.opponentBoardView.addCard(GAME.opponentDeck.drawCard());
-                }
-
-                setTimeout(() => {
-                    this.startPlayerTurn()
-                }, 1 * 1000);
-            }, 2.5 * 1000);
-        }
+        setTimeout(AI(), 1.25 * 1000);
     }
 }

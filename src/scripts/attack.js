@@ -19,11 +19,8 @@ function attack() {
             if (currentAttacker == null) {
 
             } else if ((this.classList.contains('computer-cardinplay') || (this.id == 'opponentHero'))) {
-                GAME.playerBoardView.getElement().style.zIndex = "2"
-                GAME.opponentBoardView.getElement().style.zIndex = "1"
-                let target = this.id,
-                    currentAttackerElement = document.getElementById(currentAttacker),
-                    targetElement = document.getElementById(target),
+                let currentAttackerElement = document.getElementById(currentAttacker),
+                    targetElement = document.getElementById(this.id),
                     currentAttackerAttack = currentAttackerElement.children[0].children[0].innerHTML,
                     currentAttackerHealth = currentAttackerElement.children[1].children[0].innerHTML,
                     targetAttack = targetElement.children[0].children[0].innerHTML,
@@ -35,13 +32,13 @@ function attack() {
                         targetHealth -= currentAttackerAttack;
                         currentAttackerElement.children[1].children[0].innerHTML = currentAttackerHealth;
                         targetElement.children[1].children[0].innerHTML = targetHealth;
-                        if (targetElement.id != "opponentHero") {
+                        if (this.id != "opponentHero") {
                             currentAttackerElement.children[1].children[0].style.color = "#f20301";
                         }
                         targetElement.children[1].children[0].style.color = "#f20301";
                         if (targetHealth <= 0) {
                             setTimeout(function () {
-                                if (targetElement.id == "opponentHero") {
+                                if (this.id == "opponentHero") {
                                     gameWon();
                                 }
                                 targetElement.remove();
@@ -49,26 +46,13 @@ function attack() {
                         }
                     }, 1 * 1000);
                 } else {
-                    if (currentAttackerElement.classList.contains("hasDivineShield")) {
-                        currentAttackerElement.classList.remove("hasDivineShield");
-                        currentAttackerElement.children[2].classList.add("divineShieldBreak");
-                        setTimeout(function () {
-                            currentAttackerElement.children[2].style.visibility = "hidden";
-                        }, 0.4 * 1000);
-                    } else {
-                        currentAttackerHealth -= targetAttack;
-                        if (targetElement.id != "opponentHero") {
-                            currentAttackerElement.children[1].children[0].style.color = "#f20301";
-                        }
+                    currentAttackerHealth -= targetAttack;
+                    if (this.id != "opponentHero") {
+                        currentAttackerElement.children[1].children[0].style.color = "#f20301";
                     }
 
-                    if (targetElement.classList.contains("hasDivineShield")) {
-                        targetElement.classList.remove("hasDivineShield");
-                        GAME.opponentBoard.htmlElement.lastChild.children[2].style.visibility = "hidden";
-                    } else {
-                        targetHealth -= currentAttackerAttack;
-                        targetElement.children[1].children[0].style.color = "#f20301";
-                    }
+                    targetHealth -= currentAttackerAttack;
+                    targetElement.children[1].children[0].style.color = "#f20301";
 
                     currentAttackerElement.children[1].children[0].innerHTML = currentAttackerHealth;
                     targetElement.children[1].children[0].innerHTML = targetHealth;
@@ -89,13 +73,16 @@ function attack() {
                             'opacity': 1,
                             'transition': 'none'
                         });
+
                     $('#computerdamagelabel, #computerdamagevalue')
                         .addClass('openMenuAnim')
                         .removeClass('fadeOutAnim');
+
                     setTimeout(function () {
                         $('#computerdamagelabel, #computerdamagevalue')
                             .addClass('fadeOutAnim')
                             .removeClass('openMenuAnim');
+
                         setTimeout(function () {
                             $('#computerdamagecontainer')
                                 .css({
@@ -118,9 +105,7 @@ function attack() {
                             alert("You've Lost!")
                             location.reload();
                         }
-                        if (currentAttackerElement.classList.contains("hasTaunt")) {
-                            tauntExists = false;
-                        }
+                        
                         currentAttackerElement.remove();
                     }
 
@@ -150,7 +135,6 @@ function attack() {
                 }, 0.25 * 1000);
 
                 currentAttacker = null;
-                canAttack = false;
                 svg.style.display = "none";
                 $('#innercursor, #outercursor, #arrowcursor')
                     .css({ 'visibility': 'hidden' });
@@ -210,7 +194,7 @@ function gameWon() {
             .addClass('openMenuAnim');
 
         setTimeout(function () {
-            document.getElementById('fireworkCanvas').classList.add("fadeOutAnim");
+            $('#fireworkCanvas').addClass('fadeOutAnim');
             setTimeout(function () {
                 $('#fireworkCanvas').hide();
 
@@ -218,8 +202,7 @@ function gameWon() {
                     location.reload();
                 }, 9 * 1000);
 
-                $('#victoryhint')
-                    .show()
+                $('#victoryhint').show()
                     .addClass('openMenuAnim');
 
                 // when not in tutorial

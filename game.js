@@ -11,6 +11,7 @@ import { BoardPlayerView } from './src/jsObjects/views/BoardPlayerView.js';
 import { DeckOpponentView } from './src/jsObjects/views/DeckOpponentView.js';
 import { DeckPlayerView } from './src/jsObjects/views/DeckPlayerView.js';
 import { HandPlayerView } from './src/jsObjects/views/HandPlayerView.js';
+import { HandOpponentView } from './src/jsObjects/views/HandOpponentView.js';
 import { DialoguePlayerView } from './src/jsObjects/views/DialoguePlayerView.js';
 import { DialogueOpponentView } from './src/jsObjects/views/DialogueOpponentView.js';
 import { ManaPlayerView } from './src/jsObjects/views/ManaPlayerView.js';
@@ -60,7 +61,9 @@ class GAME {
         this.opponentBoardView = new BoardOpponentView(this.opponentBoard);
 
         this.playerHand = new Hand();
+
         this.playerHandView = new HandPlayerView(this.playerHand);
+        this.opponentHandView = new HandOpponentView();
 
         this.playerDialogueView = new DialoguePlayerView();
         this.opponentDialogueView = new DialogueOpponentView();
@@ -73,6 +76,24 @@ class GAME {
 
         this.minionAttackController = new MinionAttackController(this.playerBoardView, this.opponentBoardView);
         this.turnController = new TurnController();
+    }
+
+    playerDrawCard() {
+        const c = this.playerDeckView.drawCard();
+        if(this.playerHandView.count() < 10) {
+            this.playerHandView.addCard();
+        } else {
+            // burn card from overdrawing
+        }
+    }
+
+    opponentDrawCard() {
+        const c = this.opponentDeckView.drawCard();
+        if(this.playerHandView.count() < 10) {
+            this.opponentHandView.addCard();
+        } else {
+            // burn card from overdrawing
+        }
     }
 }
 

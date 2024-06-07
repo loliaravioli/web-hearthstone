@@ -40,10 +40,18 @@ export class MinionAttackController {
                     'top': `${e.pageY}px`
                 });
         }
-        
+
         document.addEventListener('mousemove', onMouseOuterMove);
         document.addEventListener('mousemove', onMouseInnerMove);
         document.addEventListener('mousemove', onMouseTriangleMove);
+    }
+
+    setAttacker(attackerHTML) {
+        this.attackerCard = attackerHTML;
+    }
+
+    setTarget(targetHTML) {
+        this.targetCard = targetHTML;
     }
 
     onDragStart(event) {
@@ -66,6 +74,7 @@ export class MinionAttackController {
                 const destX = e.clientX,
                     destY = e.clientY,
                     angleDeg = (Math.atan2(destY - y, destX - x) * 180 / Math.PI) + 90;
+
                 // TODO: fix visual bug where this arrow briefly appears on the previous card it was on
                 $('#arrowcursor')
                     .css('transform', `rotate(${angleDeg}deg) translate(-50%,-110%)`);
