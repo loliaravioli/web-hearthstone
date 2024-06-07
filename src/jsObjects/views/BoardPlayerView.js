@@ -1,3 +1,4 @@
+import GAME from '../../../game.js';
 import { AbstractBoardView } from './AbstractBoardView.js';
 import { MinionCardPlayerBoardView } from './MinionCardPlayerBoardView.js'
 
@@ -57,15 +58,13 @@ export class BoardPlayerView extends AbstractBoardView {
             this.getElement().appendChild(view.getElement());
         }
 
-        $(this.divID).droppable({
+        $(`#${this.divID}`).droppable({
             accept: '.card',
             drop: (event, ui) => {
                 ui.helper.data('hovering-board', false);
-                const droppedCard = ui.draggable;
-                GAME.playerBoardView.addCard(GAME.playerHandView.getCard(droppedCard.data('handIndex')));
-                GAME.playerHandView.removeCard(droppedCard.data('handIndex'));
-                $('#gifhint, #texthint')
-                    .css({ 'display': 'none' });
+                GAME.playerBoardView.addCard(GAME.playerHandView.getCard(ui.draggable.data('handIndex')));
+                GAME.playerHandView.removeCard(ui.draggable.data('handIndex'));
+                $('#gifhint, #texthint').hide();
                 this.update;
             }, over: function (event, ui) {
                 ui.helper.data('hovering-board', true);
