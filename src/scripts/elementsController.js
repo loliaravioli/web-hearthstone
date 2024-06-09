@@ -29,8 +29,8 @@ const mainmenuOST = new Audio("src/media/sounds/ost/mainmenu.mp3"),
     openpacksbtn = document.getElementById('openpacksbutton'),
     shopbtn = document.getElementById('shopbutton'),
     starttutorialbtn = document.getElementById('starttutorialbutton');
-    // backfrompackbtn = document.getElementById('backfrompackbtn'),
-    // donepackbtn = document.getElementById('donepackbutton');
+// backfrompackbtn = document.getElementById('backfrompackbtn'),
+// donepackbtn = document.getElementById('donepackbutton');
 
 let hasPlayedBattleBeginSnd = new Boolean(false),
     isInGame = new Boolean(false),
@@ -429,8 +429,10 @@ document.getElementById('preventCORS').onclick = function () {
             "src/media/sounds/voiceovers/innkeeper_1.mp3",
             "src/media/sounds/voiceovers/innkeeper_2.mp3",
             "src/media/sounds/voiceovers/innkeeper_3.mp3"
-        ], introLine = introLines[Math.floor(Math.random() * introLines.length)];
-        (new Audio(introLine)).play();
+        ], introLine = introLines[Math.floor(Math.random() * introLines.length)],
+        introLineAudio = new Audio(introLine);
+        introLineAudio.volume = 0.4;
+        introLineAudio.play();
         playedIntroLine = true;
     }
 

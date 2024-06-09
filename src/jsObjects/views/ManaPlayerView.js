@@ -48,7 +48,7 @@ export class ManaPlayerView {
         $('#mana').html(`${this.currentMana()}/${this.mana.manaCap}`);
         
         // update the "playable" status of cards and hero power when mana changes
-        GAME.playerHandView.update();
+        // GAME.playerHandView.update();
         // GAME.playerHeroPowerView.update();
     }
 }
