@@ -1,11 +1,12 @@
-export class DeckOpponentView {
-    constructor(deck) {
+export class DeckView {
+    constructor(deck, divID) {
         this.deck = deck;
+        this.divID = divID;
         this.update();
     }
 
     getElement() {
-        return document.querySelector('.computer-deck');
+        return document.getElementById(this.divID);
     }
 
     drawCard() {

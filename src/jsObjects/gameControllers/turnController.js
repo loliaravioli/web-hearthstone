@@ -38,14 +38,15 @@ export class TurnController {
 
         document.body.style.cursor = "url(src/media/images/cursor/spectate.png) 10 2, auto";
 
-        document.getElementById("playerHeropower").style.boxShadow = "none";
-
         $('#computerTurn').show();
 
         $('#endturn')
             .css({ 'background-color': 'grey' })
             .html('ENEMY TURN');
 
-        setTimeout(AI(), 1.25 * 1000);
+        setTimeout(function() {
+            AI();
+            this.startPlayerTurn();
+        }, 1.25 * 1000);
     }
 }

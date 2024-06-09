@@ -1,8 +1,9 @@
-export class DialogueOpponentView {
-    constructor() {
+export class DialogueView {
+    constructor(divID) {
         this.dialogueText = '...';
         this.audioFileStr = '';
         this.audio = new Audio('src/media/sounds/voiceovers/jaina_tutorialbattle.mp3');
+        this.divID = divID;
         this.update();
     }
 
@@ -32,18 +33,18 @@ export class DialogueOpponentView {
     }
 
     openBubble() {
-        $('#opponentBubble')
+        $(`#${this.divID}`)
             .html(this.dialogueText)
             .css({ 'visibility': 'visible' })
             .addClass('openMenuAnim');
     }
 
     closeBubble() {
-        $('#opponentBubble')
+        $(`#${this.divID}`)
             .addClass('easeOutAnim')
             .removeClass('openMenuAnim');
         setTimeout(function () {
-            $('#opponentBubble')
+            $(`#${this.divID}`)
                 .css({ 'visibility': 'hidden' })
                 .removeClass('easeOutAnim');
         }, 0.25 * 1000);

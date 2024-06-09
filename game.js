@@ -7,14 +7,11 @@ import { MinionAttackController } from './src/jsObjects/gameControllers/minionAt
 import { TurnController } from './src/jsObjects/gameControllers/turnController.js';
 import { CardDrawController } from './src/jsObjects/gameControllers/cardDrawController.js';
 
-import { BoardOpponentView } from './src/jsObjects/views/BoardOpponentView.js';
-import { BoardPlayerView } from './src/jsObjects/views/BoardPlayerView.js';
-import { DeckOpponentView } from './src/jsObjects/views/DeckOpponentView.js';
-import { DeckPlayerView } from './src/jsObjects/views/DeckPlayerView.js';
+import { BoardView } from './src/jsObjects/views/BoardView.js';
+import { DeckView } from './src/jsObjects/views/DeckView.js';
+import { DialogueView } from './src/jsObjects/views/DialogueView.js';
 import { HandPlayerView } from './src/jsObjects/views/HandPlayerView.js';
 import { HandOpponentView } from './src/jsObjects/views/HandOpponentView.js';
-import { DialoguePlayerView } from './src/jsObjects/views/DialoguePlayerView.js';
-import { DialogueOpponentView } from './src/jsObjects/views/DialogueOpponentView.js';
 import { ManaPlayerView } from './src/jsObjects/views/ManaPlayerView.js';
 import { ManaOpponentView } from './src/jsObjects/views/ManaOpponentView.js';
 
@@ -53,22 +50,22 @@ class GAME {
         this.playerDeck = new Deck();
         this.opponentDeck = new Deck();
 
-        this.playerDeckView = new DeckPlayerView(this.playerDeck);
-        this.opponentDeckView = new DeckOpponentView(this.opponentDeck);
+        this.playerDeckView = new DeckView(this.playerDeck, 'playerDeck');
+        this.opponentDeckView = new DeckView(this.opponentDeck, 'opponentDeck');
 
         this.playerBoard = new Board();
         this.opponentBoard = new Board();
 
-        this.playerBoardView = new BoardPlayerView(this.playerBoard);
-        this.opponentBoardView = new BoardOpponentView(this.opponentBoard);
+        this.playerBoardView = new BoardView(this.playerBoard, 'board--player', true);
+        this.opponentBoardView = new BoardView(this.opponentBoard, 'board--opponent', false);
 
         this.playerHand = new Hand();
 
         this.playerHandView = new HandPlayerView(this.playerHand);
         this.opponentHandView = new HandOpponentView();
 
-        this.playerDialogueView = new DialoguePlayerView();
-        this.opponentDialogueView = new DialogueOpponentView();
+        this.playerDialogueView = new DialogueView('playerBubble');
+        this.opponentDialogueView = new DialogueView('opponentBubble');
 
         this.playerMana = new Mana();
         this.opponentMana = new Mana();

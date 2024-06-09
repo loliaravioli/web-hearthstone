@@ -951,7 +951,7 @@ svg {
 	user-select: none;
 }
 
-.player-deck {
+#playerDeck {
 	background-image: url(src/media/images/legendcardback.png);
 	background-repeat: no-repeat;
 	background-size: contain;
@@ -963,7 +963,7 @@ svg {
 	left: 82%;
 }
 
-.computer-deck {
+#opponentDeck {
 	background-image: url(src/media/images/frostcardback.png);
 	background-repeat: no-repeat;
 	background-size: contain;
