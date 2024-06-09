@@ -4,6 +4,8 @@ Web-based vanilla Hearthstone currently in development.
 https://loliaravioli.github.io/web-hearthstone
 
 
+run npm install
+
 To-do List:
 
 - Specify class types on objects with JSDoc. Add "// @ts-check" at the top of the file (or configure it globally through a jsconfig.json file at the root of the project). https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html
