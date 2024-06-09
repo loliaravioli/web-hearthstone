@@ -22,15 +22,17 @@ export class HandPlayerView {
 
     addCard(card, animation) {
         this.hand.addCard(card);
-        // this.update();
+        this.update();
 
-        const view = new MinionCardHandView(card, this.count());
-        view.setPlayable(true); // FOR DEBUGGING
-        this.cardViews.push(view);
-        this.getElement().appendChild(view.getElement());
-        view.getElement().offsetHeight;
-        view.getElement().classList.add(animation);
-        view.getElement().offsetHeight;
+        // trying to do a card draw animation
+
+        // const view = new MinionCardHandView(card, this.count());
+        // view.setPlayable(true); // FOR DEBUGGING
+        // this.cardViews.push(view);
+        // this.getElement().appendChild(view.getElement());
+        // view.getElement().offsetHeight;
+        // view.getElement().classList.add(animation);
+        // view.getElement().offsetHeight;
     }
 
     removeCard(index) {
