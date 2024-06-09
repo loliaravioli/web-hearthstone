@@ -3,7 +3,7 @@ import { MinionCardBoardView } from './MinionCardBoardView.js'
 
 export class BoardView {
     constructor(board, divID, isPlayer) {
-        super(board);
+        this.board = board;
         this.placeholderIndex = -1;
         this.divID = divID;
         this.isPlayer = isPlayer;

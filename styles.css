@@ -390,14 +390,6 @@ head {
 		font-size: 25px;
 	}
 
-	#playerBubble {
-		font-size: 25px;
-	}
-
-	#opponentBubble {
-		font-size: 20px;
-	}
-
 	#computerdamagelabel {
 		left: 45.5%;
 		top: 1%;
@@ -582,14 +574,6 @@ head {
 	#opponentlabel {
 		top: 46.5%;
 		left: 63.5%;
-		font-size: 30px;
-	}
-
-	#playerBubble {
-		font-size: 35px;
-	}
-
-	#opponentBubble {
 		font-size: 30px;
 	}
 
@@ -2213,6 +2197,7 @@ span {
 	padding-bottom: 2.5px;
 	background: linear-gradient(0deg, #dbd4cc 5%, #ffffff 100%);
 	color: #000000;
+	font-size: 30px;
 	font-family: Arial;
 	line-height: 40px;
 	box-shadow: 0px 1px 0px 5px #000000;

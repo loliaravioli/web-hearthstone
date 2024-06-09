@@ -1,6 +1,7 @@
 export class MinionCardBoardView {
     constructor(card, boardIndex, isPlayer) {
-        super(card, boardIndex);
+        this.card = card;
+        this.boardIndex = boardIndex;
         this.isPlayer = isPlayer;
         this.element = this.generateElement();
         this.update();

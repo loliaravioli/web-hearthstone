@@ -13,7 +13,7 @@ export class DialogueView {
         if (this.audioFileStr != '') {
             this.audio.play();
         } else {
-            setTimeout(this.closeBubble, 2 * 1000);
+            setTimeout(() => { this.closeBubble(); }, 2 * 1000);
         }
     }
 
@@ -29,7 +29,7 @@ export class DialogueView {
     }
 
     update() {
-        this.audio.addEventListener('ended', this.closeBubble);
+        this.audio.addEventListener('ended', () => { this.closeBubble(); });
     }
 
     openBubble() {
@@ -43,7 +43,8 @@ export class DialogueView {
         $(`#${this.divID}`)
             .addClass('easeOutAnim')
             .removeClass('openMenuAnim');
-        setTimeout(function () {
+
+        setTimeout(() => {
             $(`#${this.divID}`)
                 .css({ 'visibility': 'hidden' })
                 .removeClass('easeOutAnim');
