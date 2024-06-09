@@ -75,8 +75,7 @@ export class HandPlayerView {
     // certain events trigger every millisecond (e.g. onmousemove)
     // use this method to make them only trigger every x milliseconds to improve performance
     throttle(func, limit) {
-        let lastFunc;
-        let lastRan;
+        let lastFunc, lastRan;
         return function (...args) {
             if (!lastRan) {
                 func.apply(this, args);

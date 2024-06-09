@@ -1,12 +1,29 @@
-import { AbstractMinionBoardView } from "./AbstractMinionBoardView.js";
-
-export class MinionCardPlayerBoardView extends AbstractMinionBoardView {
-    constructor(card, boardIndex) {
+export class MinionCardBoardView {
+    constructor(card, boardIndex, isPlayer) {
         super(card, boardIndex);
+        this.isPlayer = isPlayer;
         this.element = this.generateElement();
         this.update();
     }
-    
+
+    getElement() {
+        return this.element;
+    }
+
+    applyDamage(dmg) {
+        const isDead = this.card.applyDamage(dmg);
+        this.update();
+        return isDead;
+    }
+
+    getAttack() {
+        return this.card.attack;
+    }
+
+    triggerDeath() {
+        this.card.triggerDeath();
+    }
+
     generateElement() {
         const cardDiv = document.createElement('div'),
             attackValueBackground = document.createElement('div'),
@@ -14,11 +31,11 @@ export class MinionCardPlayerBoardView extends AbstractMinionBoardView {
             attackValue = document.createElement('div'),
             healthValue = document.createElement('div');
 
-        cardDiv.id = `playerCardInPlay${this.boardIndex}`;
+        cardDiv.id = this.isPlayer ? `playerCardInPlay${this.boardIndex}` : `opponentCardInPlay${this.boardIndex}`;
         cardDiv.dataset.boardIndex = this.boardIndex;
 
         cardDiv.classList.add("cardinplay");
-        cardDiv.classList.add("player-cardinplay");
+        cardDiv.classList.add(this.isPlayer ? "cardInPlay--player" : "cardInPlay--opponent");
         // cardDiv.classList.add('placeCardAnim');
 
         attackValue.classList.add("attackValue");

@@ -102,7 +102,7 @@ head {
 	z-index: 9;
 }
 
-#enemycards {
+#enemyCards {
 	top: -26px;
 	display: flex;
 	width: 60%;
@@ -116,7 +116,7 @@ head {
 }
 
 .card,
-.enemycard {
+.enemyCard {
 	width: 100px;
 	height: 150px;
 	position: relative;
@@ -128,7 +128,7 @@ head {
 	float: left;
 }
 
-.enemycard {
+.enemyCard {
 	margin: -15px;
 	background-image: url(src/media/images/frostcardback.png);
 	background-repeat: no-repeat;
@@ -316,7 +316,7 @@ head {
 		top: 42.5%;
 	}
 
-	.enemycard {
+	.enemyCard {
 		width: 80px;
 		height: 125px;
 	}
@@ -511,7 +511,7 @@ head {
 		top: 42%;
 	}
 
-	.enemycard {
+	.enemyCard {
 		width: 100px;
 		height: 160px;
 	}
@@ -695,7 +695,7 @@ head {
 	}
 }
 
-.computer-cardinplay:hover {
+.cardInPlay--opponent:hover {
 	box-shadow: 0 0 3em 1px white !important;
 }
 

@@ -5,7 +5,7 @@ export class HandOpponentView {
     }
 
     getElement() {
-        return document.getElementById('enemycards');
+        return document.getElementById('enemyCards');
     }
 
     count() {
@@ -23,12 +23,12 @@ export class HandOpponentView {
     }
 
     update() {
-        $('.enemycard').remove();
+        $('.enemyCard').remove();
         this.cardViews = [];
 
         for (let i = 0; i < this.cardCount; i++) {
             const c = document.createElement('div');
-            c.classList.add('enemycard');
+            c.classList.add('enemyCard');
             this.getElement().appendChild(c);
         }
     }

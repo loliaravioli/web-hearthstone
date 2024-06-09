@@ -7,18 +7,18 @@ function attack() {
     document.getElementById("playerHeropower").classList.add("canAttack");
     let numOfChild = GAME.playerBoard.count();
     for (let i = 0; i < numOfChild; i++) {
-        document.getElementsByClassName("player-cardinplay")[i].style.boxShadow = "0px 2px 15px 12px #0FCC00";
-        document.getElementsByClassName("player-cardinplay")[i].classList.add("canAttack");
+        document.getElementsByClassName("cardInPlay--player")[i].style.boxShadow = "0px 2px 15px 12px #0FCC00";
+        document.getElementsByClassName("cardInPlay--player")[i].classList.add("canAttack");
     }
 
     // attacking algorithm
     document.querySelectorAll('.cardinplay').forEach(function (e) {
         e.addEventListener('mousedown', function (e) {
             /* checks if currentAttacker is not defined and if the element contains 
-            the player-cardinplay and the canAttack class or is the player's hero power */
+            the cardInPlay--player and the canAttack class or is the player's hero power */
             if (currentAttacker == null) {
 
-            } else if ((this.classList.contains('computer-cardinplay') || (this.id == 'opponentHero'))) {
+            } else if ((this.classList.contains('cardInPlay--opponent') || (this.id == 'opponentHero'))) {
                 let currentAttackerElement = document.getElementById(currentAttacker),
                     targetElement = document.getElementById(this.id),
                     currentAttackerAttack = currentAttackerElement.children[0].children[0].innerHTML,
@@ -154,7 +154,7 @@ function attack() {
                 //     }
                 // }
 
-                if (document.getElementById(currentAttacker).classList.contains('player-cardinplay')) {
+                if (document.getElementById(currentAttacker).classList.contains('cardInPlay--player')) {
                     if (currentAttackerAttack >= 5) {
                         (new Audio("src/media/sounds/bigattack.mp3")).play();
                     } else {

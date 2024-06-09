@@ -1,6 +1,5 @@
 import GAME from '../../../game.js';
-import { MinionCardPlayerBoardView } from './MinionCardPlayerBoardView.js'
-import { MinionCardOpponentBoardView } from './MinionCardOpponentBoardView.js'
+import { MinionCardBoardView } from './MinionCardBoardView.js'
 
 export class BoardView {
     constructor(board, divID, isPlayer) {
@@ -51,7 +50,7 @@ export class BoardView {
 
                 const childElement = this.getElement().children[this.placeholderIndex],
                     placeholderCard = document.createElement('div');
-                placeholderCard.classList.add('cardinplay', 'card--placeholder', 'player-cardinplay');
+                placeholderCard.classList.add('cardinplay', 'card--placeholder', 'cardInPlay--player');
                 this.getElement().insertBefore(placeholderCard, childElement);
                 return;
             }
@@ -65,7 +64,7 @@ export class BoardView {
 
         const childElement = this.getElement().children[this.placeholderIndex],
             placeholderCard = document.createElement('div');
-        placeholderCard.classList.add('cardinplay', 'card--placeholder', 'player-cardinplay');
+        placeholderCard.classList.add('cardinplay', 'card--placeholder', 'cardInPlay--player');
         this.getElement().insertBefore(placeholderCard, childElement);
     }
 
@@ -79,12 +78,7 @@ export class BoardView {
         this.cardViews = [];
 
         for (let i = 0; i < this.board.cards.length; i++) {
-            let view;
-            if (this.isPlayer) {
-                view = new MinionCardPlayerBoardView(this.board.cards[i], i);
-            } else {
-                view = new MinionCardOpponentBoardView(this.board.cards[i], i);
-            }
+            const view = new MinionCardBoardView(this.board.cards[i], i, this.isPlayer);
             this.cardViews.push(view);
             this.getElement().appendChild(view.getElement());
         }

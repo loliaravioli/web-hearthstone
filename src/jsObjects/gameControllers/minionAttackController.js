@@ -56,7 +56,7 @@ export class MinionAttackController {
 
     onDragStart(event) {
         event.preventDefault();
-        if (event.target.classList.contains('player-cardinplay')) {
+        if (event.target.classList.contains('cardInPlay--player')) {
             this.attackerCard = event.target;
 
             const rect = this.attackerCard.getBoundingClientRect(),
@@ -87,7 +87,7 @@ export class MinionAttackController {
 
     onDrop(event) {
         event.preventDefault();
-        if (event.target.classList.contains('computer-cardinplay')) {
+        if (event.target.classList.contains('cardInPlay--opponent')) {
             this.targetCard = event.target;
 
             if (this.attackerCard) {
