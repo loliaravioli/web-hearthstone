@@ -1,5 +1,6 @@
 import { QueryHandler } from './queryHandler.js';
 import { MINION_IDS, MINION_DATA } from './baseMinionData.js';
+import { Minion } from './minion.js';
 
 const { App } = require('uWebSockets.js'), /* or require('../dist/uws.js') ? */
     { Server } = require('socket.io'),
@@ -86,9 +87,9 @@ async function getHand(socket, clientID) {
         // ];
 
         const hand = [
-            MINION_DATA[MINION_IDS.ARMORSMITH[0]],
-            MINION_DATA[MINION_IDS.LIGHTWELL[0]],
-            MINION_DATA[MINION_IDS.TIRION_FORDRING[0]]
+            new Minion(MINION_IDS.ARMORSMITH),
+            new Minion(MINION_IDS.LIGHTWELL),
+            new Minion(MINION_IDS.TIRION_FORDRING)
         ];
 
         socketEmit(socket, signature, true, { hand: hand });
