@@ -44,6 +44,21 @@ class GAME {
         this.minionAttackController = null;
         this.turnController = null;
         this.cardDrawController = null;
+
+        // TODO: move elsewhere
+        let socket = io(window.location.origin, { query: { clientID: clientID } });
+
+        socket.on('getHandResponse', (response) => {
+            const { success, signature, data } = response;
+
+            console.log(success ? 'SUCCESS' : 'FAIL', signature);
+
+            if (!success) { return; }
+
+            console.log(data.hand);
+        });
+
+        socket.emit('getHand', { /* data */ });
     }
 
     resetValues() {
