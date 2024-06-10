@@ -1,3 +1,6 @@
+import { QueryHandler } from './queryHandler.js';
+import { MINION_IDS, MINION_DATA } from './baseMinionData.js';
+
 const { App } = require('uWebSockets.js'), /* or require('../dist/uws.js') ? */
     { Server } = require('socket.io'),
     { Pool } = require('pg'),
@@ -27,23 +30,23 @@ const { App } = require('uWebSockets.js'), /* or require('../dist/uws.js') ? */
         // DOCK3: 'dock3',
         // DOCK4: 'dock4',
         // LAST_MODIFIED: 'last_modified'
-    }
+    };
 
 io.attachApp(app);
 
 const dbConfig = process.env.DATABASE_URL ? {
     connectionString: process.env.DATABASE_URL,
     ssl: { rejectUnauthorized: false },
-    connectionTimeoutMillis: 5000,
-    idleTimeoutMillis: 10000
+    connectionTimeoutMillis: 5 * 1000,
+    idleTimeoutMillis: 10 * 1000
 } : {
     user: 'postgres',
     host: 'localhost',
     database: 'scrabble',
     password: 'admin',
     port: 5432,
-    connectionTimeoutMillis: 5000,
-    idleTimeoutMillis: 10000
+    connectionTimeoutMillis: 5 * 1000,
+    idleTimeoutMillis: 10 * 1000
 };
 const pool = new Pool(dbConfig);
 
@@ -62,32 +65,36 @@ io.on('connection', (socket) => {
         delete connectedClients[socket.id];
     });
 
-    socket.on('doFunction', (data) => {
-        const { var1, var2 } = data;
-        doFunction(socket, clientID, var1, var2);
+    socket.on('getHand', (data) => {
+        const { } = data;
+        getHand(socket, clientID);
     });
 });
 
-async function doFunction(socket, clientID, var1, var2) {
+async function getHand(socket, clientID) {
     const signature = arguments.callee.name;
     console.log(signature);
 
     try {
-        const record = await getRecord(id);
+        // const record = await getRecord(id);
 
-        const scoreboard = [
-            [record[KEYS.IP1], record[KEYS.POINTS1]],
-            [record[KEYS.IP2], record[KEYS.POINTS2]],
-            [record[KEYS.IP3], record[KEYS.POINTS3]],
-            [record[KEYS.IP4], record[KEYS.POINTS4]]
+        // const scoreboard = [
+        //     [record[KEYS.IP1], record[KEYS.POINTS1]],
+        //     [record[KEYS.IP2], record[KEYS.POINTS2]],
+        //     [record[KEYS.IP3], record[KEYS.POINTS3]],
+        //     [record[KEYS.IP4], record[KEYS.POINTS4]]
+        // ];
+
+        const hand = [
+            MINION_DATA[MINION_IDS.ARMORSMITH[0]],
+            MINION_DATA[MINION_IDS.LIGHTWELL[0]],
+            MINION_DATA[MINION_IDS.TIRION_FORDRING[0]]
         ];
 
-        const whoseTurn = record[`ip${record[KEYS.WHOSE_TURN]}`];
-
-        socketEmit(socket, signature, true, { /* data */ });
+        socketEmit(socket, signature, true, { hand: hand });
     } catch (err) {
         console.error(err);
-        socketEmit(socket, signature, false, { /* data */ });
+        socketEmit(socket, signature, false, { hand: [] });
     }
 }
 

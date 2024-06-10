@@ -4,18 +4,16 @@ const RARITY = {
     RARE: "Rare",
     EPIC: "Epic",
     LEGENDARY: "Legendary"
-};
-
-const TRIBE = {
-    NONE: "",
-    BEAST: "Beast",
-    TOTEM: "Totem",
-    DEMON: "Demon",
-    MURLOC: "Murloc",
-    PIRATE: "Pirate",
-    MECH: "Mech",
-    UNDEAD: "Undead",
-    DRAGON: "Dragon"
+}, TRIBE = {
+    NONE: 0,
+    BEAST: 1,
+    TOTEM: 2,
+    DEMON: 3,
+    MURLOC: 4,
+    PIRATE: 5,
+    MECH: 6,
+    UNDEAD: 7,
+    DRAGON: 8
 };
 
 export const ATTRIBUTES = {
@@ -26,11 +24,80 @@ export const ATTRIBUTES = {
     WINDFURY: 4,
     ELUSIVE: 5,
     POISON: 6
-}
+}, MINION_IDS = {
+    KEEPER_OF_THE_GROVE: [0, 'keeper_of_the_grove'],
+    DRUID_OF_THE_CLAW: [1, 'druid_of_the_claw'],
+    ANCIENT_OF_LORE: [2, 'ancient_of_lore'],
+    ANCIENT_OF_WAR: [3, 'ancient_of_war'],
+    IRONBARK_PROTECTOR: [4, 'ironbark_protector'],
+    CENARIUS: [5, 'cenarius'],
 
-// minions objects will have more data than this
-// these are just the baseline stats for each minion, before manipulation
-export const MinionData = [
+    TIMBER_WOLF: [6, 'timber_wolf'],
+    SCAVENGING_HYENA: [7, 'scavenging_hyena'],
+    STARVING_BUZZARD: [8, 'starving_buzzard'],
+    HOUNDMASTER: [9, 'houndmaster'],
+    TUNDRA_RHINO: [10, 'tundra_rhino'],
+    SAVANNAH_HIGHMANE: [11, 'savannah_highmane'],
+    KING_KRUSH: [12, 'king_krush'],
+
+    MANA_WYRM: [13, 'mana_wyrm'],
+    SORCERERS_APPRENTICE: [14, 'sorcerers_apprentice'],
+    KIRIN_TOR_MAGE: [15, 'kirin_tor_mage'],
+    ETHEREAL_ARCANIST: [16, 'ethereal_arcanist'],
+    WATER_ELEMENTAL: [17, 'water_elemental'],
+    ARCHMAGE_ANTONIDAS: [18, 'archmage_antonidas'],
+
+    ARGENT_PROTECTOR: [19, 'argent_protector'],
+    ALDOR_PEACEKEEPER: [20, 'aldor_peacekeeper'],
+    GUARDIAN_OF_KINGS: [21, 'guardian_of_kings'],
+    TIRION_FORDRING: [22, 'tirion_fordring'],
+
+    NORTHSHIRE_CLERIC: [23, 'northshire_cleric'],
+    LIGHTWELL: [24, 'lightwell'],
+    AUCHENAI_SOULPRIEST: [25, 'auchenai_soulpriest'],
+    LIGHTSPAWN: [26, 'lightspawn'],
+    CABAL_SHADOW_PRIEST: [27, 'cabal_shadow_priest'],
+    TEMPLE_ENFORCER: [28, 'temple_enforcer'],
+    PROPHET_VELEN: [29, 'prophet_velen'],
+
+    DEFIAS_RINGLEADER: [30, 'defias_ringleader'],
+    PATIENT_ASSASSIN: [31, 'patient_assassin'],
+    EDWIN_VANCLEEF: [32, 'edwin_vancleef'],
+    SI7_AGENT: [33, 'si7_agent'],
+    MASTER_OF_DISGUISE: [34, 'master_of_disguise'],
+    KIDNAPPER: [35, 'kidnapper'],
+
+    DUST_DEVIL: [36, 'dust_devil'],
+    FLAMETONGUE_TOTEM: [37, 'flametongue_totem'],
+    MANA_TIDE_TOTEM: [38, 'mana_tide_totem'],
+    UNBOUND_ELEMENTAL: [39, 'unbound_elemental'],
+    WINDSPEAKER: [40, 'windspeaker'],
+    EARTH_ELEMENTAL: [41, 'earth_elemental'],
+    FIRE_ELEMENTAL: [42, 'fire_elemental'],
+    ALAKIR_THE_WINDLORD: [43, 'alakir_the_windlord'],
+
+    BLOOD_IMP: [44, 'blood_imp'],
+    FLAME_IMP: [45, 'flame_imp'],
+    VOIDWALKER: [46, 'voidwalker'],
+    FELSTALKER: [47, 'felstalker'],
+    FELGUARD: [48, 'felguard'],
+    VOID_TERROR: [49, 'void_terror'],
+    PIT_LORD: [50, 'pit_lord'],
+    SUMMONING_PORTAL: [51, 'summoning_portal'],
+    DOOMGUARD: [52, 'doomguard'],
+    DREAD_INFERNAL: [53, 'dread_infernal'],
+    LORD_JARAXXUS: [54, 'lord_jaraxxus'],
+
+    ARMORSMITH: [55, 'armorsmith'],
+    CRUEL_TASKMASTER: [56, 'cruel_taskmaster'],
+    FROTHING_BERSERKER: [57, 'frothing_berserker'],
+    WARSONG_COMMANDER: [58, 'warsong_commander'],
+    ARATHI_WEAPONSMITH: [59, 'arathi_weaponsmith'],
+    KORKRON_ELITE: [60, 'korkron_elite'],
+    GROMMASH_HELLSCREAM: [61, 'grommash_hellscream']
+}, MINION_DATA = [
+    // minion objects will have more data than this
+    // these are just the baseline stats for each minion, before manipulation
     { // DRUID
         "name": "Keeper of the Grove",
         "description": "",
