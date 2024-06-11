@@ -15,6 +15,8 @@ import { HandOpponentView } from './jsObjects/views/HandOpponentView.js';
 import { ManaPlayerView } from './jsObjects/views/ManaPlayerView.js';
 import { ManaOpponentView } from './jsObjects/views/ManaOpponentView.js';
 
+let socket;
+
 class GAME {
     constructor() {
         this.playerDeck = null;
@@ -46,19 +48,19 @@ class GAME {
         this.cardDrawController = null;
 
         // TODO: move elsewhere
-        let socket = io(window.location.origin, { });
+        socket = io();
 
-        socket.on('getHandResponse', (response) => {
-            const { success, signature, data } = response;
+        // socket.on('getHandResponse', (response) => {
+        //     const { success, signature, data } = response;
 
-            console.log(success ? 'SUCCESS' : 'FAIL', signature);
+        //     console.log(success ? 'SUCCESS' : 'FAIL', signature);
 
-            if (!success) { return; }
+        //     if (!success) { return; }
 
-            console.log(data.hand);
-        });
+        //     console.log(data.hand);
+        // });
 
-        socket.emit('getHand', { /* data */ });
+        // socket.emit('getHand', { /* data */ });
     }
 
     resetValues() {
