@@ -50,17 +50,17 @@ class GAME {
         // TODO: move elsewhere
         socket = io();
 
-        // socket.on('getHandResponse', (response) => {
-        //     const { success, signature, data } = response;
+        socket.on('getHandResponse', (response) => {
+            const { success, signature, data } = response;
 
-        //     console.log(success ? 'SUCCESS' : 'FAIL', signature);
+            console.log(success ? 'SUCCESS' : 'FAIL', signature);
 
-        //     if (!success) { return; }
+            if (!success) { return; }
 
-        //     console.log(data.hand);
-        // });
+            console.log(data.hand);
+        });
 
-        // socket.emit('getHand', { /* data */ });
+        socket.emit('getHand', { /* data */ });
     }
 
     resetValues() {
