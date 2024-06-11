@@ -46,7 +46,7 @@ class GAME {
         this.cardDrawController = null;
 
         // TODO: move elsewhere
-        let socket = io(window.location.origin, { query: { clientID: clientID } });
+        let socket = io(window.location.origin, { });
 
         socket.on('getHandResponse', (response) => {
             const { success, signature, data } = response;
