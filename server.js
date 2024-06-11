@@ -51,27 +51,19 @@ const { ATTRIBUTES, MINION_IDS, MINION_DATA } = require('./baseMinionData.js');
 const staticDir = path.join(__dirname, 'public');
 
 const PORT = process.env.PORT || 5500;
-app.any('/*', (res, req) => {
+app.any('/*', async (res, req) => {
     const filePath = path.join(staticDir, req.getUrl() == '/' ? '/index.html' : req.getUrl());
 
-    let fileContent,
-        mimeType,
-        status;
+    res.onAborted(() => { console.warn('Request was aborted by the client'); });
 
-    try {
-        fileContent = fs.readFileSync(filePath);
-        mimeType = mime.lookup(filePath);
-        status = '200 OK';
-    } catch (err) {
-        fileContent = 'File Not Found';
-        mimeType = 'text/plain';
-        status = '404 Not Found';
-    }
+    fs.readFile(filePath, (err, data) => {
+        if (res.aborted) { return; }
 
-    res.cork(() => {
-        res.writeStatus(status)
-            .writeHeader('Content-Type', mimeType)
-            .end(fileContent);
+        res.cork(() => {
+            res.writeStatus(err ? '404 Not Found' : '200 OK')
+                .writeHeader('Content-Type', err ? 'text/plain' : mime.lookup(filePath))
+                .end(err ? 'File Not Found' : data);
+        });
     });
 }).listen(PORT, function (token) {
     if (token) {
