@@ -13,9 +13,8 @@ export class EventEmitter {
     }
 
     emit(event, ...args) {
-        if (this.events[event]) {
-            this.events[event].forEach(listener => listener(...args));
-        }
+        if (!this.events[event]) { return; }
+        this.events[event].forEach(listener => listener(...args));
     }
 }
 

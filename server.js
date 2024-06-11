@@ -1,53 +1,57 @@
-const { App } = require('uWebSockets.js'), { Server } = require('socket.io'), { Pool } = require('pg'),
-    fs = require('fs'), path = require('path'), app = new App(), io = new Server(),
-    KEYS = { // SQL keys
-        // REMAINING_LETTERS: 'remaining_letters',
-        // PLAYER_COUNT: 'player_count',
-        // BOARD_STATE: 'board_state',
-        // WHOSE_TURN: 'whose_turn',
-        // ROOM_CODE: 'room_code',
-        // IP1: 'ip1',
-        // IP2: 'ip2',
-        // IP3: 'ip3',
-        // IP4: 'ip4',
-        // PASS1: 'pass1',
-        // PASS2: 'pass2',
-        // PASS3: 'pass3',
-        // PASS4: 'pass4',
-        // POINTS1: 'points1',
-        // POINTS2: 'points2',
-        // POINTS3: 'points3',
-        // POINTS4: 'points4',
-        // DOCK1: 'dock1',
-        // DOCK2: 'dock2',
-        // DOCK3: 'dock3',
-        // DOCK4: 'dock4',
-        // LAST_MODIFIED: 'last_modified'
-    },
-    dbConfig = process.env.DATABASE_URL ? {
-        connectionString: process.env.DATABASE_URL,
-        ssl: { rejectUnauthorized: false },
-        connectionTimeoutMillis: 5 * 1000,
-        idleTimeoutMillis: 10 * 1000
-    } : {
-        user: 'postgres',
-        host: 'localhost',
-        database: 'scrabble',
-        password: 'admin',
-        port: 5432,
-        connectionTimeoutMillis: 5 * 1000,
-        idleTimeoutMillis: 10 * 1000
-    }, pool = new Pool(dbConfig),
-    QueryHandler = require('./queryHandler.js'),
-    queryHandlerInstance = new QueryHandler('game', pool),
-    Minion = require('./minion.js'),
-    { ATTRIBUTES, MINION_IDS, MINION_DATA } = require('./baseMinionData.js'),
-    staticDir = path.join(__dirname, 'public');
-
-io.attachApp(app);
+const { App } = require('uWebSockets.js');
+const { Server } = require('socket.io');
+const { Pool } = require('pg');
+const fs = require('fs');
+const path = require('path');
+const app = new App();
+const io = new Server();
+const KEYS = { // SQL keys
+    // REMAINING_LETTERS: 'remaining_letters',
+    // PLAYER_COUNT: 'player_count',
+    // BOARD_STATE: 'board_state',
+    // WHOSE_TURN: 'whose_turn',
+    // ROOM_CODE: 'room_code',
+    // IP1: 'ip1',
+    // IP2: 'ip2',
+    // IP3: 'ip3',
+    // IP4: 'ip4',
+    // PASS1: 'pass1',
+    // PASS2: 'pass2',
+    // PASS3: 'pass3',
+    // PASS4: 'pass4',
+    // POINTS1: 'points1',
+    // POINTS2: 'points2',
+    // POINTS3: 'points3',
+    // POINTS4: 'points4',
+    // DOCK1: 'dock1',
+    // DOCK2: 'dock2',
+    // DOCK3: 'dock3',
+    // DOCK4: 'dock4',
+    // LAST_MODIFIED: 'last_modified'
+};
+const dbConfig = process.env.DATABASE_URL ? {
+    connectionString: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false },
+    connectionTimeoutMillis: 5 * 1000,
+    idleTimeoutMillis: 10 * 1000
+} : {
+    user: 'postgres',
+    host: 'localhost',
+    database: 'scrabble',
+    password: 'admin',
+    port: 5432,
+    connectionTimeoutMillis: 5 * 1000,
+    idleTimeoutMillis: 10 * 1000
+}, pool = new Pool(dbConfig);
+const QueryHandler = require('./queryHandler.js');
+const queryHandlerInstance = new QueryHandler('game', pool);
+const Minion = require('./minion.js');
+const { ATTRIBUTES, MINION_IDS, MINION_DATA } = require('./baseMinionData.js');
+const staticDir = path.join(__dirname, 'public');
 
 app.get('/*', (res, req) => {
     const filePath = path.join(staticDir, req.getUrl() === '/' ? '/index.html' : req.getUrl());
+    let contentType = 'application/javascript';
 
     let aborted = false;
     res.onAborted(() => {
@@ -62,6 +66,7 @@ app.get('/*', (res, req) => {
             if (err) {
                 res.writeStatus('404 Not Found').end('File Not Found');
             } else {
+                res.writeHeader('Content-Type', contentType);
                 res.writeStatus('200 OK').end(data);
             }
         });
@@ -71,6 +76,8 @@ app.get('/*', (res, req) => {
         res.end(file);
     });
 });
+
+io.attachApp(app);
 
 io.on('connection', (socket) => {
     // associate the socket with the client's unique identifier

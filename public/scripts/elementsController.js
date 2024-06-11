@@ -1,4 +1,4 @@
-import GAME from '../../game.js';
+import GAME from '../game.js';
 
 let playedIntroLine = false;
 const mainmenuOST = new Audio("../media/sounds/ost/mainmenu.mp3"),

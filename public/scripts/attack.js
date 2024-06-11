@@ -1,4 +1,4 @@
-import GAME from '../../game.js';
+import GAME from '../game.js';
 
 /* gives all current cards on the board the ability to attack by giving the card
 class 'canAttack', when attacking the card is checked to see if the card has

@@ -1,4 +1,4 @@
-import GAME from '../../game.js';
+import GAME from '../game.js';
 
 export function AI() {
     if(GAME.opponentBoard.count() == 7) { // full board
