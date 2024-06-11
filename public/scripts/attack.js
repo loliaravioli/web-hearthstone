@@ -138,7 +138,7 @@ function attack() {
                 svg.style.display = "none";
                 $('#innercursor, #outercursor, #arrowcursor')
                     .css({ 'visibility': 'hidden' });
-                body.style.cursor = "url(src/media/images/cursor/cursor.png) 10 2, auto";
+                body.style.cursor = "url(..//media/images/cursor/cursor.png) 10 2, auto";
                 currentAttackerElement.classList.remove("canAttack");
 
                 // check if there's any cards left to play or attack with and play the "job's done" sound if not
@@ -149,16 +149,16 @@ function attack() {
                 //         // }
 
                 //         if ((i == oldNumOfChild - 1) && (gameIsWon == false)) {
-                //             (new Audio("src/media/sounds/voiceovers/innkeeper_jobs_done.mp3")).play();
+                //             (new Audio("../media/sounds/voiceovers/innkeeper_jobs_done.mp3")).play();
                 //         }
                 //     }
                 // }
 
                 if (document.getElementById(currentAttacker).classList.contains('cardInPlay--player')) {
                     if (currentAttackerAttack >= 5) {
-                        (new Audio("src/media/sounds/bigattack.mp3")).play();
+                        (new Audio("../media/sounds/bigattack.mp3")).play();
                     } else {
-                        (new Audio("src/media/sounds/attack.mp3")).play();
+                        (new Audio("../media/sounds/attack.mp3")).play();
                     }
                 } else {
                     heropowerSnd.play();
@@ -172,7 +172,7 @@ function attack() {
 }
 
 function gameWon() {
-    (new Audio("src/media/sounds/victorytutorial.mp3")).play();
+    (new Audio("../media/sounds/victorytutorial.mp3")).play();
     song.pause();
 
     // adjust position of player board to fix GUI

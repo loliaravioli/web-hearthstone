@@ -14,9 +14,7 @@ const RARITY = {
     MECH: 6,
     UNDEAD: 7,
     DRAGON: 8
-};
-
-export const ATTRIBUTES = {
+}, ATTRIBUTES = {
     CHARGE: 0,
     TAUNT: 1,
     DIVINE_SHIELD: 2,
@@ -596,3 +594,9 @@ export const ATTRIBUTES = {
         "attributes": [true, false, false, false, false, false, false]
     }
 ]
+
+module.exports = {
+    ATTRIBUTES,
+    MINION_IDS,
+    MINION_DATA
+}

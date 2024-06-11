@@ -1,23 +1,23 @@
 import GAME from '../../game.js';
 
 let playedIntroLine = false;
-const mainmenuOST = new Audio("src/media/sounds/ost/mainmenu.mp3"),
-    crowdSnd = new Audio("src/media/sounds/crowd.mp3"),
-    openmenuSnd = new Audio("src/media/sounds/openmenu.mp3"),
-    menubtnsSnd = new Audio("src/media/sounds/menubtnpress.mp3"),
-    purchaseSnd = new Audio("src/media/sounds/purchase.mp3"),
-    menuhoverSnd = new Audio("src/media/sounds/menuselect.mp3"),
-    shophoverSnd = new Audio("src/media/sounds/shophover.mp3"),
-    shoponclickSnd = new Audio("src/media/sounds/shoponclick.mp3"),
-    startTutorialSnd = new Audio("src/media/sounds/voiceovers/innkeeper_starttutorial.mp3"),
-    battlebeginSnd = new Audio("src/media/sounds/voiceovers/innkeeper_tutorialbattle.mp3"),
+const mainmenuOST = new Audio("../media/sounds/ost/mainmenu.mp3"),
+    crowdSnd = new Audio("../media/sounds/crowd.mp3"),
+    openmenuSnd = new Audio("../media/sounds/openmenu.mp3"),
+    menubtnsSnd = new Audio("../media/sounds/menubtnpress.mp3"),
+    purchaseSnd = new Audio("../media/sounds/purchase.mp3"),
+    menuhoverSnd = new Audio("../media/sounds/menuselect.mp3"),
+    shophoverSnd = new Audio("../media/sounds/shophover.mp3"),
+    shoponclickSnd = new Audio("../media/sounds/shoponclick.mp3"),
+    startTutorialSnd = new Audio("../media/sounds/voiceovers/innkeeper_starttutorial.mp3"),
+    battlebeginSnd = new Audio("../media/sounds/voiceovers/innkeeper_tutorialbattle.mp3"),
     songs = [
-        "src/media/sounds/ost/mulligan.mp3",
-        "src/media/sounds/ost/bad_reputation.mp3",
-        "src/media/sounds/ost/better_hand.mp3",
-        "src/media/sounds/ost/dont_let_your_guard_down.mp3",
-        "src/media/sounds/ost/duel.mp3",
-        "src/media/sounds/ost/the_forge.mp3"
+        "../media/sounds/ost/mulligan.mp3",
+        "../media/sounds/ost/bad_reputation.mp3",
+        "../media/sounds/ost/better_hand.mp3",
+        "../media/sounds/ost/dont_let_your_guard_down.mp3",
+        "../media/sounds/ost/duel.mp3",
+        "../media/sounds/ost/the_forge.mp3"
     ],
     song = new Audio(songs[Math.floor(Math.random() * songs.length)]),
     fpsDiv = document.getElementById("fps"),
@@ -173,7 +173,7 @@ playbtn.onclick = function () {
     setTimeout(function () {
         $('#contents, #playerlabel, #playerclasslabel, #opponentlabel, #vs')
             .css({ 'visibility': 'visible' });
-        (new Audio("src/media/sounds/ongameload.mp3")).play();
+        (new Audio("../media/sounds/ongameload.mp3")).play();
         document.getElementById('playerHeroContainer').classList.add("onLoadPlayerAnim");
         $('#opponentHeroContainer')
             .addClass('onLoadComputerAnim')
@@ -254,7 +254,7 @@ function tutorial() {
             'top': '34%',
             'left': '44.7%',
             'transform': 'rotate(-15deg)',
-            'background-image': 'url(src/media/images/pack.png)'
+            'background-image': 'url(../media/images/pack.png)'
         })
         .addClass('packHoverAnim').html('');
 
@@ -271,7 +271,7 @@ function tutorial() {
         $('#opponentHeroContainer')
             .css({
                 'visibility': 'hidden',
-                'background-image': 'url(src/media/images/hogger.png)',
+                'background-image': 'url(../media/images/hogger.png)',
                 'z-index': 5
             });
 
@@ -378,7 +378,7 @@ starttutorialbtn.onclick = function () {
         battlebeginSnd.onended = function () {
             $('#block').hide();
 
-            GAME.playerDialogueView.setDialogueAudio('src/media/sounds/voiceovers/jaina_tutorialbattle.mp3');
+            GAME.playerDialogueView.setDialogueAudio('../media/sounds/voiceovers/jaina_tutorialbattle.mp3');
             GAME.playerDialogueView.setDialogueText('Bring it on!');
             GAME.playerDialogueView.doDialogue();
 
@@ -426,9 +426,9 @@ document.getElementById('togglefps').onclick = function () {
 document.getElementById('preventCORS').onclick = function () {
     if (!playedIntroLine) {
         const introLines = [
-            "src/media/sounds/voiceovers/innkeeper_1.mp3",
-            "src/media/sounds/voiceovers/innkeeper_2.mp3",
-            "src/media/sounds/voiceovers/innkeeper_3.mp3"
+            "../media/sounds/voiceovers/innkeeper_1.mp3",
+            "../media/sounds/voiceovers/innkeeper_2.mp3",
+            "../media/sounds/voiceovers/innkeeper_3.mp3"
         ], introLine = introLines[Math.floor(Math.random() * introLines.length)],
         introLineAudio = new Audio(introLine);
         introLineAudio.volume = 0.4;
@@ -481,7 +481,7 @@ document.getElementById('preventCORS').onclick = function () {
     $('#opponentHeroContainer')
         .css({
             'visibility': 'hidden',
-            'background-image': 'url(src/media/images/hogger.png)',
+            'background-image': 'url(../media/images/hogger.png)',
             'z-index': 5
         });
 
@@ -507,9 +507,9 @@ document.getElementById('preventCORS').onclick = function () {
 }
 
 endturnbtn.addEventListener("click", function () {
-    (new Audio("src/media/sounds/endturn.mp3")).play();
+    (new Audio("../media/sounds/endturn.mp3")).play();
     endturnbtn.style.zIndex = "50";
-    document.getElementById("gifhint").style.backgroundImage = "url('src/media/hints/attack.gif')";
+    document.getElementById("gifhint").style.backgroundImage = "url('../media/hints/attack.gif')";
     document.getElementById("texthint").innerText = "Click on an green glowing allied card then click on an enemy to attack.";
     GAME.turnController.startOpponentTurn();
 });

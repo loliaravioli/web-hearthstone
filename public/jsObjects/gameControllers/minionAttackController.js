@@ -138,6 +138,6 @@ export class MinionAttackController {
         $('#innercursor, #outercursor, #arrowcursor')
             .css({ 'visibility': 'hidden' });
 
-        document.body.style.cursor = 'url(src/media/images/cursor/cursor.png) 10 2, auto';
+        document.body.style.cursor = 'url(../media/images/cursor/cursor.png) 10 2, auto';
     }
 }

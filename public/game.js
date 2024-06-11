@@ -1,19 +1,19 @@
-import { Deck } from './src/jsObjects/gameObjects/deck.js';
-import { Hand } from './src/jsObjects/gameObjects/hand.js';
-import { Board } from './src/jsObjects/gameObjects/board.js';
-import { Mana } from './src/jsObjects/gameObjects/mana.js';
+import { Deck } from './jsObjects/gameObjects/deck.js';
+import { Hand } from './jsObjects/gameObjects/hand.js';
+import { Board } from './jsObjects/gameObjects/board.js';
+import { Mana } from './jsObjects/gameObjects/mana.js';
 
-import { MinionAttackController } from './src/jsObjects/gameControllers/minionAttackController.js';
-import { TurnController } from './src/jsObjects/gameControllers/turnController.js';
-import { CardDrawController } from './src/jsObjects/gameControllers/cardDrawController.js';
+import { MinionAttackController } from './jsObjects/gameControllers/minionAttackController.js';
+import { TurnController } from './jsObjects/gameControllers/turnController.js';
+import { CardDrawController } from './jsObjects/gameControllers/cardDrawController.js';
 
-import { BoardView } from './src/jsObjects/views/BoardView.js';
-import { DeckView } from './src/jsObjects/views/DeckView.js';
-import { DialogueView } from './src/jsObjects/views/DialogueView.js';
-import { HandPlayerView } from './src/jsObjects/views/HandPlayerView.js';
-import { HandOpponentView } from './src/jsObjects/views/HandOpponentView.js';
-import { ManaPlayerView } from './src/jsObjects/views/ManaPlayerView.js';
-import { ManaOpponentView } from './src/jsObjects/views/ManaOpponentView.js';
+import { BoardView } from './jsObjects/views/BoardView.js';
+import { DeckView } from './jsObjects/views/DeckView.js';
+import { DialogueView } from './jsObjects/views/DialogueView.js';
+import { HandPlayerView } from './jsObjects/views/HandPlayerView.js';
+import { HandOpponentView } from './jsObjects/views/HandOpponentView.js';
+import { ManaPlayerView } from './jsObjects/views/ManaPlayerView.js';
+import { ManaOpponentView } from './jsObjects/views/ManaOpponentView.js';
 
 class GAME {
     constructor() {
@@ -62,11 +62,11 @@ class GAME {
     }
 
     resetValues() {
-        this.playerDeck = new Deck();
-        this.opponentDeck = new Deck();
+        // this.playerDeck = new Deck();
+        // this.opponentDeck = new Deck();
 
-        this.playerDeckView = new DeckView(this.playerDeck, 'playerDeck');
-        this.opponentDeckView = new DeckView(this.opponentDeck, 'opponentDeck');
+        // this.playerDeckView = new DeckView(this.playerDeck, 'playerDeck');
+        // this.opponentDeckView = new DeckView(this.opponentDeck, 'opponentDeck');
 
         this.playerBoard = new Board();
         this.opponentBoard = new Board();

@@ -3,8 +3,8 @@ const concedeButton = document.getElementById('concedebutton'),
     quitButton = document.getElementById('quitbutton'),
     resumeButton = document.getElementById('resumebutton'),
     miscellaneousButton = document.getElementById('miscellaneousbutton'),
-    menuHoverSound = new Audio("src/media/sounds/menuselect.mp3"),
-    openMenuSound = new Audio("src/media/sounds/openmenu.mp3");
+    menuHoverSound = new Audio("../media/sounds/menuselect.mp3"),
+    openMenuSound = new Audio("../media/sounds/openmenu.mp3");
 
 let isScreenShake = new Boolean(true);
 

@@ -1,13 +1,5 @@
-import { QueryHandler } from './queryHandler.js';
-import { MINION_IDS, MINION_DATA } from './baseMinionData.js';
-import { Minion } from './minion.js';
-
-const { App } = require('uWebSockets.js'), /* or require('../dist/uws.js') ? */
-    { Server } = require('socket.io'),
-    { Pool } = require('pg'),
-    app = new App(),
-    io = new Server(),
-    PORT = 5500,
+const { App } = require('uWebSockets.js'), { Server } = require('socket.io'), { Pool } = require('pg'),
+    fs = require('fs'), path = require('path'), app = new App(), io = new Server(),
     KEYS = { // SQL keys
         // REMAINING_LETTERS: 'remaining_letters',
         // PLAYER_COUNT: 'player_count',
@@ -31,27 +23,54 @@ const { App } = require('uWebSockets.js'), /* or require('../dist/uws.js') ? */
         // DOCK3: 'dock3',
         // DOCK4: 'dock4',
         // LAST_MODIFIED: 'last_modified'
-    };
+    },
+    dbConfig = process.env.DATABASE_URL ? {
+        connectionString: process.env.DATABASE_URL,
+        ssl: { rejectUnauthorized: false },
+        connectionTimeoutMillis: 5 * 1000,
+        idleTimeoutMillis: 10 * 1000
+    } : {
+        user: 'postgres',
+        host: 'localhost',
+        database: 'scrabble',
+        password: 'admin',
+        port: 5432,
+        connectionTimeoutMillis: 5 * 1000,
+        idleTimeoutMillis: 10 * 1000
+    }, pool = new Pool(dbConfig),
+    QueryHandler = require('./queryHandler.js'),
+    queryHandlerInstance = new QueryHandler('game', pool),
+    Minion = require('./minion.js'),
+    { ATTRIBUTES, MINION_IDS, MINION_DATA } = require('./baseMinionData.js'),
+    staticDir = path.join(__dirname, 'public');
 
 io.attachApp(app);
 
-const dbConfig = process.env.DATABASE_URL ? {
-    connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false },
-    connectionTimeoutMillis: 5 * 1000,
-    idleTimeoutMillis: 10 * 1000
-} : {
-    user: 'postgres',
-    host: 'localhost',
-    database: 'scrabble',
-    password: 'admin',
-    port: 5432,
-    connectionTimeoutMillis: 5 * 1000,
-    idleTimeoutMillis: 10 * 1000
-};
-const pool = new Pool(dbConfig);
+app.get('/*', (res, req) => {
+    const filePath = path.join(staticDir, req.getUrl() === '/' ? '/index.html' : req.getUrl());
 
-const queryHandlerInstance = new QueryHandler('game', pool);
+    let aborted = false;
+    res.onAborted(() => {
+        aborted = true;
+        console.log('Request aborted');
+    });
+
+    const file = fs.readFileSync(filePath, function (err, data) {
+        if (aborted) { return; }
+
+        res.cork(() => {
+            if (err) {
+                res.writeStatus('404 Not Found').end('File Not Found');
+            } else {
+                res.writeStatus('200 OK').end(data);
+            }
+        });
+    });
+
+    res.cork(() => {
+        res.end(file);
+    });
+});
 
 io.on('connection', (socket) => {
     // associate the socket with the client's unique identifier
@@ -124,4 +143,5 @@ async function getRecord(id) {
     }
 }
 
-app.listen(PORT, (token) => { console.log(`Listening on port ${PORT}`); });
+const PORT = process.env.PORT || 5500;
+app.listen(PORT, () => { console.log(`Server is running at http://localhost:${PORT}`); });

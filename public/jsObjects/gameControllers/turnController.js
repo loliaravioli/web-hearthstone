@@ -6,7 +6,7 @@ import { AI } from '../../scripts/AI.js';
 export class TurnController {
     constructor() {
         this.playersTurn = false;
-        this.playerTurnSound = new Audio("src/media/sounds/playerturn.mp3");
+        this.playerTurnSound = new Audio("../media/sounds/playerturn.mp3");
     }
 
     startPlayerTurn() {
@@ -16,7 +16,7 @@ export class TurnController {
 
         GAME.playerManaView.newTurn();
 
-        document.body.style.cursor = "url(src/media/images/cursor/cursor.png) 10 2, auto";
+        document.body.style.cursor = "url(../media/images/cursor/cursor.png) 10 2, auto";
 
         $('#playerHeropower')
             .css({ 'box-shadow': '0px 2px 15px 12px #0FCC00' })
@@ -36,7 +36,7 @@ export class TurnController {
 
         GAME.playerHandView.setAllCardsUnplayable();
 
-        document.body.style.cursor = "url(src/media/images/cursor/spectate.png) 10 2, auto";
+        document.body.style.cursor = "url(../media/images/cursor/spectate.png) 10 2, auto";
 
         $('#computerTurn').show();
 

@@ -2,7 +2,7 @@ export class DialogueView {
     constructor(divID) {
         this.dialogueText = '...';
         this.audioFileStr = '';
-        this.audio = new Audio('src/media/sounds/voiceovers/jaina_tutorialbattle.mp3');
+        this.audio = new Audio('../media/sounds/voiceovers/jaina_tutorialbattle.mp3');
         this.divID = divID;
         this.update();
     }

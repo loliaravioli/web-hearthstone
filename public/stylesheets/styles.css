@@ -15,11 +15,11 @@ body {
 body,
 button:hover,
 button:active {
-	cursor: url(src/media/images/cursor/cursor.png) 10 2, auto;
+	cursor: url(../media/images/cursor/cursor.png) 10 2, auto;
 }
 
 body:active {
-	cursor: url(src/media/images/cursor/click.png) 10 2, auto;
+	cursor: url(../media/images/cursor/click.png) 10 2, auto;
 }
 
 head {
@@ -34,7 +34,7 @@ head {
 	top: 0;
 	left: 0;
 	right: 0;
-	background-image: url(src/media/images/background.png) !important;
+	background-image: url(../media/images/background.png) !important;
 	background-size: contain;
 	background-attachment: fixed;
 	background-position: center;
@@ -44,7 +44,7 @@ head {
 
 @font-face {
 	font-family: BelweBdBTBold;
-	src: url(src/fonts/BelweBdBTBold.ttf);
+	src: url(../fonts/BelweBdBTBold.ttf);
 }
 
 #load,
@@ -64,7 +64,7 @@ head {
 }
 
 #load {
-	background-image: url(src/media/images/loading.gif) !important;
+	background-image: url(../media/images/loading.gif) !important;
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -130,7 +130,7 @@ head {
 
 .enemyCard {
 	margin: -15px;
-	background-image: url(src/media/images/frostcardback.png);
+	background-image: url(../media/images/frostcardback.png);
 	background-repeat: no-repeat;
 	background-size: contain;
 }
@@ -169,7 +169,7 @@ head {
 }
 
 .card:active {
-	cursor: url(src/media/images/cursor/grab.png) 10 2, auto;
+	cursor: url(../media/images/cursor/grab.png) 10 2, auto;
 }
 
 .card-face {
@@ -685,7 +685,7 @@ head {
 
 .cardinplay:hover {
 	box-shadow: 0 0 3em 1px white;
-	cursor: url(src/media/images/cursor/cursor.png) 10 2, auto;
+	cursor: url(../media/images/cursor/cursor.png) 10 2, auto;
 }
 
 .playerHero:hover {
@@ -701,7 +701,7 @@ head {
 }
 
 .cardinplay:active {
-	cursor: url(src/media/images/cursor/click.png) 10 2, auto;
+	cursor: url(../media/images/cursor/click.png) 10 2, auto;
 }
 
 svg {
@@ -743,12 +743,12 @@ svg {
 
 #playerHeroContainer {
 	top: 67.75%;
-	background-image: url(src/media/images/jaina_proudmoore.gif);
+	background-image: url(../media/images/jaina_proudmoore.gif);
 }
 
 #opponentHeroContainer {
 	top: 9.75%;
-	background-image: url(src/media/images/lich_king.png);
+	background-image: url(../media/images/hogger.png);
 }
 
 .playerHeropower {
@@ -758,7 +758,7 @@ svg {
 	top: 69%;
 	left: 56%;
 	z-index: 0;
-	background-image: url(src/media/images/heropower.gif);
+	background-image: url(../media/images/heropower.gif);
 	background-repeat: no-repeat;
 	/* Do not repeat the image */
 	background-size: contain;
@@ -936,7 +936,7 @@ svg {
 }
 
 #playerDeck {
-	background-image: url(src/media/images/legendcardback.png);
+	background-image: url(../media/images/legendcardback.png);
 	background-repeat: no-repeat;
 	background-size: contain;
 	color: white;
@@ -948,7 +948,7 @@ svg {
 }
 
 #opponentDeck {
-	background-image: url(src/media/images/frostcardback.png);
+	background-image: url(../media/images/frostcardback.png);
 	background-repeat: no-repeat;
 	background-size: contain;
 	color: white;
@@ -1858,7 +1858,7 @@ span {
 	bottom: 0;
 	left: 0;
 	right: 0;
-	background-image: url(src/media/images/mainmenubackground.jpg) !important;
+	background-image: url(../media/images/mainmenubackground.jpg) !important;
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
@@ -2147,7 +2147,7 @@ span {
 	position: absolute;
 	top: 40%;
 	left: 45%;
-	background-image: url(src/media/images/vs.png);
+	background-image: url(../media/images/vs.png);
 	background-size: contain;
 	background-repeat: no-repeat;
 	z-index: 20;
@@ -2179,12 +2179,12 @@ span {
 }
 
 #victoryImg1 {
-	background-image: url(src/media/images/jaina_proudmoore.gif);
+	background-image: url(../media/images/jaina_proudmoore.gif);
 	z-index: 13;
 }
 
 #victoryImg2 {
-	background-image: url(src/media/images/lich_king.png);
+	background-image: url(../media/images/hogger.png);
 	z-index: 12;
 }
 
@@ -2614,7 +2614,7 @@ span {
 	position: absolute;
 	top: 20%;
 	left: 10%;
-	background-image: url(src/media/images/hoggerposter.png);
+	background-image: url(../media/images/hoggerposter.png);
 	background-repeat: no-repeat;
 	background-size: contain;
 }
@@ -2634,7 +2634,7 @@ span {
 	position: absolute;
 	bottom: 0;
 	left: 12%;
-	background-image: url("src/media/hints/place_card.gif");
+	background-image: url(../media/hints/place_card.gif);
 	background-repeat: no-repeat;
 	background-size: contain;
 	display: none;
@@ -2753,7 +2753,7 @@ span {
 	top: 0;
 	left: 12%;
 	right: 0;
-	background-image: url(src/media/images/openpacksbackground.png) !important;
+	background-image: url(../media/images/openpacksbackground.png) !important;
 	background-size: contain;
 	background-repeat: no-repeat;
 	display: none;
@@ -2786,7 +2786,7 @@ span {
 }
 
 .pack:active {
-	cursor: url(src/media/images/cursor/grab.png) 10 2, auto;
+	cursor: url(../media/images/cursor/grab.png) 10 2, auto;
 }
 
 .pack-image {
@@ -2902,7 +2902,7 @@ span {
 	width: 17%;
 	height: 34%;
 	position: absolute;
-	background-image: url(src/media/images/pack.png);
+	background-image: url(../media/images/pack.png);
 	background-repeat: no-repeat;
 	background-size: contain;
 	transform-style: preserve-3d;
@@ -3058,7 +3058,7 @@ span {
 	position: absolute;
 	left: 68%;
 	top: 10%;
-	background-image: url(src/media/images/pack.png);
+	background-image: url(../media/images/pack.png);
 	background-repeat: no-repeat;
 	background-size: contain;
 }
@@ -3183,7 +3183,7 @@ span {
 	position: absolute;
 	top: -22%;
 	left: -31.5%;
-	background-image: url(src/media/images/divine_shield.png) !important;
+	background-image: url(../media/images/divine_shield.png) !important;
 	background-size: contain;
 	background-repeat: no-repeat;
 	user-select: none;
@@ -3191,7 +3191,7 @@ span {
 }
 
 .taunt {
-	background-image: url(src/media/images/taunt.png) !important;
+	background-image: url(../media/images/taunt.png) !important;
 	background-size: contain;
 	background-repeat: no-repeat;
 	user-select: none;
@@ -3205,7 +3205,7 @@ span {
 	position: absolute;
 	top: -13%;
 	left: 5.5%;
-	background-image: url(src/media/images/legendaryinplay.png) !important;
+	background-image: url(../media/images/legendaryinplay.png) !important;
 	background-size: contain;
 	background-repeat: no-repeat;
 	user-select: none;
@@ -3221,7 +3221,7 @@ span {
 	top: 0;
 	left: 12%;
 	right: 0;
-	background-image: url(src/media/images/example.png) !important;
+	background-image: url(../media/images/example.png) !important;
 	background-size: contain;
 	background-repeat: no-repeat;
 	display: none;

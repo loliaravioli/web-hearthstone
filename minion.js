@@ -1,6 +1,6 @@
-import { ATTRIBUTES, MINION_DATA } from './baseMinionData.js';
+const { ATTRIBUTES, MINION_IDS, MINION_DATA } = require('./baseMinionData.js');
 
-export class Minion {
+class Minion {
     constructor(minion) {
         this.minionID = minion[0];
         this.minionFileName = minion[1];
@@ -24,3 +24,5 @@ export class Minion {
         this.hasPoison = baseData.attributes[ATTRIBUTES.POISON];
     }
 }
+
+module.exports = Minion;

@@ -49,7 +49,7 @@ export class MinionCardBoardView {
         cardDiv.appendChild(healthValueBackground);
         healthValueBackground.appendChild(healthValue);
 
-        cardDiv.style.backgroundImage = "url('src/media/images/cardimages/" + this.card.constructor.name + ".jpg')";
+        cardDiv.style.backgroundImage = "url('../media/images/cardimages/" + this.card.constructor.name + ".jpg')";
 
         return cardDiv;
     }
