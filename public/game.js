@@ -15,6 +15,7 @@ import { HandOpponentView } from './jsObjects/views/HandOpponentView.js';
 import { ManaPlayerView } from './jsObjects/views/ManaPlayerView.js';
 import { ManaOpponentView } from './jsObjects/views/ManaOpponentView.js';
 
+import { handleSocketResponse } from './socketResponseHandler.js';
 let socket;
 
 class GAME {
@@ -50,15 +51,14 @@ class GAME {
         // TODO: move elsewhere
         socket = io();
 
-        socket.on('getHandResponse', (response) => {
-            const { success, signature, data } = response;
-
-            console.log(success ? 'SUCCESS' : 'FAIL', signature);
-
-            if (!success) { return; }
-
-            console.log(data.hand);
-        });
+        handleSocketResponse(socket, 'getHandResponse',
+            (data) => {
+                console.log(data.hand);
+            },
+            (response) => {
+                console.error('Request failed:', response.signature);
+            }
+        );
 
         socket.emit('getHand', { /* data */ });
     }
