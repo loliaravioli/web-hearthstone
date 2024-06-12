@@ -1,6 +1,3 @@
-import { Deck } from './jsObjects/gameObjects/deck.js';
-import { Hand } from './jsObjects/gameObjects/hand.js';
-import { Board } from './jsObjects/gameObjects/board.js';
 import { Mana } from './jsObjects/gameObjects/mana.js';
 
 import { MinionAttackController } from './jsObjects/gameControllers/minionAttackController.js';
@@ -20,19 +17,12 @@ let ws;
 
 class GAME {
     constructor() {
-        this.playerDeck = null;
-        this.opponentDeck = null;
-
         this.playerDeckView = null;
         this.opponentDeckView = null;
-
-        this.playerBoard = null;
-        this.opponentBoard = null;
 
         this.playerBoardView = null;
         this.opponentBoardView = null;
 
-        this.playerHand = null;
         this.playerHandView = null;
 
         this.playerDialogueView = null;
