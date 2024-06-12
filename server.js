@@ -1,11 +1,3 @@
-const mime = require('mime-types');
-const { App } = require('uWebSockets.js');
-const { Server } = require('socket.io');
-const { Pool } = require('pg');
-const fs = require('fs');
-const path = require('path');
-const app = new App();
-const io = new Server();
 const KEYS = { // SQL keys
     // REMAINING_LETTERS: 'remaining_letters',
     // PLAYER_COUNT: 'player_count',
@@ -30,6 +22,8 @@ const KEYS = { // SQL keys
     // DOCK4: 'dock4',
     // LAST_MODIFIED: 'last_modified'
 };
+
+const { Pool } = require('pg');
 const dbConfig = process.env.DATABASE_URL ? {
     connectionString: process.env.DATABASE_URL,
     ssl: { rejectUnauthorized: false },
@@ -44,53 +38,17 @@ const dbConfig = process.env.DATABASE_URL ? {
     connectionTimeoutMillis: 5 * 1000,
     idleTimeoutMillis: 10 * 1000
 }, pool = new Pool(dbConfig);
+
 const QueryHandler = require('./queryHandler.js');
 const queryHandlerInstance = new QueryHandler('game', pool);
+
 const Minion = require('./minion.js');
 const { ATTRIBUTES, MINION_IDS, MINION_DATA } = require('./baseMinionData.js');
-const staticDir = path.join(__dirname, 'public');
 
-const PORT = process.env.PORT || 5500;
-app.any('/*', async (res, req) => {
-    const filePath = path.join(staticDir, req.getUrl() == '/' ? '/index.html' : req.getUrl());
-
-    res.onAborted(() => { console.warn('Request was aborted by the client'); });
-
-    fs.readFile(filePath, (err, data) => {
-        if (res.aborted) { return; }
-
-        res.cork(() => {
-            res.writeStatus(err ? '404 Not Found' : '200 OK')
-                .writeHeader('Content-Type', err ? 'text/plain' : mime.lookup(filePath))
-                .end(err ? 'File Not Found' : data);
-        });
-    });
-}).listen(PORT, function (token) {
-    if (token) {
-        console.log(`Server is running at http://localhost:${PORT}`);
-    } else {
-        console.log(`Failed to listen to port ${PORT}`);
-    }
-});
-
-io.attachApp(app);
-
-let connectedClients = {};
-io.on('connection', (socket) => {
-    const clientID = 'XXXXX'; // socket.handshake.query.clientID
-    connectedClients[clientID] = socket;
-
-    console.log(clientID, 'connected');
-
-    socket.on('disconnect', () => {
-        console.log(clientID, 'disconnected');
-        delete connectedClients[socket.id];
-    });
-
-    socket.on('getHand', (data) => {
-        const { } = data;
-        getHand(socket, clientID);
-    });
+const socket = require('./socketioServer.js');
+socket.on('getHand', (data) => {
+    const { } = data;
+    getHand(socket, clientID);
 });
 
 async function getHand(socket, clientID) {
