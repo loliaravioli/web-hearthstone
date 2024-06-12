@@ -7,9 +7,9 @@ To-do List:
 
 - Specify class types on objects with JSDoc. Add "// @ts-check" at the top of the file (or configure it globally through a jsconfig.json file at the root of the project). https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html
 
-- Get all card images and sound effects.
+- Get all card images and sound effects. Most are now in the files but some are sporadically missing.
 
-- Implement proper turn-based gameplay. Partially working but missing mana mechanics, AI that can attack, attacks that target the hero, among other things.
+- Implement proper turn-based gameplay... basically make the game work vs AI.
 
 - Fix the mess of HTML and CSS. Start using something like storybook for the html/css elements, so they can be developed without having to play the entire game. https://storybook.js.org/docs/get-started
 
