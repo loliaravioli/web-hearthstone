@@ -18,22 +18,22 @@ export class BoardView {
         return this.cardViews[index];
     }
 
-    addCard(card) {
-        if (this.placeholderIndex == -1) {
-            this.board.addCard(card, 0);
-        } else {
-            this.board.addCard(card, this.placeholderIndex);
-            this.placeholderIndex = -1;
-        }
-        card.triggerPlay();
-        this.update();
-    }
+    // addCard(card) {
+    //     if (this.placeholderIndex == -1) {
+    //         this.board.addCard(card, 0);
+    //     } else {
+    //         this.board.addCard(card, this.placeholderIndex);
+    //         this.placeholderIndex = -1;
+    //     }
+    //     card.triggerPlay();
+    //     this.update();
+    // }
 
-    killCard(index) {
-        this.cardViews[index].triggerDeath();
-        this.board.removeCard(index);
-        this.update();
-    }
+    // killCard(index) {
+    //     this.cardViews[index].triggerDeath();
+    //     this.board.removeCard(index);
+    //     this.update();
+    // }
 
     generatePlaceholder(cardX) {
         if (this.cardViews.length == 0) { return; }
@@ -77,8 +77,8 @@ export class BoardView {
         this.getElement().replaceChildren();
         this.cardViews = [];
 
-        for (let i = 0; i < this.board.cards.length; i++) {
-            const view = new MinionCardBoardView(this.board.cards[i], i, this.isPlayer);
+        for (let i = 0; i < this.board.length; i++) {
+            const view = new MinionCardBoardView(this.board[i], i, this.isPlayer);
             this.cardViews.push(view);
             this.getElement().appendChild(view.getElement());
         }
@@ -88,8 +88,12 @@ export class BoardView {
                 accept: '.card',
                 drop: (event, ui) => {
                     ui.helper.data('hovering-board', false);
-                    GAME.playerBoardView.addCard(GAME.playerHandView.getCard(ui.draggable.data('handIndex')));
-                    GAME.playerHandView.removeCard(ui.draggable.data('handIndex'));
+                    //GAME.playerBoardView.addCard(GAME.playerHandView.getCard(ui.draggable.data('handIndex')));
+                    //GAME.playerHandView.removeCard(ui.draggable.data('handIndex'));
+                    GAME.emit('playMinion', {
+                        boardIndex: this.placeholderIndex,
+                        handIndex: ui.draggable.data('handIndex')
+                    });
                     $('#gifhint, #texthint').hide();
                     this.update;
                 }, over: function (event, ui) {

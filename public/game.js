@@ -59,8 +59,21 @@ class GAME {
                 this.playerHandView.update();
             },
             onFailure: (data) => {
-                socket.emit('getHand', { /* data */ }); // retry
+                this.emit('getHand', { /* data */ }); // retry
             }
+        });
+
+        handleSocketResponse({
+            socket: socket,
+            event: 'getBoardResponse',
+            onSuccess: (data) => {
+                console.log(data.playerBoard);
+                this.playerBoardView.board = data.playerBoard;
+                this.playerBoardView.update();
+            },
+            // onFailure: (data) => {
+            //     this.emit('getHand', { /* data */ }); // retry
+            // }
         });
     }
 
@@ -95,7 +108,11 @@ class GAME {
         this.turnController = new TurnController();
         this.cardDrawController = new CardDrawController();
 
-        socket.emit('getHand', { /* data */ });
+        this.emit('getHand', { /* data */ });
+    }
+
+    emit(command, data) {
+        socket.emit(command, data);
     }
 }
 

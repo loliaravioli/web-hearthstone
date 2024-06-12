@@ -87,6 +87,9 @@ export class MinionAttackController {
 
     onDrop(event) {
         event.preventDefault();
+        
+        if (!this.attackerCard) { return; }
+
         if (event.target.classList.contains('cardInPlay--opponent')) {
             this.targetCard = event.target;
 

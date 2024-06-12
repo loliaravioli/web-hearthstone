@@ -28,10 +28,19 @@ const Minion = require('./minion.js');
 const { ATTRIBUTES, MINION_IDS, MINION_DATA } = require('./baseMinionData.js');
 
 module.exports = {
-    getHand
+    getHand,
+    playMinion
 };
 
-async function getHand(socket, clientID, data) {
+let hand = [
+    new Minion(MINION_IDS.ARMORSMITH),
+    new Minion(MINION_IDS.LIGHTWELL),
+    new Minion(MINION_IDS.TIRION_FORDRING)
+];
+
+let playerBoard = [];
+
+async function getHand(socket, data) {
     const signature = arguments.callee.name;
     console.log(signature);
 
@@ -45,16 +54,32 @@ async function getHand(socket, clientID, data) {
         //     [record[KEYS.IP4], record[KEYS.POINTS4]]
         // ];
 
-        const hand = [
-            new Minion(MINION_IDS.ARMORSMITH),
-            new Minion(MINION_IDS.LIGHTWELL),
-            new Minion(MINION_IDS.TIRION_FORDRING)
-        ];
-
         socketEmit(socket, signature, true, { hand: hand });
     } catch (err) {
         console.error(err);
         socketEmit(socket, signature, false, { hand: [] });
+    }
+}
+
+async function playMinion(socket, data) {
+    const signature = arguments.callee.name;
+    console.log(signature);
+
+    try {
+        const { boardIndex, handIndex } = data;
+
+        console.log(boardIndex, handIndex);
+
+        const card = hand[handIndex];
+        hand.splice(handIndex, 1);
+        playerBoard.push(card);
+
+        socketEmit(socket, 'getBoard', true, { playerBoard: playerBoard });
+        socketEmit(socket, 'getHand', true, { hand: hand });
+    } catch (err) {
+        console.error(err);
+        socketEmit(socket, 'getBoard', false, { playerBoard: playerBoard });
+        socketEmit(socket, 'getHand', false, { hand: hand });
     }
 }
 

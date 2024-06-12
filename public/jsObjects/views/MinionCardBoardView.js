@@ -11,19 +11,19 @@ export class MinionCardBoardView {
         return this.element;
     }
 
-    applyDamage(dmg) {
-        const isDead = this.card.applyDamage(dmg);
-        this.update();
-        return isDead;
-    }
+    // applyDamage(dmg) {
+    //     const isDead = this.card.applyDamage(dmg);
+    //     this.update();
+    //     return isDead;
+    // }
 
-    getAttack() {
-        return this.card.attack;
-    }
+    // getAttack() {
+    //     return this.card.attack;
+    // }
 
-    triggerDeath() {
-        this.card.triggerDeath();
-    }
+    // triggerDeath() {
+    //     this.card.triggerDeath();
+    // }
 
     generateElement() {
         const cardDiv = document.createElement('div'),
@@ -49,7 +49,7 @@ export class MinionCardBoardView {
         cardDiv.appendChild(healthValueBackground);
         healthValueBackground.appendChild(healthValue);
 
-        cardDiv.style.backgroundImage = "url('../media/images/cardimages/" + this.card.constructor.name + ".jpg')";
+        cardDiv.style.backgroundImage = "url('../media/images/cardimages/" + this.card.minionFileName + ".jpg')";
 
         return cardDiv;
     }

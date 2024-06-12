@@ -25,7 +25,7 @@ io.on('connection', (socket) => {
     // each function should also have the same parameters
     Object.keys(functions).forEach(eventName => {
         socket.on(eventName, (data) => {
-            functions[eventName](socket, clientID, data);
+            functions[eventName](socket, data);
         });
     });
 });
