@@ -54,7 +54,8 @@ class GAME {
         handleSocketResponse({
             socket: socket,
             event: 'getHandResponse',
-            success: (data) => {
+            onSuccess: (data) => {
+                console.log(data.hand);
                 this.playerHandView.hand = data.hand;
                 this.playerHandView.update();
             }

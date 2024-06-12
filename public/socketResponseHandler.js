@@ -1,16 +1,16 @@
-export const handleSocketResponse = ({ socket, event, success, failure = () => {} }) => {
+export const handleSocketResponse = ({ socket, event, onSuccess, onFailure = () => {} }) => {
     socket.on(event, (response) => {
         const { success, signature, data } = response;
 
         console.log(success ? 'SUCCESS' : 'FAIL', signature);
 
         if (!success) {
-            failure(data);
+            onFailure(data);
             return;
         }
 
-        if (typeof successHandler === 'function') {
-            success(data);
+        if (typeof onSuccess === 'function') {
+            onSuccess(data);
         }
     });
 };
@@ -21,10 +21,10 @@ export const handleSocketResponse = ({ socket, event, success, failure = () => {
 handleSocketResponse({
     socket: socket,
     event: 'getHandResponse',
-    success: (data) => {
+    onSuccess: (data) => {
         // Handle success
     },
-    failure: (data) =>  {
+    onFailure: (data) =>  {
         // Handle failure
         // silently returns by default
     }
