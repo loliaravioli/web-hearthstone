@@ -5,7 +5,7 @@ export const handleSocketResponse = (socket, eventName, successHandler, failureH
         console.log(success ? 'SUCCESS' : 'FAIL', signature);
 
         if (!success) {
-            failureHandler(response);
+            failureHandler(data);
             return;
         }
 
@@ -22,7 +22,7 @@ handleSocketResponse(socket, 'getHandResponse',
     (data) => {
         // SUCCESS CONDITION
     },
-    (response) => {
+    (data) => {
         // FAILURE CONDITION
         // SILENTLY RETURNS BY DEFAULT
     }

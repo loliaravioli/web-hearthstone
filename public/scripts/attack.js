@@ -118,11 +118,11 @@ function attack() {
                                     'opacity': 0,
                                     'visibility': 'visible'
                                 });
-                            setTimeout(function () {
-                                $('#fireworkCanvas')
-                                    .show()
-                                    .addClass('fadeInAnim');
-                            }, 3 * 1000);
+                            // setTimeout(function () {
+                            //     $('#fireworkCanvas')
+                            //         .show()
+                            //         .addClass('fadeInAnim');
+                            // }, 3 * 1000);
                             gameWon();
                         } else {
                             targetElement.remove();
@@ -194,9 +194,9 @@ function gameWon() {
             .addClass('openMenuAnim');
 
         setTimeout(function () {
-            $('#fireworkCanvas').addClass('fadeOutAnim');
+            // $('#fireworkCanvas').addClass('fadeOutAnim');
             setTimeout(function () {
-                $('#fireworkCanvas').hide();
+                // $('#fireworkCanvas').hide();
 
                 setTimeout(function () {
                     location.reload();

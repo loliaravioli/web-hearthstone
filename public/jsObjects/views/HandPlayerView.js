@@ -12,16 +12,16 @@ export class HandPlayerView {
         return document.getElementById('playerCards');
     }
 
-    count() {
-        return this.hand.count();
-    }
+    // count() {
+    //     return this.hand.count();
+    // }
 
     getCard(index) {
-        return this.hand.getCard(index);
+        return this.hand[index];
     }
 
     addCard(card, animation) {
-        this.hand.addCard(card);
+        this.hand.push(card);
         this.update();
 
         // trying to do a card draw animation
@@ -52,8 +52,16 @@ export class HandPlayerView {
         $('.card').remove();
         this.cardViews = [];
 
-        for (let i = 0; i < this.hand.count(); i++) {
-            const view = new MinionCardHandView(this.hand.cards[i], i);
+        // old code
+        // for (let i = 0; i < this.hand.count(); i++) {
+        //     const view = new MinionCardHandView(this.hand.cards[i], i);
+        //     view.setPlayable(true); // FOR DEBUGGING
+        //     this.cardViews.push(view);
+        //     this.getElement().appendChild(view.getElement());
+        // }
+
+        for (let i = 0; i < this.hand.length; i++) {
+            const view = new MinionCardHandView(this.hand[i], i);
             view.setPlayable(true); // FOR DEBUGGING
             this.cardViews.push(view);
             this.getElement().appendChild(view.getElement());

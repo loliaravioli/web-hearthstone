@@ -53,14 +53,10 @@ class GAME {
 
         handleSocketResponse(socket, 'getHandResponse',
             (data) => {
-                console.log(data.hand);
-            },
-            (response) => {
-                console.error('Request failed:', response.signature);
+                this.playerHandView.hand = data.hand;
+                this.playerHandView.update();
             }
         );
-
-        socket.emit('getHand', { /* data */ });
     }
 
     resetValues() {
@@ -93,6 +89,8 @@ class GAME {
         this.minionAttackController = new MinionAttackController(this.playerBoardView, this.opponentBoardView);
         this.turnController = new TurnController();
         this.cardDrawController = new CardDrawController();
+
+        socket.emit('getHand', { /* data */ });
     }
 }
 

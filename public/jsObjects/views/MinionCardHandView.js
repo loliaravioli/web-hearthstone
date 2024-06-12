@@ -46,24 +46,24 @@ export class MinionCardHandView {
         // only in tutorial
         tutorialHintValueInHand.innerText = 'Mana Cost\nAttack' + '                     ' + 'Health';
 
-        playerInfoValueInHand.innerText = this.card.info;
+        playerInfoValueInHand.innerText = this.card.description;
         playerNameValueInHand.innerText = this.card.name;
-        playerCardFaceInHandDiv.style.backgroundImage = "url(../media/images/cardimages/" + this.card.constructor.name + ".jpg)";
+        playerCardFaceInHandDiv.style.backgroundImage = "url(../media/images/cardimages/" + this.card.minionFileName + ".jpg)";
 
         return cardDiv;
     }
 
     update() {
+        this.getElement().querySelector('.cardManaValue').innerText = this.card.mana;
         this.getElement().querySelector('.cardAttackValue').innerText = this.card.attack;
         this.getElement().querySelector('.cardHealthValue').innerText = this.card.health;
-        this.getElement().querySelector('.cardManaValue').innerText = this.card.mana;
 
-        this.getElement().style.pointerEvents = this.card.isPlayable ? 'all' : 'none';
-        this.getElement().children[0].children[4].style.border = `solid 4px ${this.card.isPlayable ? '#0FCC00' : '#383838'}`;
+        this.getElement().style.pointerEvents = this.playable ? 'all' : 'none';
+        this.getElement().children[0].children[4].style.border = `solid 4px ${this.playable ? '#0FCC00' : '#383838'}`;
     }
 
     setPlayable(isPlayable) {
-        this.card.isPlayable = isPlayable;
+        this.playable = isPlayable;
         this.update();
     }
 }
