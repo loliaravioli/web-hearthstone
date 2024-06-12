@@ -2,10 +2,17 @@
   "name": "hs",
   "version": "1.0.0",
   "description": "Web-based vanilla Hearthstone currently in development.",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "mime-types": "^2.1.35",
+    "pg": "^8.12.0",
+    "socket.io": "^4.7.5",
+    "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.43.0"
+  }
 }
