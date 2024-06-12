@@ -1,3 +1,19 @@
+const { Pool } = require('pg');
+const dbConfig = process.env.DATABASE_URL ? {
+    connectionString: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false },
+    connectionTimeoutMillis: 5 * 1000,
+    idleTimeoutMillis: 10 * 1000
+} : {
+    user: 'postgres',
+    host: 'localhost',
+    database: 'scrabble',
+    password: 'admin',
+    port: 5432,
+    connectionTimeoutMillis: 5 * 1000,
+    idleTimeoutMillis: 10 * 1000
+}, pool = new Pool(dbConfig);
+
 class QueryHandler {
     constructor(tableName, pool) {
         this.tableName = tableName;
@@ -22,7 +38,7 @@ class QueryHandler {
         }
         query += ' RETURNING *;';
         console.log(query);
-        
+
         try {
             const client = await this.pool.connect();
             const { rows } = await client.query(query);
@@ -130,4 +146,4 @@ class QueryHandler {
     }
 }
 
-module.exports = QueryHandler;
+module.exports = new QueryHandler('game', pool);

@@ -1,3 +1,4 @@
+const queryHandler = require('./queryHandler.js');
 const KEYS = { // SQL keys
     // REMAINING_LETTERS: 'remaining_letters',
     // PLAYER_COUNT: 'player_count',
@@ -22,25 +23,6 @@ const KEYS = { // SQL keys
     // DOCK4: 'dock4',
     // LAST_MODIFIED: 'last_modified'
 };
-
-const { Pool } = require('pg');
-const dbConfig = process.env.DATABASE_URL ? {
-    connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false },
-    connectionTimeoutMillis: 5 * 1000,
-    idleTimeoutMillis: 10 * 1000
-} : {
-    user: 'postgres',
-    host: 'localhost',
-    database: 'scrabble',
-    password: 'admin',
-    port: 5432,
-    connectionTimeoutMillis: 5 * 1000,
-    idleTimeoutMillis: 10 * 1000
-}, pool = new Pool(dbConfig);
-
-const QueryHandler = require('./queryHandler.js');
-const queryHandlerInstance = new QueryHandler('game', pool);
 
 const Minion = require('./minion.js');
 const { ATTRIBUTES, MINION_IDS, MINION_DATA } = require('./baseMinionData.js');
@@ -88,7 +70,7 @@ async function getRecord(id) {
 
     try {
         const params = { where: [{ key: KEYS.ROOM_CODE, value: id }] };
-        const result = await queryHandlerInstance.select(params);
+        const result = await queryHandler.select(params);
         return result[0]; // query only ever returns one row since id is unique
     } catch (err) {
         console.error(err);
