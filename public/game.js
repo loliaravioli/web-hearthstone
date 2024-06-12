@@ -48,15 +48,17 @@ class GAME {
         this.turnController = null;
         this.cardDrawController = null;
 
-        // TODO: move elsewhere
+        // TODO: move elsewhere?
         socket = io();
 
-        handleSocketResponse(socket, 'getHandResponse',
-            (data) => {
+        handleSocketResponse({
+            socket: socket,
+            event: 'getHandResponse',
+            success: (data) => {
                 this.playerHandView.hand = data.hand;
                 this.playerHandView.update();
             }
-        );
+        });
     }
 
     resetValues() {

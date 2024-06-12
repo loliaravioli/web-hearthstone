@@ -1,16 +1,16 @@
-export const handleSocketResponse = (socket, eventName, successHandler, failureHandler = () => { }) => {
-    socket.on(eventName, (response) => {
+export const handleSocketResponse = ({ socket, event, success, failure = () => {} }) => {
+    socket.on(event, (response) => {
         const { success, signature, data } = response;
 
         console.log(success ? 'SUCCESS' : 'FAIL', signature);
 
         if (!success) {
-            failureHandler(data);
+            failure(data);
             return;
         }
 
         if (typeof successHandler === 'function') {
-            successHandler(data);
+            success(data);
         }
     });
 };
@@ -18,14 +18,16 @@ export const handleSocketResponse = (socket, eventName, successHandler, failureH
 
 /* EXAMPLE USAGE:
 
-handleSocketResponse(socket, 'getHandResponse',
-    (data) => {
-        // SUCCESS CONDITION
+handleSocketResponse({
+    socket: socket,
+    event: 'getHandResponse',
+    success: (data) => {
+        // Handle success
     },
-    (data) => {
-        // FAILURE CONDITION
-        // SILENTLY RETURNS BY DEFAULT
+    failure: (data) =>  {
+        // Handle failure
+        // silently returns by default
     }
-);
+});
 
 */
