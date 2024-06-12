@@ -1,7 +1,7 @@
 const App = require('./uWebSocketsApp.js');
 const { Server } = require('socket.io');
 
-const rin = require('./rin.js');
+const functions = require('./socketFunctions.js');
 
 const io = new Server();
 io.attachApp(App);
@@ -20,6 +20,6 @@ io.on('connection', (socket) => {
 
     socket.on('getHand', (data) => {
         const { } = data;
-        rin.getHand(socket, clientID);
+        functions.getHand(socket, clientID);
     });
 });
