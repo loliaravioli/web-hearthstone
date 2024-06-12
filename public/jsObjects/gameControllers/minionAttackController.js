@@ -1,18 +1,17 @@
-export class MinionAttackController {
-    constructor(playerBoardView, opponentBoardView) {
-        this.playerBoardView = playerBoardView;
-        this.opponentBoardView = opponentBoardView;
+import GAME from '../../game.js';
 
+export class MinionAttackController {
+    constructor() {
         // HTML dom elements, not views or objects
         // use .dataSet.boardIndex or id to distinguish them
         this.attackerCard = null;
         this.targetCard = null;
 
-        this.playerBoardView.getElement().addEventListener('mousedown', (e) => this.onDragStart(e));
+        GAME.playerBoardView.getElement().addEventListener('mousedown', (e) => this.onDragStart(e));
 
-        this.opponentBoardView.getElement().addEventListener('mouseup', (e) => this.onDrop(e));
+        GAME.opponentBoardView.getElement().addEventListener('mouseup', (e) => this.onDrop(e));
 
-        document.body.addEventListener('mouseup', (e) => this.onMouseUp(e));
+        // document.body.addEventListener('mouseup', (e) => this.onMouseUp(e));
 
 
         // TODO: maybe need to move the code below elsewhere
@@ -87,14 +86,20 @@ export class MinionAttackController {
 
     onDrop(event) {
         event.preventDefault();
-        
+
         if (!this.attackerCard) { return; }
 
         if (event.target.classList.contains('cardInPlay--opponent')) {
             this.targetCard = event.target;
 
             if (this.attackerCard) {
-                this.doAttack();
+                console.log(`${this.attackerCard.id} attacks ${this.targetCard.id}`);
+
+                GAME.emit('attack', {
+                    attackerIndex: this.attackerCard.dataset.boardIndex,
+                    targetIndex: this.targetCard.dataset.boardIndex
+                });
+
                 this.resetAttack();
             }
         } else {
@@ -102,35 +107,13 @@ export class MinionAttackController {
         }
     }
 
-    onMouseUp(event) {
-        event.preventDefault();
-        if (this.attackerCard && this.targetCard) {
-            this.doAttack();
-        }
-        this.resetAttack();
-    }
-
-    doAttack() {
-        console.log(`${this.attackerCard.id} attacks ${this.targetCard.id}`);
-
-        const attackerViewIndex = this.attackerCard.dataset.boardIndex,
-            targetViewIndex = this.targetCard.dataset.boardIndex,
-            attackerCardView = this.playerBoardView.card(attackerViewIndex),
-            targetCardView = this.opponentBoardView.card(targetViewIndex),
-            targetIsDead = targetCardView.applyDamage(attackerCardView.getAttack()),
-            attackerIsDead = attackerCardView.applyDamage(targetCardView.getAttack());
-
-        // instead of simply removing the cards here, have a separate function which kills minions
-        // which is usable elsewhere
-
-        if (targetIsDead) {
-            this.opponentBoardView.killCard(targetViewIndex);
-        }
-
-        if (attackerIsDead) {
-            this.playerBoardView.killCard(attackerViewIndex);
-        }
-    }
+    // onMouseUp(event) {
+    //     event.preventDefault();
+    //     if (this.attackerCard && this.targetCard) {
+    //         this.doAttack();
+    //     }
+    //     this.resetAttack();
+    // }
 
     resetAttack() {
         this.attackerCard = null;

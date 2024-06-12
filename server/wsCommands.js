@@ -30,7 +30,8 @@ const { ATTRIBUTES, MINION_IDS, MINION_DATA } = require('./baseMinionData.js');
 module.exports = {
     getHand,
     getBoard,
-    playMinion
+    playMinion,
+    attack
 };
 
 // TODO: move these local variables into a SQL table
@@ -38,20 +39,26 @@ module.exports = {
 
 // hands, boards and decks will all use the same Minion class
 // this makes it easy to modify the stats of minions wherever they are
-let hand = [
+let playerHand = [
     new Minion(MINION_IDS.ARMORSMITH),
     new Minion(MINION_IDS.LIGHTWELL),
     new Minion(MINION_IDS.TIRION_FORDRING)
 ];
 
-let playerBoard = [];
+let playerBoard = [],
+    opponentBoard = [
+        new Minion(MINION_IDS.ALAKIR_THE_WINDLORD),
+        new Minion(MINION_IDS.CENARIUS),
+        new Minion(MINION_IDS.KORKRON_ELITE),
+        new Minion(MINION_IDS.SUMMONING_PORTAL)
+    ];
 
 async function getHand(ws, data) {
     const signature = arguments.callee.name;
     console.log(signature);
 
     try {
-        wsEmit(ws, signature, true, { hand: hand });
+        wsEmit(ws, signature, true, { hand: playerHand });
     } catch (err) {
         console.error(err);
         wsEmit(ws, signature, false, { hand: [] });
@@ -63,10 +70,16 @@ async function getBoard(ws, data) {
     console.log(signature);
 
     try {
-        wsEmit(ws, signature, true, { playerBoard: playerBoard });
+        wsEmit(ws, signature, true, {
+            playerBoard: playerBoard,
+            opponentBoard: opponentBoard
+        });
     } catch (err) {
         console.error(err);
-        wsEmit(ws, signature, false, { playerBoard: [] });
+        wsEmit(ws, signature, false, {
+            playerBoard: [],
+            opponentBoard: []
+        });
     }
 }
 
@@ -78,8 +91,8 @@ async function playMinion(ws, data) {
         const { boardIndex, handIndex } = data;
 
         // TODO: check that the indexed card is actually a minion
-        const card = hand[handIndex];
-        hand.splice(handIndex, 1);
+        const card = playerHand[handIndex];
+        playerHand.splice(handIndex, 1);
 
         // TODO: trigger minion's battlecry
 
@@ -87,6 +100,42 @@ async function playMinion(ws, data) {
 
         // TODO: trigger onPlay effects
 
+    } catch (err) {
+        console.error(err);
+    }
+
+    getBoard(ws, data);
+    getHand(ws, data);
+}
+
+async function attack(ws, data) {
+    const signature = arguments.callee.name;
+    console.log(signature);
+
+    try {
+        const { attackerIndex, targetIndex } = data;
+
+        // TODO: might use -1 or the board's length as the indicator
+        // that the attacker/target is a hero rather than a minion
+        if(attackerIndex >= playerBoard.length || attackerIndex < 0) {
+            throw new Error('Invalid attacker index');
+        } else if(targetIndex >= opponentBoard.length || targetIndex < 0) {
+            throw new Error('Invalid target index');
+        }
+
+        opponentBoard[targetIndex].health -= playerBoard[attackerIndex].attack;
+        playerBoard[attackerIndex].health -= opponentBoard[targetIndex].attack;
+
+        // TODO: implement response handler on clientside
+        // it should just trigger the animation
+        wsEmit(ws, signature, true, {
+            attackerIndex: attackerIndex,
+            targetIndex: targetIndex
+        });
+        
+        // TODO: implement a function which checks if there are any dead minions or heroes
+        // it will send a message saying which minions/heroes died
+        // it can be used after any action which causes damage. just check the whole board to be safe
     } catch (err) {
         console.error(err);
     }

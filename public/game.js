@@ -70,6 +70,9 @@ class GAME {
             onSuccess: (data) => {
                 this.playerBoardView.board = data.playerBoard;
                 this.playerBoardView.update();
+
+                this.opponentBoardView.board = data.opponentBoard;
+                this.opponentBoardView.update();
             },
             onFailure: (data) => {
                 setTimeout(() => {
@@ -98,7 +101,7 @@ class GAME {
         this.playerManaView = new ManaPlayerView(this.playerMana);
         this.opponentManaView = new ManaOpponentView(this.opponentMana); // TODO: get rid of separate player/opponent views for Mana
 
-        this.minionAttackController = new MinionAttackController(this.playerBoardView, this.opponentBoardView);
+        this.minionAttackController = new MinionAttackController();
         this.turnController = new TurnController();
         this.cardDrawController = new CardDrawController();
 
