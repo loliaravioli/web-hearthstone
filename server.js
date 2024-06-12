@@ -16,7 +16,7 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         console.log(clientID, 'disconnected');
-        delete connectedClients[socket.id];
+        delete connectedClients[clientID];
     });
 
     // programmatically connects events to their respective function
