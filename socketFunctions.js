@@ -54,6 +54,10 @@ async function getHand(socket, clientID, data) {
     }
 }
 
+module.exports = {
+    getHand
+};
+
 // HELPER FUNCTIONS
 
 function socketEmit(socket, signature, success, data) {
@@ -77,7 +81,3 @@ async function getRecord(id) {
         throw err;
     }
 }
-
-module.exports = {
-    getHand
-};
