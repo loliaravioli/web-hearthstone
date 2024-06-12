@@ -12,7 +12,10 @@ class uWebSocketsApp {
         this.app.any('/*', async (res, req) => {
             const filePath = path.join(staticDir, req.getUrl() == '/' ? '/index.html' : req.getUrl());
 
-            res.onAborted(() => { console.warn('Request was aborted by the client'); });
+            res.onAborted(() => {
+                res.aborted = true;
+                console.warn('Request was aborted by the client');
+            });
 
             fs.readFile(filePath, (err, data) => {
                 if (res.aborted) { return; }
