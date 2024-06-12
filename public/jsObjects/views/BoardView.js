@@ -91,7 +91,7 @@ export class BoardView {
                     //GAME.playerBoardView.addCard(GAME.playerHandView.getCard(ui.draggable.data('handIndex')));
                     //GAME.playerHandView.removeCard(ui.draggable.data('handIndex'));
                     GAME.emit('playMinion', {
-                        boardIndex: this.placeholderIndex,
+                        boardIndex: this.placeholderIndex == -1 ? 0 : this.placeholderIndex,
                         handIndex: ui.draggable.data('handIndex')
                     });
                     $('#gifhint, #texthint').hide();

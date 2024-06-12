@@ -12,7 +12,6 @@
   "dependencies": {
     "mime-types": "^2.1.35",
     "pg": "^8.12.0",
-    "socket.io": "^4.7.5",
     "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.43.0"
   }
 }

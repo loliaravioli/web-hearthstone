@@ -1,6 +1,7 @@
 import GAME from '../game.js';
 
 let playedIntroLine = false;
+
 const mainmenuOST = new Audio("../media/sounds/ost/mainmenu.mp3"),
     crowdSnd = new Audio("../media/sounds/crowd.mp3"),
     openmenuSnd = new Audio("../media/sounds/openmenu.mp3"),
@@ -430,7 +431,7 @@ document.getElementById('preventCORS').onclick = function () {
             "../media/sounds/voiceovers/innkeeper_2.mp3",
             "../media/sounds/voiceovers/innkeeper_3.mp3"
         ], introLine = introLines[Math.floor(Math.random() * introLines.length)],
-        introLineAudio = new Audio(introLine);
+            introLineAudio = new Audio(introLine);
         introLineAudio.volume = 0.4;
         introLineAudio.play();
         playedIntroLine = true;

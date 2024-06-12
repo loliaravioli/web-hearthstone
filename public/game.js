@@ -15,8 +15,8 @@ import { HandOpponentView } from './jsObjects/views/HandOpponentView.js';
 import { ManaPlayerView } from './jsObjects/views/ManaPlayerView.js';
 import { ManaOpponentView } from './jsObjects/views/ManaOpponentView.js';
 
-import { handleSocketResponse } from './socketResponseHandler.js';
-let socket;
+import { handleWSResponse } from './wsResponseHandler.js';
+let ws;
 
 class GAME {
     constructor() {
@@ -49,31 +49,42 @@ class GAME {
         this.cardDrawController = null;
 
         // TODO: move elsewhere?
-        socket = io();
+        ws = new WebSocket('ws://localhost:5500');
 
-        handleSocketResponse({
-            socket: socket,
+        ws.onopen = () => {
+            console.log('Connected to WebSocket server');
+        };
+
+        ws.onclose = () => {
+            console.log('Disconnected from WebSocket server');
+        };
+
+        handleWSResponse({
+            socket: ws,
             event: 'getHandResponse',
             onSuccess: (data) => {
                 this.playerHandView.hand = data.hand;
                 this.playerHandView.update();
             },
             onFailure: (data) => {
-                this.emit('getHand', { /* data */ }); // retry
+                setTimeout(() => {
+                    this.emit('getHand', { /* data */ }); // retry
+                }, 5 * 1000);
             }
         });
 
-        handleSocketResponse({
-            socket: socket,
+        handleWSResponse({
+            socket: ws,
             event: 'getBoardResponse',
             onSuccess: (data) => {
-                console.log(data.playerBoard);
                 this.playerBoardView.board = data.playerBoard;
                 this.playerBoardView.update();
             },
-            // onFailure: (data) => {
-            //     this.emit('getHand', { /* data */ }); // retry
-            // }
+            onFailure: (data) => {
+                setTimeout(() => {
+                    this.emit('getBoard', { /* data */ }); // retry
+                }, 5 * 1000);
+            }
         });
     }
 
@@ -112,7 +123,7 @@ class GAME {
     }
 
     emit(command, data) {
-        socket.emit(command, data);
+        ws.send(JSON.stringify({ command: command, data: data }));
     }
 }
 
