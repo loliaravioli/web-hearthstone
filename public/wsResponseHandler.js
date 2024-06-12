@@ -4,7 +4,7 @@ export const handleWSResponse = ({ socket, event, onSuccess, onFailure = () => {
     if (!eventHandlers[event]) {
         eventHandlers[event] = [];
     }
-    
+
     eventHandlers[event].push({ onSuccess, onFailure });
 
     socket.addEventListener('message', (evt) => {

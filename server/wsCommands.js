@@ -33,6 +33,9 @@ module.exports = {
     playMinion
 };
 
+// TODO: move these local variables into a SQL table
+// retrieve them as needed without storing them locally
+
 // hands, boards and decks will all use the same Minion class
 // this makes it easy to modify the stats of minions wherever they are
 let hand = [

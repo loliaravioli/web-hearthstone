@@ -2,11 +2,11 @@ import GAME from '../../../game.js';
 import { MinionCardBoardView } from './MinionCardBoardView.js'
 
 export class BoardView {
-    constructor(board, divID, isPlayer) {
-        this.board = board;
+    constructor(isPlayer) {
+        this.board = [];
         this.placeholderIndex = -1;
-        this.divID = divID;
         this.isPlayer = isPlayer;
+        this.divID = this.isPlayer ? 'board--player' : 'board--opponent';
         this.update();
     }
 

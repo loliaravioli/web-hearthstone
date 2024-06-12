@@ -2,8 +2,8 @@ import GAME from '../../../game.js';
 import { MinionCardHandView } from "./MinionCardHandView.js";
 
 export class HandPlayerView {
-    constructor(hand) {
-        this.hand = hand;
+    constructor() {
+        this.hand = [];
         this.cardViews = [];
         this.update();
     }

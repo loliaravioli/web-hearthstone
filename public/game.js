@@ -68,7 +68,7 @@ class GAME {
             },
             onFailure: (data) => {
                 setTimeout(() => {
-                    this.emit('getHand', { /* data */ }); // retry
+                    this.emit('getHand'); // retry
                 }, 5 * 1000);
             }
         });
@@ -82,47 +82,40 @@ class GAME {
             },
             onFailure: (data) => {
                 setTimeout(() => {
-                    this.emit('getBoard', { /* data */ }); // retry
+                    this.emit('getBoard'); // retry
                 }, 5 * 1000);
             }
         });
     }
 
     resetValues() {
-        // this.playerDeck = new Deck();
-        // this.opponentDeck = new Deck();
+        this.playerDeckView = new DeckView(true);
+        this.opponentDeckView = new DeckView(false);
 
-        // this.playerDeckView = new DeckView(this.playerDeck, 'playerDeck');
-        // this.opponentDeckView = new DeckView(this.opponentDeck, 'opponentDeck');
+        this.playerBoardView = new BoardView(true);
+        this.opponentBoardView = new BoardView(false);
 
-        this.playerBoard = new Board();
-        this.opponentBoard = new Board();
-
-        this.playerBoardView = new BoardView(this.playerBoard, 'board--player', true);
-        this.opponentBoardView = new BoardView(this.opponentBoard, 'board--opponent', false);
-
-        this.playerHand = new Hand();
-
-        this.playerHandView = new HandPlayerView(this.playerHand);
+        this.playerHandView = new HandPlayerView();
         this.opponentHandView = new HandOpponentView();
 
-        this.playerDialogueView = new DialogueView('playerBubble');
-        this.opponentDialogueView = new DialogueView('opponentBubble');
+        this.playerDialogueView = new DialogueView(true);
+        this.opponentDialogueView = new DialogueView(false);
 
         this.playerMana = new Mana();
         this.opponentMana = new Mana();
 
         this.playerManaView = new ManaPlayerView(this.playerMana);
-        this.opponentManaView = new ManaOpponentView(this.playerMana);
+        this.opponentManaView = new ManaOpponentView(this.opponentMana); // TODO: get rid of separate player/opponent views for Mana
 
         this.minionAttackController = new MinionAttackController(this.playerBoardView, this.opponentBoardView);
         this.turnController = new TurnController();
         this.cardDrawController = new CardDrawController();
 
-        this.emit('getHand', { /* data */ });
+        this.emit('getHand');
+        this.emit('getBoard');
     }
 
-    emit(command, data) {
+    emit(command, data = {}) {
         ws.send(JSON.stringify({ command: command, data: data }));
     }
 }
