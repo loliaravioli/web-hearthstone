@@ -26,7 +26,7 @@ handleSocketResponse({
     },
     onFailure: (data) =>  {
         // Handle failure
-        // silently returns by default
+        // Silently returns by default
     }
 });
 
