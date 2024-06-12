@@ -4,7 +4,10 @@ Web-based vanilla Hearthstone currently in development.
 https://loliaravioli.github.io/web-hearthstone
 
 
-run npm install
+run `npm install`
+
+and then `npm start` to run the website
+
 
 To-do List:
 
