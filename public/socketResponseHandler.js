@@ -15,9 +15,9 @@ export const handleSocketResponse = (socket, eventName, successHandler, failureH
     });
 };
 
-// EXAMPLE USAGE:
 
-/*
+/* EXAMPLE USAGE:
+
 handleSocketResponse(socket, 'getHandResponse',
     (data) => {
         // SUCCESS CONDITION
@@ -27,4 +27,5 @@ handleSocketResponse(socket, 'getHandResponse',
         // SILENTLY RETURNS BY DEFAULT
     }
 );
+
 */
