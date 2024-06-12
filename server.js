@@ -9,7 +9,7 @@ io.attachApp(app);
 let connectedClients = {};
 
 io.on('connection', (socket) => {
-    const clientID = 'XXXXX'; // socket.handshake.query.clientID
+    const clientID = socket.id;
     connectedClients[clientID] = socket;
 
     console.log(clientID, 'connected');
