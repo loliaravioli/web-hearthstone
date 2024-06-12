@@ -3,7 +3,7 @@ const { App } = require('uWebSockets.js');
 const mime = require('mime-types');
 const fs = require('fs');
 const path = require('path');
-const staticDir = path.join(__dirname, 'public');
+const staticDir = path.join(__dirname, '../public');
 
 class uWebSocketsApp {
     constructor() {

@@ -4,6 +4,7 @@
   "description": "Web-based vanilla Hearthstone currently in development.",
   "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

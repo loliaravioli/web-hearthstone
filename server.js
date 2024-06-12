@@ -1,8 +1,9 @@
-const app = require('./uWebSocketsApp.js');
-const { Server } = require('socket.io');
-const functions = require('./socketFunctions.js');
+const app = require('./server/uWebSocketsApp.js');
+const functions = require('./server/socketFunctions.js');
 
+const { Server } = require('socket.io');
 const io = new Server();
+
 io.attachApp(app);
 
 let connectedClients = {};
