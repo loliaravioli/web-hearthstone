@@ -27,6 +27,10 @@ const KEYS = { // SQL keys
 const Minion = require('./minion.js');
 const { ATTRIBUTES, MINION_IDS, MINION_DATA } = require('./baseMinionData.js');
 
+module.exports = {
+    getHand
+};
+
 async function getHand(socket, clientID, data) {
     const signature = arguments.callee.name;
     console.log(signature);
@@ -53,10 +57,6 @@ async function getHand(socket, clientID, data) {
         socketEmit(socket, signature, false, { hand: [] });
     }
 }
-
-module.exports = {
-    getHand
-};
 
 // HELPER FUNCTIONS
 
