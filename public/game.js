@@ -24,6 +24,7 @@ class GAME {
         this.opponentBoardView = null;
 
         this.playerHandView = null;
+        this.opponentHandView = null;
 
         this.playerDialogueView = null;
         this.opponentDialogueView = null;
