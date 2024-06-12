@@ -1,104 +1,25 @@
-const KEYS = { // SQL keys
-    // REMAINING_LETTERS: 'remaining_letters',
-    // PLAYER_COUNT: 'player_count',
-    // BOARD_STATE: 'board_state',
-    // WHOSE_TURN: 'whose_turn',
-    // ROOM_CODE: 'room_code',
-    // IP1: 'ip1',
-    // IP2: 'ip2',
-    // IP3: 'ip3',
-    // IP4: 'ip4',
-    // PASS1: 'pass1',
-    // PASS2: 'pass2',
-    // PASS3: 'pass3',
-    // PASS4: 'pass4',
-    // POINTS1: 'points1',
-    // POINTS2: 'points2',
-    // POINTS3: 'points3',
-    // POINTS4: 'points4',
-    // DOCK1: 'dock1',
-    // DOCK2: 'dock2',
-    // DOCK3: 'dock3',
-    // DOCK4: 'dock4',
-    // LAST_MODIFIED: 'last_modified'
-};
+const App = require('./uWebSocketsApp.js');
+const { Server } = require('socket.io');
 
-const { Pool } = require('pg');
-const dbConfig = process.env.DATABASE_URL ? {
-    connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false },
-    connectionTimeoutMillis: 5 * 1000,
-    idleTimeoutMillis: 10 * 1000
-} : {
-    user: 'postgres',
-    host: 'localhost',
-    database: 'scrabble',
-    password: 'admin',
-    port: 5432,
-    connectionTimeoutMillis: 5 * 1000,
-    idleTimeoutMillis: 10 * 1000
-}, pool = new Pool(dbConfig);
+const rin = require('./rin.js');
 
-const QueryHandler = require('./queryHandler.js');
-const queryHandlerInstance = new QueryHandler('game', pool);
+const io = new Server();
+io.attachApp(App);
 
-const Minion = require('./minion.js');
-const { ATTRIBUTES, MINION_IDS, MINION_DATA } = require('./baseMinionData.js');
+let connectedClients = {};
+io.on('connection', (socket) => {
+    const clientID = 'XXXXX'; // socket.handshake.query.clientID
+    connectedClients[clientID] = socket;
 
-const socket = require('./socketioServer.js');
-socket.on('getHand', (data) => {
-    const { } = data;
-    getHand(socket, clientID);
-});
+    console.log(clientID, 'connected');
 
-async function getHand(socket, clientID) {
-    const signature = arguments.callee.name;
-    console.log(signature);
-
-    try {
-        // const record = await getRecord(id);
-
-        // const scoreboard = [
-        //     [record[KEYS.IP1], record[KEYS.POINTS1]],
-        //     [record[KEYS.IP2], record[KEYS.POINTS2]],
-        //     [record[KEYS.IP3], record[KEYS.POINTS3]],
-        //     [record[KEYS.IP4], record[KEYS.POINTS4]]
-        // ];
-
-        const hand = [
-            new Minion(MINION_IDS.ARMORSMITH),
-            new Minion(MINION_IDS.LIGHTWELL),
-            new Minion(MINION_IDS.TIRION_FORDRING)
-        ];
-
-        socketEmit(socket, signature, true, { hand: hand });
-    } catch (err) {
-        console.error(err);
-        socketEmit(socket, signature, false, { hand: [] });
-    }
-}
-
-function socketEmit(socket, signature, success, data) {
-    socket.emit(`${signature}Response`, {
-        success: success,
-        signature: signature,
-        data: data
+    socket.on('disconnect', () => {
+        console.log(clientID, 'disconnected');
+        delete connectedClients[socket.id];
     });
-}
 
-async function getRecord(id) {
-    const signature = arguments.callee.name;
-    console.log(signature);
-
-    try {
-        const params = { where: [{ key: KEYS.ROOM_CODE, value: id }] };
-        const result = await queryHandlerInstance.select(params);
-
-        debugConsole(CATEGORY.SUCCESS, signature);
-        // query only ever returns one row since id is unique
-        return result[0];
-    } catch (err) {
-        console.error(err);
-        throw err;
-    }
-}
+    socket.on('getHand', (data) => {
+        const { } = data;
+        rin.getHand(socket, clientID);
+    });
+});
