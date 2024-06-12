@@ -57,7 +57,6 @@ uWS.App({
             parsedMessage = JSON.parse(msg);
         } catch (error) {
             console.error('Invalid JSON');
-            ws.send(JSON.stringify({ error: 'Invalid JSON' }));
             return;
         }
 
@@ -71,7 +70,6 @@ uWS.App({
             commands[command](ws, data);
         } else {
             console.error('Unknown command', command);
-            ws.send(JSON.stringify({ error: 'Unknown command' }));
         }
     }
 }).listen(port, () => {
