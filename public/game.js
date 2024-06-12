@@ -55,9 +55,11 @@ class GAME {
             socket: socket,
             event: 'getHandResponse',
             onSuccess: (data) => {
-                console.log(data.hand);
                 this.playerHandView.hand = data.hand;
                 this.playerHandView.update();
+            },
+            onFailure: (data) => {
+                socket.emit('getHand', { /* data */ }); // retry
             }
         });
     }
