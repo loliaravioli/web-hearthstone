@@ -27,7 +27,7 @@ const KEYS = { // SQL keys
 const Minion = require('./minion.js');
 const { ATTRIBUTES, MINION_IDS, MINION_DATA } = require('./baseMinionData.js');
 
-async function getHand(socket, clientID) {
+async function getHand(socket, clientID, data) {
     const signature = arguments.callee.name;
     console.log(signature);
 
