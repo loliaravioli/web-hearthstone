@@ -178,6 +178,9 @@ function checkDeath(ws) {
     const signature = arguments.callee.name;
     console.log(signature);
 
+    // it's necessary to send the board state each time
+    // because minion indices change as minions die
+    // and client needs to know which minions to animate
     try {
         let index = 0;
         while (index < playerBoard.length) {
