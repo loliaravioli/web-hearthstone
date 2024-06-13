@@ -29,11 +29,12 @@ export class BoardView {
     //     this.update();
     // }
 
-    // killCard(index) {
-    //     this.cardViews[index].triggerDeath();
-    //     this.board.removeCard(index);
-    //     this.update();
-    // }
+    killCard(index) {
+        console.log(`Killing minion at index ${index} on ${this.isPlayer ? "player's" : "opponent's"} board`);
+        // this.cardViews[index].triggerDeath();
+        // this.board.removeCard(index);
+        // this.update();
+    }
 
     generatePlaceholder(cardX) {
         if (this.cardViews.length == 0) { return; }

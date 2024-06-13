@@ -11,7 +11,8 @@ export class MinionAttackController {
 
         GAME.opponentBoardView.getElement().addEventListener('mouseup', (e) => this.onDrop(e));
 
-        // document.body.addEventListener('mouseup', (e) => this.onMouseUp(e));
+        // this lets you cancel an attack by releasing the mouse
+        document.body.addEventListener('mouseup', (e) => this.onMouseUp(e));
 
 
         // TODO: maybe need to move the code below elsewhere
@@ -107,13 +108,13 @@ export class MinionAttackController {
         }
     }
 
-    // onMouseUp(event) {
-    //     event.preventDefault();
-    //     if (this.attackerCard && this.targetCard) {
-    //         this.doAttack();
-    //     }
-    //     this.resetAttack();
-    // }
+    onMouseUp(event) {
+        event.preventDefault();
+        if (this.attackerCard && this.targetCard) {
+            this.doAttack();
+        }
+        this.resetAttack();
+    }
 
     resetAttack() {
         this.attackerCard = null;

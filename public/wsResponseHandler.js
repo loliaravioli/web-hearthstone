@@ -1,6 +1,11 @@
 const eventHandlers = {};
 
 export const handleWSResponse = ({ socket, event, onSuccess, onFailure = () => { } }) => {
+    if (typeof onSuccess != 'function') {
+        console.error(`${event} onSuccess clause must be a function`);
+        return;
+    }
+
     if (!eventHandlers[event]) {
         eventHandlers[event] = [];
     }
@@ -8,18 +13,19 @@ export const handleWSResponse = ({ socket, event, onSuccess, onFailure = () => {
     eventHandlers[event].push({ onSuccess, onFailure });
 
     socket.addEventListener('message', (evt) => {
-        const message = JSON.parse(evt.data);
-        const { command, success, data } = message;
+        const { signature, success, data } = JSON.parse(evt.data);
 
-        if (!eventHandlers[command]) { return; }
+        if (event != signature) { return; } // not the right instance of handleWSResponse for this signature
 
-        eventHandlers[command].forEach(handler => {
-            console.log(success ? 'SUCCESS' : 'FAIL', command);
+        if (!eventHandlers[signature]) { return; } // no handlers specified for the signature
 
-            if (!success) {
-                handler.onFailure(data);
-            } else if (typeof handler.onSuccess === 'function') {
+        eventHandlers[signature].forEach(handler => {
+            console.log(success ? 'SUCCESS' : 'FAIL', signature);
+
+            if (success) {
                 handler.onSuccess(data);
+            } else {
+                handler.onFailure(data);
             }
         });
     });

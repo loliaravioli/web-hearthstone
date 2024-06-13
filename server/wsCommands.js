@@ -104,8 +104,8 @@ async function playMinion(ws, data) {
         console.error(err);
     }
 
-    getBoard(ws, data);
-    getHand(ws, data);
+    getBoard(ws, {});
+    getHand(ws, {});
 }
 
 async function attack(ws, data) {
@@ -117,9 +117,9 @@ async function attack(ws, data) {
 
         // TODO: might use -1 or the board's length as the indicator
         // that the attacker/target is a hero rather than a minion
-        if(attackerIndex >= playerBoard.length || attackerIndex < 0) {
+        if (attackerIndex >= playerBoard.length || attackerIndex < 0) {
             throw new Error('Invalid attacker index');
-        } else if(targetIndex >= opponentBoard.length || targetIndex < 0) {
+        } else if (targetIndex >= opponentBoard.length || targetIndex < 0) {
             throw new Error('Invalid target index');
         }
 
@@ -132,23 +132,21 @@ async function attack(ws, data) {
             attackerIndex: attackerIndex,
             targetIndex: targetIndex
         });
-        
-        // TODO: implement a function which checks if there are any dead minions or heroes
-        // it will send a message saying which minions/heroes died
-        // it can be used after any action which causes damage. just check the whole board to be safe
+
+        checkDeath(ws);
     } catch (err) {
         console.error(err);
     }
 
-    getBoard(ws, data);
-    getHand(ws, data);
+    getBoard(ws, {});
+    getHand(ws, {});
 }
 
 // HELPER FUNCTIONS
 
 function wsEmit(ws, signature, success, data) {
     ws.send(JSON.stringify({
-        command: `${signature}Response`,
+        signature: signature,
         success: success,
         data: data
     }));
@@ -175,3 +173,42 @@ function wsEmit(ws, signature, success, data) {
 //     [record[KEYS.IP3], record[KEYS.POINTS3]],
 //     [record[KEYS.IP4], record[KEYS.POINTS4]]
 // ];
+
+function checkDeath(ws) {
+    const signature = arguments.callee.name;
+    console.log(signature);
+
+    try {
+        let index = 0;
+        while (index < playerBoard.length) {
+            if (playerBoard[index].health <= 0) {
+                playerBoard.splice(index, 1);
+                wsEmit(ws, 'deathEvent', true, {
+                    isPlayer: true,
+                    boardIndex: index,
+                    playerBoard: playerBoard,
+                    opponentBoard: opponentBoard
+                });
+                continue;
+            }
+            index++;
+        }
+
+        index = 0;
+        while (index < opponentBoard.length) {
+            if (opponentBoard[index].health <= 0) {
+                opponentBoard.splice(index, 1);
+                wsEmit(ws, 'deathEvent', true, {
+                    isPlayer: false,
+                    boardIndex: index,
+                    playerBoard: playerBoard,
+                    opponentBoard: opponentBoard
+                });
+                continue;
+            }
+            index++;
+        }
+    } catch (err) {
+        console.error(err);
+    }
+}

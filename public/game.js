@@ -17,6 +17,7 @@ let ws;
 
 class GAME {
     constructor() {
+        console.log('GAME CONSTRUCTOR');
         this.playerDeckView = null;
         this.opponentDeckView = null;
 
@@ -52,7 +53,7 @@ class GAME {
 
         handleWSResponse({
             socket: ws,
-            event: 'getHandResponse',
+            event: 'getHand',
             onSuccess: (data) => {
                 this.playerHandView.hand = data.hand;
                 this.playerHandView.update();
@@ -66,7 +67,7 @@ class GAME {
 
         handleWSResponse({
             socket: ws,
-            event: 'getBoardResponse',
+            event: 'getBoard',
             onSuccess: (data) => {
                 this.playerBoardView.board = data.playerBoard;
                 this.playerBoardView.update();
@@ -78,6 +79,24 @@ class GAME {
                 setTimeout(() => {
                     this.emit('getBoard'); // retry
                 }, 5 * 1000);
+            }
+        });
+
+        handleWSResponse({
+            socket: ws,
+            event: 'deathEvent',
+            onSuccess: (data) => {
+                if(data.isPlayer) {
+                    this.playerBoardView.killCard(data.boardIndex);
+                } else {
+                    this.opponentBoardView.killCard(data.boardIndex);
+                }
+
+                this.playerBoardView.board = data.playerBoard;
+                this.playerBoardView.update();
+
+                this.opponentBoardView.board = data.opponentBoard;
+                this.opponentBoardView.update();
             }
         });
     }
