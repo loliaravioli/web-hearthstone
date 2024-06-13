@@ -27,6 +27,8 @@ const KEYS = { // SQL keys
 const Minion = require('./minion.js');
 const { ATTRIBUTES, MINION_IDS, MINION_DATA } = require('./baseMinionData.js');
 
+// TODO: these should be actions taken by the players
+// need to define a separate category for "events" i.e. damageEvent, deathEvent, minionPlayEvent, etc.
 module.exports = {
     getGameState,
     playMinion,
@@ -117,12 +119,14 @@ async function attack(ws, data) {
             opponentHealth -= playerBoard[attackerIndex].attack;
             console.log('opponentHealth is', opponentHealth);
         } else if (targetIndex < opponentBoard.length && targetIndex >= 0) {
+            // TODO: may need to split these up into individual, synchronous damage instances
+            // like emitting a "damageEvent"
             opponentBoard[targetIndex].health -= playerBoard[attackerIndex].attack;
             playerBoard[attackerIndex].health -= opponentBoard[targetIndex].attack;
         } else {
             throw new Error('Invalid target index');
         }
-        
+
         // TODO: think of a way to uniquely identify minions without indices
         // and keep track of whether or not they've attacked already
 
