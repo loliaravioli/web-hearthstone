@@ -123,6 +123,8 @@ async function attack(ws, data) {
             throw new Error('Invalid target index');
         }
 
+        // TODO: may need to split these up into individual, synchronous damage instances
+        // like emitting a "damageEvent"
         opponentBoard[targetIndex].health -= playerBoard[attackerIndex].attack;
         playerBoard[attackerIndex].health -= opponentBoard[targetIndex].attack;
 
