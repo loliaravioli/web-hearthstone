@@ -15,6 +15,12 @@ To-do List:
 
 - Organize the content of javascript scripts into objects as much as possible.
 
-- Do animations... https://animista.net/play/entrances/slit-in for drawing cards. https://animista.net/play/entrances/tilt-in-fwd/tilt-in-fwd-tr for showing what card opponent is playing. https://animista.net/play/entrances/puff-in/puff-in-center for placing the card. https://animista.net/play/exits/slit-out to shuffle card back into deck. https://animista.net/play/exits/puff-out for burning a card? https://animista.net/play/attention/shake for when a minion dies.
+- Do animations...
+    - Draw card https://animista.net/play/entrances/slit-in
+    - Show what card opponent is playing https://animista.net/play/entrances/tilt-in-fwd/tilt-in-fwd-tr
+    - Place minion https://animista.net/play/entrances/puff-in/puff-in-center
+    - Shuffle card back into deck https://animista.net/play/exits/slit-out
+    - Burn/overdraw card https://animista.net/play/exits/puff-out
+    - Minion dies https://animista.net/play/attention/shake
 
 - Figure out how things like battlecries will work between client and server.
