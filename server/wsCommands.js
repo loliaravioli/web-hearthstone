@@ -27,6 +27,8 @@ const KEYS = { // SQL keys
 const Minion = require('./minion.js');
 const { ATTRIBUTES, MINION_IDS, MINION_DATA } = require('./baseMinionData.js');
 
+// TODO: these should be actions taken by the players
+// need to define a separate category for "events" i.e. damageEvent, deathEvent, minionPlayEvent, etc.
 module.exports = {
     getHand,
     getBoard,
