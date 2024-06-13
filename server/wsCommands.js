@@ -28,8 +28,7 @@ const Minion = require('./minion.js');
 const { ATTRIBUTES, MINION_IDS, MINION_DATA } = require('./baseMinionData.js');
 
 module.exports = {
-    getHand,
-    getBoard,
+    getGameState,
     playMinion,
     attack
 };
@@ -43,40 +42,35 @@ let playerHand = [
     new Minion(MINION_IDS.ARMORSMITH),
     new Minion(MINION_IDS.LIGHTWELL),
     new Minion(MINION_IDS.TIRION_FORDRING)
-];
-
-let playerBoard = [],
+],
+    playerBoard = [],
     opponentBoard = [
         new Minion(MINION_IDS.ALAKIR_THE_WINDLORD),
         new Minion(MINION_IDS.CENARIUS),
         new Minion(MINION_IDS.KORKRON_ELITE),
         new Minion(MINION_IDS.SUMMONING_PORTAL)
-    ];
+    ],
+    playerHealth = 30,
+    opponentHealth = 10;
 
-async function getHand(ws, data) {
-    const signature = arguments.callee.name;
-    console.log(signature);
-
-    try {
-        wsEmit(ws, signature, true, { hand: playerHand });
-    } catch (err) {
-        console.error(err);
-        wsEmit(ws, signature, false, { hand: [] });
-    }
-}
-
-async function getBoard(ws, data) {
+async function getGameState(ws, data) {
     const signature = arguments.callee.name;
     console.log(signature);
 
     try {
         wsEmit(ws, signature, true, {
+            playerHealth: playerHealth,
+            opponentHealth: opponentHealth,
+            hand: playerHand,
             playerBoard: playerBoard,
             opponentBoard: opponentBoard
         });
     } catch (err) {
         console.error(err);
         wsEmit(ws, signature, false, {
+            playerHealth: 30,
+            opponentHealth: 30,
+            hand: [],
             playerBoard: [],
             opponentBoard: []
         });
@@ -104,8 +98,7 @@ async function playMinion(ws, data) {
         console.error(err);
     }
 
-    getBoard(ws, {});
-    getHand(ws, {});
+    getGameState(ws, {});
 }
 
 async function attack(ws, data) {
@@ -115,16 +108,23 @@ async function attack(ws, data) {
     try {
         const { attackerIndex, targetIndex } = data;
 
-        // TODO: might use -1 or the board's length as the indicator
-        // that the attacker/target is a hero rather than a minion
+        // TODO: add condition for where the hero is the attacker
         if (attackerIndex >= playerBoard.length || attackerIndex < 0) {
             throw new Error('Invalid attacker index');
-        } else if (targetIndex >= opponentBoard.length || targetIndex < 0) {
-            throw new Error('Invalid target index');
         }
 
-        opponentBoard[targetIndex].health -= playerBoard[attackerIndex].attack;
-        playerBoard[attackerIndex].health -= opponentBoard[targetIndex].attack;
+        if (targetIndex == 99) {
+            opponentHealth -= playerBoard[attackerIndex].attack;
+            console.log('opponentHealth is', opponentHealth);
+        } else if (targetIndex < opponentBoard.length && targetIndex >= 0) {
+            opponentBoard[targetIndex].health -= playerBoard[attackerIndex].attack;
+            playerBoard[attackerIndex].health -= opponentBoard[targetIndex].attack;
+        } else {
+            throw new Error('Invalid target index');
+        }
+        
+        // TODO: think of a way to uniquely identify minions without indices
+        // and keep track of whether or not they've attacked already
 
         // TODO: implement response handler on clientside
         // it should just trigger the animation
@@ -138,8 +138,7 @@ async function attack(ws, data) {
         console.error(err);
     }
 
-    getBoard(ws, {});
-    getHand(ws, {});
+    getGameState(ws, {});
 }
 
 // HELPER FUNCTIONS
@@ -189,9 +188,8 @@ function checkDeath(ws) {
                 wsEmit(ws, 'deathEvent', true, {
                     isPlayer: true,
                     boardIndex: index,
-                    playerBoard: playerBoard,
-                    opponentBoard: opponentBoard
                 });
+                getGameState(ws, {});
                 continue;
             }
             index++;
@@ -203,10 +201,9 @@ function checkDeath(ws) {
                 opponentBoard.splice(index, 1);
                 wsEmit(ws, 'deathEvent', true, {
                     isPlayer: false,
-                    boardIndex: index,
-                    playerBoard: playerBoard,
-                    opponentBoard: opponentBoard
+                    boardIndex: index
                 });
+                getGameState(ws, {});
                 continue;
             }
             index++;

@@ -1,6 +1,6 @@
 import { Mana } from './jsObjects/gameObjects/mana.js';
 
-import { MinionAttackController } from './jsObjects/gameControllers/minionAttackController.js';
+import { AttackController } from './jsObjects/gameControllers/attackController.js';
 import { TurnController } from './jsObjects/gameControllers/turnController.js';
 import { CardDrawController } from './jsObjects/gameControllers/cardDrawController.js';
 
@@ -36,48 +36,36 @@ class GAME {
         this.playerManaView = null;
         this.opponentManaView = null;
 
-        this.minionAttackController = null;
+        this.attackController = null;
         this.turnController = null;
         this.cardDrawController = null;
 
-        // TODO: move elsewhere?
+
+
+
+        // TODO: move elsewhere
         ws = new WebSocket('ws://localhost:5500');
-
-        ws.onopen = () => {
-            console.log('Connected to WebSocket server');
-        };
-
-        ws.onclose = () => {
-            console.log('Disconnected from WebSocket server');
-        };
+        ws.onopen = () => { console.log('Connected to WebSocket server'); };
+        ws.onclose = () => { console.log('Disconnected from WebSocket server'); };
 
         handleWSResponse({
             socket: ws,
-            event: 'getHand',
+            event: 'getGameState',
             onSuccess: (data) => {
                 this.playerHandView.hand = data.hand;
                 this.playerHandView.update();
-            },
-            onFailure: (data) => {
-                setTimeout(() => {
-                    this.emit('getHand'); // retry
-                }, 5 * 1000);
-            }
-        });
 
-        handleWSResponse({
-            socket: ws,
-            event: 'getBoard',
-            onSuccess: (data) => {
                 this.playerBoardView.board = data.playerBoard;
                 this.playerBoardView.update();
 
                 this.opponentBoardView.board = data.opponentBoard;
                 this.opponentBoardView.update();
+
+                // TODO: handle hero HP
             },
             onFailure: (data) => {
                 setTimeout(() => {
-                    this.emit('getBoard'); // retry
+                    this.emit('getBoardState'); // retry
                 }, 5 * 1000);
             }
         });
@@ -91,12 +79,6 @@ class GAME {
                 } else {
                     this.opponentBoardView.killCard(data.boardIndex);
                 }
-
-                this.playerBoardView.board = data.playerBoard;
-                this.playerBoardView.update();
-
-                this.opponentBoardView.board = data.opponentBoard;
-                this.opponentBoardView.update();
             }
         });
     }
@@ -120,12 +102,11 @@ class GAME {
         this.playerManaView = new ManaPlayerView(this.playerMana);
         this.opponentManaView = new ManaOpponentView(this.opponentMana); // TODO: get rid of separate player/opponent views for Mana
 
-        this.minionAttackController = new MinionAttackController();
+        this.attackController = new AttackController();
         this.turnController = new TurnController();
         this.cardDrawController = new CardDrawController();
 
-        this.emit('getHand');
-        this.emit('getBoard');
+        this.emit('getGameState');
     }
 
     emit(command, data = {}) {

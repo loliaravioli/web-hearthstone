@@ -1,6 +1,7 @@
 import GAME from '../../game.js';
 
-export class MinionAttackController {
+// maybe convert this into TargetController or something which handles all targeting (attacks, spells, hero powers, etc.)
+export class AttackController {
     constructor() {
         // HTML dom elements, not views or objects
         // use .dataSet.boardIndex or id to distinguish them
@@ -13,7 +14,6 @@ export class MinionAttackController {
 
         // this lets you cancel an attack by releasing the mouse
         document.body.addEventListener('mouseup', (e) => this.onMouseUp(e));
-
 
         // TODO: maybe need to move the code below elsewhere
         // it will also be used for spells and hero powers
@@ -82,6 +82,8 @@ export class MinionAttackController {
                 $('#svgpath')
                     .attr('d', `M${destX},${destY} ${x},${y}`);
             });
+        } else if (true /* click on hero portrait */) {
+            // do hero attack
         }
     }
 
@@ -103,6 +105,15 @@ export class MinionAttackController {
 
                 this.resetAttack();
             }
+        } else if (event.target.classList.contains('opponentHero')) {
+            console.log(`${this.attackerCard.id} attacks the enemy hero`);
+
+            GAME.emit('attack', {
+                attackerIndex: this.attackerCard.dataset.boardIndex,
+                targetIndex: 99 // TODO: make a list of shared enums between server and client for stuff like this
+            });
+
+            this.resetAttack();
         } else {
             console.log('invalid target for attack');
         }
