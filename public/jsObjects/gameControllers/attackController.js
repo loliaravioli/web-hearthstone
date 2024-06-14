@@ -10,9 +10,6 @@ export class AttackController {
 
         GAME.playerBoardView.getElement().addEventListener('mousedown', (e) => this.onDragStart(e));
 
-        GAME.opponentBoardView.getElement().addEventListener('mouseup', (e) => this.onDrop(e));
-
-        // this lets you cancel an attack by releasing the mouse
         document.body.addEventListener('mouseup', (e) => this.onMouseUp(e));
 
         // TODO: maybe need to move the code below elsewhere
@@ -87,7 +84,7 @@ export class AttackController {
         }
     }
 
-    onDrop(event) {
+    onMouseUp(event) {
         event.preventDefault();
 
         if (!this.attackerCard) { return; }
@@ -95,35 +92,21 @@ export class AttackController {
         if (event.target.classList.contains('cardInPlay--opponent')) {
             this.targetCard = event.target;
 
-            if (this.attackerCard) {
-                console.log(`${this.attackerCard.id} attacks ${this.targetCard.id}`);
+            console.log(`${this.attackerCard.id} attacks ${this.targetCard.id}`);
 
-                GAME.emit('attack', {
-                    attackerIndex: this.attackerCard.dataset.boardIndex,
-                    targetIndex: this.targetCard.dataset.boardIndex
-                });
-
-                this.resetAttack();
-            }
-        } else if (event.target.classList.contains('opponentHero')) {
+            GAME.trigger('trigger_attack', {
+                attackerIndex: this.attackerCard.dataset.boardIndex,
+                targetIndex: this.targetCard.dataset.boardIndex
+            });
+        } else if (event.target.id == 'opponentHero') {
             console.log(`${this.attackerCard.id} attacks the enemy hero`);
 
-            GAME.emit('attack', {
+            GAME.trigger('trigger_attack', {
                 attackerIndex: this.attackerCard.dataset.boardIndex,
                 targetIndex: 99 // TODO: make a list of shared enums between server and client for stuff like this
             });
-
-            this.resetAttack();
-        } else {
-            console.log('invalid target for attack');
         }
-    }
 
-    onMouseUp(event) {
-        event.preventDefault();
-        if (this.attackerCard && this.targetCard) {
-            this.doAttack();
-        }
         this.resetAttack();
     }
 

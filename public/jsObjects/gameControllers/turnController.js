@@ -1,5 +1,4 @@
 import GAME from '../../../game.js';
-import { AI } from '../../scripts/AI.js';
 
 // TODO: create separate functionality specifically for AI
 
@@ -45,7 +44,7 @@ export class TurnController {
             .html('ENEMY TURN');
 
         setTimeout(function() {
-            AI();
+            // AI();
             this.startPlayerTurn();
         }, 1.25 * 1000);
     }

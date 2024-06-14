@@ -23,23 +23,11 @@ const KEYS = { // SQL keys
     // DOCK4: 'dock4',
     // LAST_MODIFIED: 'last_modified'
 };
-
+const { TRIGGER, EVENT } = require('../constants.js');
 const Minion = require('./minion.js');
 const { ATTRIBUTES, MINION_IDS, MINION_DATA } = require('./baseMinionData.js');
 
-// TODO: these should be actions taken by the players
-// need to define a separate category for "events" i.e. damageEvent, deathEvent, minionPlayEvent, etc.
-module.exports = {
-    getGameState,
-    playMinion,
-    attack
-};
-
-// TODO: move these local variables into a SQL table
-// retrieve them as needed without storing them locally
-
-// hands, boards and decks will all use the same Minion class
-// this makes it easy to modify the stats of minions wherever they are
+// DEBUG DATA
 let playerHand = [
     new Minion(MINION_IDS.ARMORSMITH),
     new Minion(MINION_IDS.LIGHTWELL),
@@ -54,13 +42,20 @@ let playerHand = [
     ],
     playerHealth = 30,
     opponentHealth = 10;
+// DEBUG DATA
 
-async function getGameState(ws, data) {
-    const signature = arguments.callee.name;
-    console.log(signature);
+// TRIGGERS
+module.exports = {
+    trigger_getGameState,
+    trigger_playMinion,
+    trigger_attack
+};
+
+async function trigger_getGameState(ws, data) {
+    console.log(arguments.callee.name);
 
     try {
-        wsEmit(ws, signature, true, {
+        sendEvent(ws, EVENT.GET_GAME_STATE, true, {
             playerHealth: playerHealth,
             opponentHealth: opponentHealth,
             hand: playerHand,
@@ -69,7 +64,7 @@ async function getGameState(ws, data) {
         });
     } catch (err) {
         console.error(err);
-        wsEmit(ws, signature, false, {
+        sendEvent(ws, EVENT.GET_GAME_STATE, false, {
             playerHealth: 30,
             opponentHealth: 30,
             hand: [],
@@ -79,9 +74,8 @@ async function getGameState(ws, data) {
     }
 }
 
-async function playMinion(ws, data) {
-    const signature = arguments.callee.name;
-    console.log(signature);
+async function trigger_playMinion(ws, data) {
+    console.log(arguments.callee.name);
 
     try {
         const { boardIndex, handIndex } = data;
@@ -89,23 +83,18 @@ async function playMinion(ws, data) {
         // TODO: check that the indexed card is actually a minion
         const card = playerHand[handIndex];
         playerHand.splice(handIndex, 1);
-
         // TODO: trigger minion's battlecry
-
         playerBoard.splice(boardIndex, 0, card);
-
         // TODO: trigger onPlay effects
-
     } catch (err) {
         console.error(err);
     }
 
-    getGameState(ws, {});
+    trigger_getGameState(ws, {});
 }
 
-async function attack(ws, data) {
-    const signature = arguments.callee.name;
-    console.log(signature);
+async function trigger_attack(ws, data) {
+    console.log(arguments.callee.name);
 
     try {
         const { attackerIndex, targetIndex } = data;
@@ -132,7 +121,7 @@ async function attack(ws, data) {
 
         // TODO: implement response handler on clientside
         // it should just trigger the animation
-        wsEmit(ws, signature, true, {
+        sendEvent(ws, EVENT.ATTACK, true, {
             attackerIndex: attackerIndex,
             targetIndex: targetIndex
         });
@@ -142,14 +131,45 @@ async function attack(ws, data) {
         console.error(err);
     }
 
-    getGameState(ws, {});
+    trigger_getGameState(ws, {});
 }
+
+function checkDeath(ws) {
+    console.log(arguments.callee.name);
+
+    // it's necessary to send the board state each time
+    // because minion indices change as minions die
+    // and client needs to know which minions to animate
+    try {
+        function checkAndRemoveDeadUnits(board, isPlayer, ws) {
+            let index = 0;
+            while (index < board.length) {
+                if (board[index].health <= 0) {
+                    board.splice(index, 1);
+                    sendEvent(ws, EVENT.DEATH, true, {
+                        isPlayer: isPlayer,
+                        boardIndex: index,
+                    });
+                    trigger_getGameState(ws, {});
+                } else {
+                    index++;
+                }
+            }
+        }
+        checkAndRemoveDeadUnits(playerBoard, true, ws);
+        checkAndRemoveDeadUnits(opponentBoard, false, ws);
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+
 
 // HELPER FUNCTIONS
 
-function wsEmit(ws, signature, success, data) {
+function sendEvent(ws, event, success, data) {
     ws.send(JSON.stringify({
-        signature: signature,
+        signature: event,
         success: success,
         data: data
     }));
@@ -176,43 +196,3 @@ function wsEmit(ws, signature, success, data) {
 //     [record[KEYS.IP3], record[KEYS.POINTS3]],
 //     [record[KEYS.IP4], record[KEYS.POINTS4]]
 // ];
-
-function checkDeath(ws) {
-    const signature = arguments.callee.name;
-    console.log(signature);
-
-    // it's necessary to send the board state each time
-    // because minion indices change as minions die
-    // and client needs to know which minions to animate
-    try {
-        let index = 0;
-        while (index < playerBoard.length) {
-            if (playerBoard[index].health <= 0) {
-                playerBoard.splice(index, 1);
-                wsEmit(ws, 'deathEvent', true, {
-                    isPlayer: true,
-                    boardIndex: index,
-                });
-                getGameState(ws, {});
-                continue;
-            }
-            index++;
-        }
-
-        index = 0;
-        while (index < opponentBoard.length) {
-            if (opponentBoard[index].health <= 0) {
-                opponentBoard.splice(index, 1);
-                wsEmit(ws, 'deathEvent', true, {
-                    isPlayer: false,
-                    boardIndex: index
-                });
-                getGameState(ws, {});
-                continue;
-            }
-            index++;
-        }
-    } catch (err) {
-        console.error(err);
-    }
-}

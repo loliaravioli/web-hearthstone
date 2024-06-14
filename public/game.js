@@ -12,7 +12,7 @@ import { HandOpponentView } from './jsObjects/views/HandOpponentView.js';
 import { ManaPlayerView } from './jsObjects/views/ManaPlayerView.js';
 import { ManaOpponentView } from './jsObjects/views/ManaOpponentView.js';
 
-import { handleWSResponse } from './wsResponseHandler.js';
+import { wsEventHandler } from './wsEventHandler.js';
 let ws;
 
 class GAME {
@@ -48,9 +48,9 @@ class GAME {
         ws.onopen = () => { console.log('Connected to WebSocket server'); };
         ws.onclose = () => { console.log('Disconnected from WebSocket server'); };
 
-        handleWSResponse({
+        wsEventHandler({
             socket: ws,
-            event: 'getGameState',
+            event: 'event_getGameState',
             onSuccess: (data) => {
                 this.playerHandView.hand = data.hand;
                 this.playerHandView.update();
@@ -65,20 +65,28 @@ class GAME {
             },
             onFailure: (data) => {
                 setTimeout(() => {
-                    this.emit('getBoardState'); // retry
+                    this.trigger('trigger_getGameState'); // retry
                 }, 5 * 1000);
             }
         });
 
-        handleWSResponse({
+        wsEventHandler({
             socket: ws,
-            event: 'deathEvent',
+            event: 'event_death',
             onSuccess: (data) => {
-                if(data.isPlayer) {
+                if (data.isPlayer) {
                     this.playerBoardView.killCard(data.boardIndex);
                 } else {
                     this.opponentBoardView.killCard(data.boardIndex);
                 }
+            }
+        });
+
+        wsEventHandler({
+            socket: ws,
+            event: 'event_damage',
+            onSuccess: (data) => {
+                // TODO: implement
             }
         });
     }
@@ -99,18 +107,22 @@ class GAME {
         this.playerMana = new Mana();
         this.opponentMana = new Mana();
 
+        // TODO: get rid of separate player/opponent views for Mana
         this.playerManaView = new ManaPlayerView(this.playerMana);
-        this.opponentManaView = new ManaOpponentView(this.opponentMana); // TODO: get rid of separate player/opponent views for Mana
+        this.opponentManaView = new ManaOpponentView(this.opponentMana);
 
         this.attackController = new AttackController();
         this.turnController = new TurnController();
         this.cardDrawController = new CardDrawController();
 
-        this.emit('getGameState');
+        this.trigger('trigger_getGameState');
     }
 
-    emit(command, data = {}) {
-        ws.send(JSON.stringify({ command: command, data: data }));
+    trigger(trigger, data = {}) {
+        ws.send(JSON.stringify({
+            trigger: trigger,
+            data: data,
+        }));
     }
 }
 
