@@ -80,6 +80,7 @@ class GAME {
             socket: ws,
             event: 'death',
             onSuccess: (data) => {
+                console.log(`${data.boardIndex} died - player's side: ${data.isPlayer}`);
                 if (data.isPlayer) {
                     this.playerBoardView.killCard(data.boardIndex);
                 } else {
@@ -90,9 +91,17 @@ class GAME {
 
         wsEventHandler({
             socket: ws,
+            event: 'attack',
+            onSuccess: (data) => {
+                console.log(`${data.attackerIndex} attacked ${data.targetIndex}`);
+            }
+        });
+
+        wsEventHandler({
+            socket: ws,
             event: 'damage',
             onSuccess: (data) => {
-                // TODO: implement
+                console.log(`${data.attackerIndex} dealt ${data.damage} to ${data.targetIndex}`);
             }
         });
     }

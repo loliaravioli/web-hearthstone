@@ -103,66 +103,67 @@ async function attack(ws, data) {
             throw new Error('Invalid attacker index');
         }
 
-        if (targetIndex == 99) {
-            opponentHealth -= playerBoard[attackerIndex].attack;
-            console.log('opponentHealth is', opponentHealth);
-        } else if (targetIndex < opponentBoard.length && targetIndex >= 0) {
-            // TODO: may need to split these up into individual, synchronous damage instances
-            // like emitting a "damageEvent"
-            opponentBoard[targetIndex].health -= playerBoard[attackerIndex].attack;
-            playerBoard[attackerIndex].health -= opponentBoard[targetIndex].attack;
+        let damageToAttacker =
+            damageToTarget = 0;
+
+        if (targetIndex == 99) { // target is hero
+            damageToTarget = playerBoard[attackerIndex].attack;
+        } else if (targetIndex < opponentBoard.length && targetIndex >= 0) { // target is minion
+            damageToTarget = playerBoard[attackerIndex].attack;
+            damageToAttacker = opponentBoard[targetIndex].attack;
         } else {
             throw new Error('Invalid target index');
         }
 
-        // TODO: think of a way to uniquely identify minions without indices
-        // and keep track of whether or not they've attacked already
-
-        // TODO: implement response handler on clientside
-        // it should just trigger the animation
-        sendEvent(ws, 'attack', true, {
+        sendEvent(ws, 'attack', true, { // trigger animation on client
             attackerIndex: attackerIndex,
             targetIndex: targetIndex
         });
 
-        checkDeath(ws);
+        if (damageToTarget > 0) { // deal damage to target
+            if(targetIndex == 99) {
+                opponentHealth -= damageToTarget;
+            } else {
+                opponentBoard[targetIndex].health -= damageToTarget;
+            }
+            sendEvent(ws, 'damage', true, {
+                attackerIndex: attackerIndex,
+                targetIndex: targetIndex,
+                damage: damageToTarget
+            });
+
+            if (targetIndex != 99 && opponentBoard[targetIndex].health <= 0) {
+                opponentBoard.splice(targetIndex, 1);
+                sendEvent(ws, 'death', true, {
+                    isPlayer: false,
+                    boardIndex: targetIndex,
+                });
+                getGameState(ws, {});
+            }
+        }
+
+        if (damageToAttacker > 0) { // deal damage to attacker
+            playerBoard[attackerIndex].health -= damageToAttacker;
+            sendEvent(ws, 'damage', true, {
+                attackerIndex: targetIndex,
+                targetIndex: attackerIndex,
+                damage: damageToAttacker
+            });
+
+            if (playerBoard[attackerIndex].health <= 0) {
+                playerBoard.splice(attackerIndex, 1);
+                sendEvent(ws, 'death', true, {
+                    isPlayer: true,
+                    boardIndex: attackerIndex,
+                });
+                getGameState(ws, {});
+            }
+        }
     } catch (err) {
         console.error(err);
     }
 
     getGameState(ws, {});
-}
-
-function checkDeath(ws) {
-    console.log(arguments.callee.name);
-
-    // it's necessary to send the board state each time
-    // because minion indices change as minions die
-    // and client needs to know which minions to animate
-
-    // ^ not necessary after unique minion object ID's are implemented
-
-    try {
-        function checkAndRemoveDeadUnits(board, isPlayer, ws) {
-            let index = 0;
-            while (index < board.length) {
-                if (board[index].health <= 0) {
-                    board.splice(index, 1);
-                    sendEvent(ws, 'death', true, {
-                        isPlayer: isPlayer,
-                        boardIndex: index,
-                    });
-                    getGameState(ws, {});
-                } else {
-                    index++;
-                }
-            }
-        }
-        checkAndRemoveDeadUnits(playerBoard, true, ws);
-        checkAndRemoveDeadUnits(opponentBoard, false, ws);
-    } catch (err) {
-        console.error(err);
-    }
 }
 
 

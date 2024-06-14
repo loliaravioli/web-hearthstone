@@ -3,10 +3,9 @@ import GAME from '../../game.js';
 // maybe convert this into TargetController or something which handles all targeting (attacks, spells, hero powers, etc.)
 export class AttackController {
     constructor() {
-        // HTML dom elements, not views or objects
-        // use .dataSet.boardIndex or id to distinguish them
+        // HTML dom element, not view or object
+        // use .dataSet.boardIndex or id to distinguish
         this.attackerCard = null;
-        this.targetCard = null;
 
         GAME.playerBoardView.getElement().addEventListener('mousedown', (e) => this.onDragStart(e));
 
@@ -41,14 +40,6 @@ export class AttackController {
         document.addEventListener('mousemove', onMouseOuterMove);
         document.addEventListener('mousemove', onMouseInnerMove);
         document.addEventListener('mousemove', onMouseTriangleMove);
-    }
-
-    setAttacker(attackerHTML) {
-        this.attackerCard = attackerHTML;
-    }
-
-    setTarget(targetHTML) {
-        this.targetCard = targetHTML;
     }
 
     onDragStart(event) {
@@ -90,17 +81,11 @@ export class AttackController {
         if (!this.attackerCard) { return; }
 
         if (event.target.classList.contains('cardInPlay--opponent')) {
-            this.targetCard = event.target;
-
-            console.log(`${this.attackerCard.id} attacks ${this.targetCard.id}`);
-
             GAME.triggerEvent('attack', {
                 attackerIndex: this.attackerCard.dataset.boardIndex,
-                targetIndex: this.targetCard.dataset.boardIndex
+                targetIndex: event.target.dataset.boardIndex
             });
         } else if (event.target.id == 'opponentHero') {
-            console.log(`${this.attackerCard.id} attacks the enemy hero`);
-
             GAME.triggerEvent('attack', {
                 attackerIndex: this.attackerCard.dataset.boardIndex,
                 targetIndex: 99 // TODO: make a list of shared enums between server and client for stuff like this
@@ -112,7 +97,6 @@ export class AttackController {
 
     resetAttack() {
         this.attackerCard = null;
-        this.targetCard = null;
 
         $('#svg').hide();
 
