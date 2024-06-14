@@ -7,6 +7,8 @@ import { CardDrawController } from './jsObjects/gameControllers/cardDrawControll
 import { BoardView } from './jsObjects/views/BoardView.js';
 import { DeckView } from './jsObjects/views/DeckView.js';
 import { DialogueView } from './jsObjects/views/DialogueView.js';
+import { HeroView } from './jsObjects/views/HeroView.js';
+
 import { HandPlayerView } from './jsObjects/views/HandPlayerView.js';
 import { HandOpponentView } from './jsObjects/views/HandOpponentView.js';
 import { ManaPlayerView } from './jsObjects/views/ManaPlayerView.js';
@@ -30,6 +32,9 @@ class GAME {
         this.playerDialogueView = null;
         this.opponentDialogueView = null;
 
+        this.playerHeroView = null;
+        this.opponentHeroView = null;
+
         this.playerMana = null;
         this.opponentMana = null;
 
@@ -50,7 +55,7 @@ class GAME {
 
         wsEventHandler({
             socket: ws,
-            event: 'event_getGameState',
+            event: 'getGameState',
             onSuccess: (data) => {
                 this.playerHandView.hand = data.hand;
                 this.playerHandView.update();
@@ -61,18 +66,19 @@ class GAME {
                 this.opponentBoardView.board = data.opponentBoard;
                 this.opponentBoardView.update();
 
-                // TODO: handle hero HP
+                this.playerHeroView.setHealth(data.playerHealth);
+                this.opponentHeroView.setHealth(data.opponentHealth);
             },
             onFailure: (data) => {
                 setTimeout(() => {
-                    this.trigger('trigger_getGameState'); // retry
+                    this.triggerEvent('getGameState'); // retry
                 }, 5 * 1000);
             }
         });
 
         wsEventHandler({
             socket: ws,
-            event: 'event_death',
+            event: 'death',
             onSuccess: (data) => {
                 if (data.isPlayer) {
                     this.playerBoardView.killCard(data.boardIndex);
@@ -84,7 +90,7 @@ class GAME {
 
         wsEventHandler({
             socket: ws,
-            event: 'event_damage',
+            event: 'damage',
             onSuccess: (data) => {
                 // TODO: implement
             }
@@ -103,6 +109,9 @@ class GAME {
 
         this.playerDialogueView = new DialogueView(true);
         this.opponentDialogueView = new DialogueView(false);
+        
+        this.playerHeroView = new HeroView(true);
+        this.opponentHeroView = new HeroView(false);
 
         this.playerMana = new Mana();
         this.opponentMana = new Mana();
@@ -115,14 +124,11 @@ class GAME {
         this.turnController = new TurnController();
         this.cardDrawController = new CardDrawController();
 
-        this.trigger('trigger_getGameState');
+        this.triggerEvent('getGameState');
     }
 
-    trigger(trigger, data = {}) {
-        ws.send(JSON.stringify({
-            trigger: trigger,
-            data: data,
-        }));
+    triggerEvent(event, data = {}) {
+        ws.send(JSON.stringify({ event: event, data: data }));
     }
 }
 

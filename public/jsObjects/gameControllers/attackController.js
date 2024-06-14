@@ -94,14 +94,14 @@ export class AttackController {
 
             console.log(`${this.attackerCard.id} attacks ${this.targetCard.id}`);
 
-            GAME.trigger('trigger_attack', {
+            GAME.triggerEvent('attack', {
                 attackerIndex: this.attackerCard.dataset.boardIndex,
                 targetIndex: this.targetCard.dataset.boardIndex
             });
         } else if (event.target.id == 'opponentHero') {
             console.log(`${this.attackerCard.id} attacks the enemy hero`);
 
-            GAME.trigger('trigger_attack', {
+            GAME.triggerEvent('attack', {
                 attackerIndex: this.attackerCard.dataset.boardIndex,
                 targetIndex: 99 // TODO: make a list of shared enums between server and client for stuff like this
             });

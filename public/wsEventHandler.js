@@ -30,21 +30,3 @@ export const wsEventHandler = ({ socket, event, onSuccess, onFailure = () => { }
         });
     });
 };
-
-
-
-/* EXAMPLE USAGE:
-
-handleWSResponse({
-    socket: socket,
-    event: 'getHandResponse',
-    onSuccess: (data) => {
-        // Handle success
-    },
-    onFailure: (data) =>  {
-        // Handle failure
-        // Silently returns by default
-    }
-});
-
-*/

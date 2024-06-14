@@ -4,12 +4,12 @@ const mime = require('mime-types');
 const fs = require('fs');
 const path = require('path');
 const staticDir = path.join(__dirname, '/public');
-const triggerHandlers = require('./server/triggerHandlers.js');
+const events = require('./server/wsEvents.js');
 
 // const clients = new Map();
 
 const port = process.env.PORT || 5500;
-const app = uWS.App({
+uWS.App({
     key_file_name: 'misc/key.pem',
     cert_file_name: 'misc/cert.pem',
     passphrase: '1234'
@@ -60,16 +60,20 @@ const app = uWS.App({
             return;
         }
 
-        const { trigger, data } = parsedMessage;
+        const { event, data } = parsedMessage;
 
-        // programmatically connects triggers to their respective function
-        // each trigger should be named the same as the function
-        // e.g. the trigger 'trigger_playMinion' will trigger the function trigger_playMinion()
-        // each function should also have the same parameters
-        if (triggerHandlers[trigger]) {
-            triggerHandlers[trigger](ws, data);
-        } else {
-            console.error('Unknown trigger', trigger);
+        switch (event) {
+            case 'getGameState':
+                events.getGameState(ws, data);
+                break;
+            case 'playMinion':
+                events.playMinion(ws, data);
+                break;
+            case 'attack':
+                events.attack(ws, data);
+                break;
+            default:
+                console.error('Unknown event', event);
         }
     }
 }).listen(port, () => {

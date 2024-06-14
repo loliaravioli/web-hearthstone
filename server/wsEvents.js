@@ -23,7 +23,6 @@ const KEYS = { // SQL keys
     // DOCK4: 'dock4',
     // LAST_MODIFIED: 'last_modified'
 };
-const { TRIGGER, EVENT } = require('../constants.js');
 const Minion = require('./minion.js');
 const { ATTRIBUTES, MINION_IDS, MINION_DATA } = require('./baseMinionData.js');
 
@@ -44,18 +43,18 @@ let playerHand = [
     opponentHealth = 10;
 // DEBUG DATA
 
-// TRIGGERS
+// EVENTS
 module.exports = {
-    trigger_getGameState,
-    trigger_playMinion,
-    trigger_attack
+    getGameState,
+    playMinion,
+    attack
 };
 
-async function trigger_getGameState(ws, data) {
+async function getGameState(ws, data) {
     console.log(arguments.callee.name);
 
     try {
-        sendEvent(ws, EVENT.GET_GAME_STATE, true, {
+        sendEvent(ws, 'getGameState', true, {
             playerHealth: playerHealth,
             opponentHealth: opponentHealth,
             hand: playerHand,
@@ -64,7 +63,7 @@ async function trigger_getGameState(ws, data) {
         });
     } catch (err) {
         console.error(err);
-        sendEvent(ws, EVENT.GET_GAME_STATE, false, {
+        sendEvent(ws, 'getGameState', false, {
             playerHealth: 30,
             opponentHealth: 30,
             hand: [],
@@ -74,7 +73,7 @@ async function trigger_getGameState(ws, data) {
     }
 }
 
-async function trigger_playMinion(ws, data) {
+async function playMinion(ws, data) {
     console.log(arguments.callee.name);
 
     try {
@@ -90,10 +89,10 @@ async function trigger_playMinion(ws, data) {
         console.error(err);
     }
 
-    trigger_getGameState(ws, {});
+    getGameState(ws, {});
 }
 
-async function trigger_attack(ws, data) {
+async function attack(ws, data) {
     console.log(arguments.callee.name);
 
     try {
@@ -121,7 +120,7 @@ async function trigger_attack(ws, data) {
 
         // TODO: implement response handler on clientside
         // it should just trigger the animation
-        sendEvent(ws, EVENT.ATTACK, true, {
+        sendEvent(ws, 'attack', true, {
             attackerIndex: attackerIndex,
             targetIndex: targetIndex
         });
@@ -131,7 +130,7 @@ async function trigger_attack(ws, data) {
         console.error(err);
     }
 
-    trigger_getGameState(ws, {});
+    getGameState(ws, {});
 }
 
 function checkDeath(ws) {
@@ -140,17 +139,20 @@ function checkDeath(ws) {
     // it's necessary to send the board state each time
     // because minion indices change as minions die
     // and client needs to know which minions to animate
+
+    // ^ not necessary after unique minion object ID's are implemented
+
     try {
         function checkAndRemoveDeadUnits(board, isPlayer, ws) {
             let index = 0;
             while (index < board.length) {
                 if (board[index].health <= 0) {
                     board.splice(index, 1);
-                    sendEvent(ws, EVENT.DEATH, true, {
+                    sendEvent(ws, 'death', true, {
                         isPlayer: isPlayer,
                         boardIndex: index,
                     });
-                    trigger_getGameState(ws, {});
+                    getGameState(ws, {});
                 } else {
                     index++;
                 }
