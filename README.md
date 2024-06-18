@@ -9,11 +9,13 @@ To-do List:
 
 - Get all card images and sound effects. Most are now in the files but some are sporadically missing.
 
-- Fix the mess of HTML and CSS. Start using something like storybook for the html/css elements, so they can be developed without having to play the entire game. https://storybook.js.org/docs/get-started
+- Tidy up HTML and CSS. Start using something like storybook for the html/css elements, so they can be developed without having to play the entire game. https://storybook.js.org/docs/get-started
 
 - Implement several screens (menu, game, card collection, etc.).
 
-- Organize the content of javascript scripts into objects as much as possible.
+- Organize the content of javascript scripts into objects or separate single-use scripts as much as possible.
+
+- Make individual events update the client's game state instead of sending the entire game state each time and having the client reload everything.
 
 - Do animations...
     - Draw card https://animista.net/play/entrances/slit-in
@@ -23,4 +25,4 @@ To-do List:
     - Burn/overdraw card https://animista.net/play/exits/puff-out
     - Minion dies https://animista.net/play/attention/shake
 
-- Figure out how things like battlecries will work between client and server.
+- Figure out how things like battlecries will work between client and server. (it'll probably work the same way as spells. store whether or not the minion has a battlecry and initiate the targeting system entirely clientside)
