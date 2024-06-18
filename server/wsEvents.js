@@ -23,25 +23,15 @@ const KEYS = { // SQL keys
     // DOCK4: 'dock4',
     // LAST_MODIFIED: 'last_modified'
 };
-const Minion = require('./minion.js');
-const { ATTRIBUTES, MINION_IDS, MINION_DATA } = require('./baseMinionData.js');
+const { sendEvent } = require('./sendEvent.js');
+const Minion = require('./minionData/minion.js');
+const { ATTRIBUTES, MINION_IDS, MINION_DATA } = require('./minionData/baseMinionData.js');
+const GameState = require('./gameState.js');
 
 // DEBUG DATA
-let playerHand = [
-    new Minion(MINION_IDS.ARMORSMITH),
-    new Minion(MINION_IDS.LIGHTWELL),
-    new Minion(MINION_IDS.TIRION_FORDRING)
-],
-    playerBoard = [],
-    opponentBoard = [
-        new Minion(MINION_IDS.ALAKIR_THE_WINDLORD),
-        new Minion(MINION_IDS.CENARIUS),
-        new Minion(MINION_IDS.KORKRON_ELITE),
-        new Minion(MINION_IDS.SUMMONING_PORTAL)
-    ],
-    playerHealth = 30,
-    opponentHealth = 10;
-// DEBUG DATA
+const gameState = new GameState(),
+    PLAYER_HERO = 'playerHero',
+    OPPONENT_HERO = 'opponentHero';
 
 // EVENTS
 module.exports = {
@@ -55,12 +45,13 @@ async function getGameState(ws, data) {
 
     try {
         sendEvent(ws, 'getGameState', true, {
-            playerHealth: playerHealth,
-            opponentHealth: opponentHealth,
-            hand: playerHand,
-            playerBoard: playerBoard,
-            opponentBoard: opponentBoard
+            playerHealth: gameState.playerHealth,
+            opponentHealth: gameState.opponentHealth,
+            hand: gameState.playerHand,
+            playerBoard: gameState.playerBoard,
+            opponentBoard: gameState.opponentBoard
         });
+        // sendEvent(ws, 'getGameState', true, gameState);
     } catch (err) {
         console.error(err);
         sendEvent(ws, 'getGameState', false, {
@@ -78,13 +69,8 @@ async function playMinion(ws, data) {
 
     try {
         const { boardIndex, handIndex } = data;
-
-        // TODO: check that the indexed card is actually a minion
-        const card = playerHand[handIndex];
-        playerHand.splice(handIndex, 1);
-        // TODO: trigger minion's battlecry
-        playerBoard.splice(boardIndex, 0, card);
-        // TODO: trigger onPlay effects
+        gameState.setWS(ws);
+        gameState.playMinion(true, boardIndex, handIndex);
     } catch (err) {
         console.error(err);
     }
@@ -99,18 +85,17 @@ async function attack(ws, data) {
         const { attackerIndex, targetIndex } = data;
 
         // TODO: add condition for where the hero is the attacker
-        if (attackerIndex >= playerBoard.length || attackerIndex < 0) {
+        if (attackerIndex >= gameState.playerBoard.length || attackerIndex < 0) {
             throw new Error('Invalid attacker index');
         }
 
-        let damageToAttacker =
-            damageToTarget = 0;
+        let damageToAttacker = damageToTarget = 0;
 
         if (targetIndex == 99) { // target is hero
-            damageToTarget = playerBoard[attackerIndex].attack;
-        } else if (targetIndex < opponentBoard.length && targetIndex >= 0) { // target is minion
-            damageToTarget = playerBoard[attackerIndex].attack;
-            damageToAttacker = opponentBoard[targetIndex].attack;
+            damageToTarget = gameState.playerBoard[attackerIndex].attack;
+        } else if (targetIndex < gameState.opponentBoard.length && targetIndex >= 0) { // target is minion
+            damageToTarget = gameState.playerBoard[attackerIndex].attack;
+            damageToAttacker = gameState.opponentBoard[targetIndex].attack;
         } else {
             throw new Error('Invalid target index');
         }
@@ -121,10 +106,10 @@ async function attack(ws, data) {
         });
 
         if (damageToTarget > 0) { // deal damage to target
-            if(targetIndex == 99) {
-                opponentHealth -= damageToTarget;
+            if (targetIndex == 99) {
+                gameState.opponentHealth -= damageToTarget;
             } else {
-                opponentBoard[targetIndex].health -= damageToTarget;
+                gameState.opponentBoard[targetIndex].health -= damageToTarget;
             }
             sendEvent(ws, 'damage', true, {
                 attackerIndex: attackerIndex,
@@ -132,8 +117,8 @@ async function attack(ws, data) {
                 damage: damageToTarget
             });
 
-            if (targetIndex != 99 && opponentBoard[targetIndex].health <= 0) {
-                opponentBoard.splice(targetIndex, 1);
+            if (targetIndex != 99 && gameState.opponentBoard[targetIndex].health <= 0) {
+                gameState.opponentBoard.splice(targetIndex, 1);
                 sendEvent(ws, 'death', true, {
                     isPlayer: false,
                     boardIndex: targetIndex,
@@ -143,15 +128,15 @@ async function attack(ws, data) {
         }
 
         if (damageToAttacker > 0) { // deal damage to attacker
-            playerBoard[attackerIndex].health -= damageToAttacker;
+            gameState.playerBoard[attackerIndex].health -= damageToAttacker;
             sendEvent(ws, 'damage', true, {
                 attackerIndex: targetIndex,
                 targetIndex: attackerIndex,
                 damage: damageToAttacker
             });
 
-            if (playerBoard[attackerIndex].health <= 0) {
-                playerBoard.splice(attackerIndex, 1);
+            if (gameState.playerBoard[attackerIndex].health <= 0) {
+                gameState.playerBoard.splice(attackerIndex, 1);
                 sendEvent(ws, 'death', true, {
                     isPlayer: true,
                     boardIndex: attackerIndex,
@@ -166,16 +151,45 @@ async function attack(ws, data) {
     getGameState(ws, {});
 }
 
+// TODO: create unique minion ID's to use in place of indices
+// should be something like "player-minionFileName-#"
+function applyDamage(attackerID, targetID, damage) {
+    if (damage < 1) { return; }
+
+    let minion;
+    if (targetID == OPPONENT_HERO) {
+        gameState.opponentHealth -= damage;
+    } else {
+        minion = getMinionWithID(targetID);
+        minion.health -= damage;
+    }
+
+    sendEvent(ws, 'damage', true, {
+        attackerIndex: attackerID,
+        targetIndex: targetID,
+        damage: damage
+    });
+
+    if (targetID != OPPONENT_HERO && minion.health <= 0) {
+        const minionIndex = gameState.opponentBoard.indexOf(minion);
+        gameState.opponentBoard.splice(minionIndex, 1);
+        sendEvent(ws, 'death', true, {
+            targetID: targetID,
+        });
+        getGameState(ws, {});
+    }
+}
+
 
 
 // HELPER FUNCTIONS
 
-function sendEvent(ws, event, success, data) {
-    ws.send(JSON.stringify({
-        signature: event,
-        success: success,
-        data: data
-    }));
+function getMinionWithID(board, id) {
+    board.forEach(minion => {
+        if (minion.uniqueID == id) {
+            return minion;
+        }
+    });
 }
 
 // async function getRecord(id) {
