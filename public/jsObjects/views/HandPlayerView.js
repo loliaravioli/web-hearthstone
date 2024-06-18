@@ -60,13 +60,13 @@ export class HandPlayerView {
         //     this.getElement().appendChild(view.getElement());
         // }
 
-        for (let i = 0; i < this.hand.length; i++) {
-            const view = new MinionHandView(this.hand[i], i);
+        this.hand.forEach((i) => {
+            const view = new MinionHandView(i);
             view.setPlayable(true); // FOR DEBUGGING
             this.cardViews.push(view);
             this.getElement().appendChild(view.getElement());
-        }
+        });
 
-        GAME.cardDragController.refresh();
+        GAME.cardPlayController.refresh();
     }
 }

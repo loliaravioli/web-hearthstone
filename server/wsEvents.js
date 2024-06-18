@@ -68,9 +68,9 @@ async function playMinion(ws, data) {
     console.log(arguments.callee.name);
 
     try {
-        const { boardIndex, handIndex } = data;
+        const { boardIndex, minionID } = data;
         gameState.setWS(ws);
-        gameState.playMinion(true, boardIndex, handIndex);
+        gameState.playMinion(true, boardIndex, minionID);
     } catch (err) {
         console.error(err);
     }
@@ -186,7 +186,7 @@ function applyDamage(attackerID, targetID, damage) {
 
 function getMinionWithID(board, id) {
     board.forEach(minion => {
-        if (minion.uniqueID == id) {
+        if (minion.minionID == id) {
             return minion;
         }
     });

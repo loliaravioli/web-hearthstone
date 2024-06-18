@@ -1,6 +1,6 @@
 import GAME from '../../game.js';
 
-export class CardDragController {
+export class CardPlayController {
     constructor() {
         this.refresh();
     }
@@ -12,24 +12,21 @@ export class CardDragController {
                 GAME.playerBoardView.removePlaceholder();
                 return !valid;
             },
-            drag: this.throttle((event, ui) => {
+            drag: this.throttle(function (event, ui) {
                 if (!ui.helper.data('hovering-board')) { return; }
                 GAME.playerBoardView.generatePlaceholder(ui.helper.offset().left + (ui.helper.width() / 2));
             }, 50)
         });
-        
+
         $('#board--player').droppable({
             accept: '.card',
-            drop: (event, ui) => {
+            drop: function (event, ui) {
                 ui.helper.data('hovering-board', false);
-                //GAME.playerBoardView.addCard(GAME.playerHandView.getCard(ui.draggable.data('handIndex')));
-                //GAME.playerHandView.removeCard(ui.draggable.data('handIndex'));
                 GAME.triggerEvent('playMinion', {
-                    boardIndex: this.placeholderIndex == -1 ? 0 : this.placeholderIndex,
-                    handIndex: ui.draggable.data('handIndex')
+                    boardIndex: GAME.playerBoardView.placeholderIndex == -1 ? 0 : GAME.playerBoardView.placeholderIndex,
+                    minionID: ui.draggable.data('minionID')
                 });
                 $('#gifhint, #texthint').hide();
-                this.update;
             }, over: function (event, ui) {
                 ui.helper.data('hovering-board', true);
             }, out: function (event, ui) {
@@ -38,8 +35,8 @@ export class CardDragController {
         });
     }
 
-    // certain events trigger every millisecond (e.g. onmousemove)
-    // use this method to make them only trigger every x milliseconds to improve performance
+    // certain events trigger so often that they ruin performance
+    // use this method to make them only trigger every x milliseconds
     throttle(func, limit) {
         let lastFunc, lastRan;
         return function (...args) {

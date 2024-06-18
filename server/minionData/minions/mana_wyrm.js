@@ -7,12 +7,12 @@ class mana_wyrm extends Minion {
     }
 
     onMinionPlayed(gameState, minion) {
-        if (minion.uniqueID == this.uniqueID) { return; }
+        if (minion.minionID == this.minionID) { return; }
         
         this.attack += 1;
         return {
             event: 'plus_attack', data: {
-                minionID: this.uniqueID,
+                minionID: this.minionID,
                 attack: this.attack
             }
         };

@@ -2,13 +2,13 @@ const { ATTRIBUTES, MINION_IDS, MINION_DATA } = require('./baseMinionData.js');
 
 class Minion {
     constructor(minion) {
-        this.minionID = minion[0];
+        this.baseMinionID = minion[0];
         this.minionFileName = minion[1];
 
-        this.uniqueID = '';
+        this.minionID = '';
         this.playedIndex = -1;
 
-        const baseData = MINION_DATA[this.minionID];
+        const baseData = MINION_DATA[minion[0]];
         this.name = baseData.name;
         this.description = baseData.description;
         this.rarity = baseData.rarity;

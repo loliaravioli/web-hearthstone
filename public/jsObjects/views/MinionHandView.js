@@ -1,7 +1,6 @@
 export class MinionHandView {
-    constructor(minion, handIndex) {
+    constructor(minion) {
         this.minion = minion;
-        this.handIndex = handIndex;
         this.playable = false;
         this.element = this.generateElement();
         this.update();
@@ -22,7 +21,7 @@ export class MinionHandView {
             playerNameValueInHand = document.createElement('div'),
             tutorialHintValueInHand = document.createElement('div');
 
-        cardDiv.dataset.handIndex = this.handIndex;
+        cardDiv.dataset.minionID = this.minion.minionID;
 
         cardDiv.classList.add("card");
         playerCardFaceInHandDiv.classList.add("card-face");

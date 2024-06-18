@@ -84,6 +84,6 @@ export class BoardView {
             this.getElement().appendChild(view.getElement());
         }
 
-        GAME.cardDragController.refresh();
+        GAME.cardPlayController.refresh();
     }
 }

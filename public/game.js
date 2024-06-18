@@ -3,7 +3,7 @@ import { Mana } from './jsObjects/gameObjects/mana.js';
 import { AttackController } from './jsObjects/gameControllers/attackController.js';
 import { TurnController } from './jsObjects/gameControllers/turnController.js';
 import { CardDrawController } from './jsObjects/gameControllers/cardDrawController.js';
-import { CardDragController } from './jsObjects/gameControllers/cardDragController.js';
+import { CardPlayController } from './jsObjects/gameControllers/cardPlayController.js';
 
 import { BoardView } from './jsObjects/views/BoardView.js';
 import { DeckView } from './jsObjects/views/DeckView.js';
@@ -45,7 +45,7 @@ class GAME {
         this.attackController = new AttackController();
         this.turnController = new TurnController();
         this.cardDrawController = new CardDrawController();
-        this.cardDragController = new CardDragController();
+        this.cardPlayController = new CardPlayController();
 
 
 

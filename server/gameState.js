@@ -60,13 +60,13 @@ class GameState {
             } else {
                 card = new Minion(playerDeckStorage[i]);
             }
-            card.uniqueID = `1-${card.minionID}-${i}`;
+            card.minionID = `1-${card.baseMinionID}-${i}`;
             this.playerDeck.push(card);
         }
 
         for (let i = 0; i < opponentDeckStorage.length; i++) {
             const card = new Minion(opponentDeckStorage[i]);
-            card.uniqueID = `2-${card.minionID}-${i}`;
+            card.minionID = `2-${card.baseMinionID}-${i}`;
             this.opponentDeck.push(card);
         }
 
@@ -103,11 +103,13 @@ class GameState {
         }
     }
 
-    playMinion(isPlayer, boardIndex, handIndex) {
+    playMinion(isPlayer, boardIndex, minionID) {
         let minion;
         if (isPlayer) {
-            minion = this.playerHand[handIndex];
-            this.playerHand.splice(handIndex, 1);
+            const index = this.playerHand.findIndex(minion => minion.minionID == minionID);
+            if (index !== -1) {
+                minion = this.playerHand.splice(index, 1)[0];
+            }
 
             const battlecryRet = minion.battlecry(this);
             if (battlecryRet) {
