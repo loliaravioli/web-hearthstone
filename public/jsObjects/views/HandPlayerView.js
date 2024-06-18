@@ -1,5 +1,5 @@
 import GAME from '../../../game.js';
-import { MinionCardHandView } from "./MinionCardHandView.js";
+import { MinionHandView } from "./MinionHandView.js";
 
 export class HandPlayerView {
     constructor() {
@@ -61,44 +61,12 @@ export class HandPlayerView {
         // }
 
         for (let i = 0; i < this.hand.length; i++) {
-            const view = new MinionCardHandView(this.hand[i], i);
+            const view = new MinionHandView(this.hand[i], i);
             view.setPlayable(true); // FOR DEBUGGING
             this.cardViews.push(view);
             this.getElement().appendChild(view.getElement());
         }
 
-        // if (this.card.isPlayable) {
-        $('.card').draggable({
-            containment: 'window',
-            revert: function (valid) {
-                GAME.playerBoardView.removePlaceholder();
-                return !valid;
-            },
-            drag: this.throttle((event, ui) => { // TODO: fix glitch where placeholder slot will remain even after dropping card
-                if (!ui.helper.data('hovering-board')) { return; }
-                GAME.playerBoardView.generatePlaceholder(ui.helper.offset().left + (ui.helper.width() / 2));
-            }, 50)
-        });
-        // }
-    }
-
-    // certain events trigger every millisecond (e.g. onmousemove)
-    // use this method to make them only trigger every x milliseconds to improve performance
-    throttle(func, limit) {
-        let lastFunc, lastRan;
-        return function (...args) {
-            if (!lastRan) {
-                func.apply(this, args);
-                lastRan = Date.now();
-            } else {
-                clearTimeout(lastFunc);
-                lastFunc = setTimeout(function () {
-                    if ((Date.now() - lastRan) >= limit) {
-                        func.apply(this, args);
-                        lastRan = Date.now();
-                    }
-                }, limit - (Date.now() - lastRan));
-            }
-        };
+        GAME.cardDragController.refresh();
     }
 }

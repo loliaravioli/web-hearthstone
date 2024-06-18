@@ -1,6 +1,6 @@
-export class MinionCardBoardView {
-    constructor(card, boardIndex, isPlayer) {
-        this.card = card;
+export class MinionBoardView {
+    constructor(minion, boardIndex, isPlayer) {
+        this.minion = minion;
         this.boardIndex = boardIndex;
         this.isPlayer = isPlayer;
         this.element = this.generateElement();
@@ -49,14 +49,23 @@ export class MinionCardBoardView {
         cardDiv.appendChild(healthValueBackground);
         healthValueBackground.appendChild(healthValue);
 
-        cardDiv.style.backgroundImage = "url('../media/images/cardimages/" + this.card.minionFileName + ".jpg')";
+        cardDiv.style.backgroundImage = "url('../media/images/cardimages/" + this.minion.minionFileName + ".jpg')";
 
         return cardDiv;
     }
 
     update() {
-        this.getElement().querySelector('.attackValue').innerText = this.card.attack;
-        this.getElement().querySelector('.healthValue').innerText = this.card.health;
+        this.getElement().querySelector('.attackValue').innerText = this.minion.attack;
+        if(this.minion.attack > this.minion.baseAttack) {
+            this.getElement().querySelector('.attackValue').style.color = 'green';
+        }
+
+        this.getElement().querySelector('.healthValue').innerText = this.minion.health;
+        if(this.minion.health > this.minion.baseHealth) {
+            this.getElement().querySelector('.healthValue').style.color = 'green';
+        } else if(this.minion.health < this.minion.baseHealth) {
+            this.getElement().querySelector('.healthValue').style.color = 'red';
+        }
 
         // also update mana
         // this.element.querySelector('.attackValue').innerText = this.attack;

@@ -1,5 +1,5 @@
 import GAME from '../../../game.js';
-import { MinionCardBoardView } from './MinionCardBoardView.js'
+import { MinionBoardView } from './MinionBoardView.js'
 
 export class BoardView {
     constructor(isPlayer) {
@@ -79,30 +79,11 @@ export class BoardView {
         this.cardViews = [];
 
         for (let i = 0; i < this.board.length; i++) {
-            const view = new MinionCardBoardView(this.board[i], i, this.isPlayer);
+            const view = new MinionBoardView(this.board[i], i, this.isPlayer);
             this.cardViews.push(view);
             this.getElement().appendChild(view.getElement());
         }
 
-        if (this.isPlayer) {
-            $(`#${this.divID}`).droppable({
-                accept: '.card',
-                drop: (event, ui) => {
-                    ui.helper.data('hovering-board', false);
-                    //GAME.playerBoardView.addCard(GAME.playerHandView.getCard(ui.draggable.data('handIndex')));
-                    //GAME.playerHandView.removeCard(ui.draggable.data('handIndex'));
-                    GAME.triggerEvent('playMinion', {
-                        boardIndex: this.placeholderIndex == -1 ? 0 : this.placeholderIndex,
-                        handIndex: ui.draggable.data('handIndex')
-                    });
-                    $('#gifhint, #texthint').hide();
-                    this.update;
-                }, over: function (event, ui) {
-                    ui.helper.data('hovering-board', true);
-                }, out: function (event, ui) {
-                    ui.helper.data('hovering-board', false);
-                },
-            });
-        }
+        GAME.cardDragController.refresh();
     }
 }

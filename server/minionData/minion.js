@@ -13,11 +13,12 @@ class Minion {
         this.description = baseData.description;
         this.rarity = baseData.rarity;
         this.tribe = baseData.tribe;
+        this.overload = baseData.overload;
+
         this.baseMana = baseData.stats[0];
         this.baseAttack = baseData.stats[1];
         this.baseHealth = baseData.stats[2];
-        this.overload = baseData.overload;
-
+        
         this.mana = baseData.stats[0];
         this.attack = baseData.stats[1];
         this.health = baseData.stats[2];

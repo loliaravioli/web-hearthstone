@@ -3,6 +3,7 @@ import { Mana } from './jsObjects/gameObjects/mana.js';
 import { AttackController } from './jsObjects/gameControllers/attackController.js';
 import { TurnController } from './jsObjects/gameControllers/turnController.js';
 import { CardDrawController } from './jsObjects/gameControllers/cardDrawController.js';
+import { CardDragController } from './jsObjects/gameControllers/cardDragController.js';
 
 import { BoardView } from './jsObjects/views/BoardView.js';
 import { DeckView } from './jsObjects/views/DeckView.js';
@@ -41,9 +42,10 @@ class GAME {
         this.playerManaView = null;
         this.opponentManaView = null;
 
-        this.attackController = null;
-        this.turnController = null;
-        this.cardDrawController = null;
+        this.attackController = new AttackController();
+        this.turnController = new TurnController();
+        this.cardDrawController = new CardDrawController();
+        this.cardDragController = new CardDragController();
 
 
 
@@ -118,7 +120,7 @@ class GAME {
 
         this.playerDialogueView = new DialogueView(true);
         this.opponentDialogueView = new DialogueView(false);
-        
+
         this.playerHeroView = new HeroView(true);
         this.opponentHeroView = new HeroView(false);
 
@@ -128,10 +130,6 @@ class GAME {
         // TODO: get rid of separate player/opponent views for Mana
         this.playerManaView = new ManaPlayerView(this.playerMana);
         this.opponentManaView = new ManaOpponentView(this.opponentMana);
-
-        this.attackController = new AttackController();
-        this.turnController = new TurnController();
-        this.cardDrawController = new CardDrawController();
 
         this.triggerEvent('getGameState');
     }

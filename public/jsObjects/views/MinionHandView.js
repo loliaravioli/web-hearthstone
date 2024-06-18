@@ -1,6 +1,6 @@
-export class MinionCardHandView {
-    constructor(card, handIndex) {
-        this.card = card;
+export class MinionHandView {
+    constructor(minion, handIndex) {
+        this.minion = minion;
         this.handIndex = handIndex;
         this.playable = false;
         this.element = this.generateElement();
@@ -46,17 +46,17 @@ export class MinionCardHandView {
         // only in tutorial
         tutorialHintValueInHand.innerText = 'Mana Cost\nAttack' + '                     ' + 'Health';
 
-        playerInfoValueInHand.innerText = this.card.description;
-        playerNameValueInHand.innerText = this.card.name;
-        playerCardFaceInHandDiv.style.backgroundImage = "url(../media/images/cardimages/" + this.card.minionFileName + ".jpg)";
+        playerInfoValueInHand.innerText = this.minion.description;
+        playerNameValueInHand.innerText = this.minion.name;
+        playerCardFaceInHandDiv.style.backgroundImage = "url(../media/images/cardimages/" + this.minion.minionFileName + ".jpg)";
 
         return cardDiv;
     }
 
     update() {
-        this.getElement().querySelector('.cardManaValue').innerText = this.card.mana;
-        this.getElement().querySelector('.cardAttackValue').innerText = this.card.attack;
-        this.getElement().querySelector('.cardHealthValue').innerText = this.card.health;
+        this.getElement().querySelector('.cardManaValue').innerText = this.minion.mana;
+        this.getElement().querySelector('.cardAttackValue').innerText = this.minion.attack;
+        this.getElement().querySelector('.cardHealthValue').innerText = this.minion.health;
 
         this.getElement().style.pointerEvents = this.playable ? 'all' : 'none';
         this.getElement().children[0].children[4].style.border = `solid 4px ${this.playable ? '#0FCC00' : '#383838'}`;

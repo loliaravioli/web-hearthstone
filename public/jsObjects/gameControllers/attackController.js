@@ -7,7 +7,7 @@ export class AttackController {
         // use .dataSet.boardIndex or id to distinguish
         this.attackerCard = null;
 
-        GAME.playerBoardView.getElement().addEventListener('mousedown', (e) => this.onDragStart(e));
+        document.getElementById('board--player').addEventListener('mousedown', (e) => this.onDragStart(e));
 
         document.body.addEventListener('mouseup', (e) => this.onMouseUp(e));
 
