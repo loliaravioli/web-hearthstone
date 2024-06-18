@@ -1,7 +1,5 @@
 import GAME from '../game.js';
 
-let playedIntroLine = false;
-
 const mainmenuOST = new Audio("../media/sounds/ost/mainmenu.mp3"),
     crowdSnd = new Audio("../media/sounds/crowd.mp3"),
     openmenuSnd = new Audio("../media/sounds/openmenu.mp3"),
@@ -25,7 +23,7 @@ const mainmenuOST = new Audio("../media/sounds/ost/mainmenu.mp3"),
     confirmbtn = document.getElementById('confirm'),
     endturnbtn = document.getElementById('endturn'),
     playbtn = document.getElementById('playbutton'),
-    tutorialbtn = document.getElementById('tutorialbutton'),
+    // tutorialbtn = document.getElementById('tutorialbutton'),
     howtoplaybtn = document.getElementById('howtoplaybutton'),
     openpacksbtn = document.getElementById('openpacksbutton'),
     shopbtn = document.getElementById('shopbutton'),
@@ -33,13 +31,13 @@ const mainmenuOST = new Audio("../media/sounds/ost/mainmenu.mp3"),
 // backfrompackbtn = document.getElementById('backfrompackbtn'),
 // donepackbtn = document.getElementById('donepackbutton');
 
-let hasPlayedBattleBeginSnd = new Boolean(false),
-    isInGame = new Boolean(false),
+let playedIntroLine = false,
+    hasPlayedBattleBeginSnd = new Boolean(false),
     tutorialIntroRunning = new Boolean(false),
     vol = 0.5,
     interval = 175;
 
-[playbtn, tutorialbtn, howtoplaybtn, openpacksbtn,
+[playbtn/*, tutorialbtn*/, howtoplaybtn, openpacksbtn,
     starttutorialbtn/*, backfrompackbtn*/, shopbtn]
     .forEach(i => {
         if (!i) { return; }
@@ -146,7 +144,6 @@ function fadeOutMainMenuOST() {
 }
 
 playbtn.onclick = function () {
-    isInGame = true;
     document.getElementById("block").style.visibility = "visible";
 
     fadeOutMainMenuOST();
@@ -232,8 +229,6 @@ playbtn.onclick = function () {
 };
 
 function tutorial() {
-    isInGame = true;
-
     GAME.resetValues();
 
     fadeOutMainMenuOST();
@@ -298,10 +293,10 @@ function tutorial() {
     }, 48 * 1000);
 }
 
-tutorialbtn.onclick = function () {
-    menubtnsSnd.play();
-    tutorial();
-};
+// tutorialbtn.onclick = function () {
+//     menubtnsSnd.play();
+//     tutorial();
+// };
 
 howtoplaybtn.onclick = function () {
     menubtnsSnd.play();
@@ -425,6 +420,8 @@ document.getElementById('togglefps').onclick = function () {
 };
 
 document.getElementById('preventCORS').onclick = function () {
+    this.onclick = null;
+
     if (!playedIntroLine) {
         const introLines = [
             "../media/sounds/voiceovers/innkeeper_1.mp3",

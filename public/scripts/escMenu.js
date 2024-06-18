@@ -71,18 +71,18 @@ document.addEventListener("keydown", function (e) {
                 .hide();
             $('#gamemenu').hide();
         }
-    } else if (document.getElementById("shopmenu").style.display == "block") {
+    /* } else if (document.getElementById("shopmenu").style.display == "block") {
         $('#shopmenu').hide();
         $('#shopmenuContent')
             .hide()
             .removeClass('openMenuAnim');
-        document.getElementById("mainmenu").style.filter = "none";
+        document.getElementById("mainmenu").style.filter = "none"; */
     } else { // show game menu
         $('#gamemenu').show();
         $('#gamemenuContent')
             .show()
             .addClass('openMenuAnim');
-        concedeButton.disabled = !isInGame;
+        // concedeButton.disabled = !isInGame;
         openMenuSound.play();
     }
 });
