@@ -1,7 +1,7 @@
 const { sendEvent } = require('./sendEvent.js');
+const { generateMinion } = require('./minionData/generateMinion.js');
 const { ATTRIBUTES, MINION_IDS, MINION_DATA } = require('./minionData/baseMinionData.js');
 const Minion = require('./minionData/minion.js');
-const mana_wyrm = require('./minionData/minions/mana_wyrm.js');
 
 const playerDeckStorage = [
     MINION_IDS.ARMORSMITH,
@@ -54,20 +54,15 @@ class GameState {
 
     startGame() {
         for (let i = 0; i < playerDeckStorage.length; i++) {
-            let card;
-            if (playerDeckStorage[i] == MINION_IDS.MANA_WYRM) {
-                card = new mana_wyrm();
-            } else {
-                card = new Minion(playerDeckStorage[i]);
-            }
-            card.minionID = `1-${card.baseMinionID}-${i}`;
-            this.playerDeck.push(card);
+            const minion = generateMinion(playerDeckStorage[i]);
+            minion.minionID = `1-${minion.baseMinionID}-${i}`;
+            this.playerDeck.push(minion);
         }
 
         for (let i = 0; i < opponentDeckStorage.length; i++) {
-            const card = new Minion(opponentDeckStorage[i]);
-            card.minionID = `2-${card.baseMinionID}-${i}`;
-            this.opponentDeck.push(card);
+            const minion = generateMinion(opponentDeckStorage[i]);
+            minion.minionID = `2-${minion.baseMinionID}-${i}`;
+            this.opponentDeck.push(minion);
         }
 
         this.shuffleDeck(this.playerDeck);
