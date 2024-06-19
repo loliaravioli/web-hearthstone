@@ -24,7 +24,7 @@ export class CardPlayController {
                 ui.helper.data('hovering-board', false);
                 GAME.triggerEvent('playMinion', {
                     boardIndex: GAME.playerBoardView.placeholderIndex == -1 ? 0 : GAME.playerBoardView.placeholderIndex,
-                    minionID: ui.draggable.data('minionID')
+                    minionID: ui.draggable.data('minionid')
                 });
                 $('#gifhint, #texthint').hide();
             }, over: function (event, ui) {

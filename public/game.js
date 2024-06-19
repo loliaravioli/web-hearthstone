@@ -20,7 +20,6 @@ let ws;
 
 class GAME {
     constructor() {
-        console.log('GAME CONSTRUCTOR');
         this.playerDeckView = null;
         this.opponentDeckView = null;
 
@@ -93,17 +92,31 @@ class GAME {
 
         wsEventHandler({
             socket: ws,
-            event: 'attack',
+            event: 'playMinion',
             onSuccess: (data) => {
-                console.log(`${data.attackerIndex} attacked ${data.targetIndex}`);
+                console.log(`${data.minion.minionID} played on board space ${data.boardIndex}`);
+                this.playerBoardView.playMinion(data.minion, data.boardIndex);
+                this.playerHandView.removeCard(data.minion);
             }
         });
 
         wsEventHandler({
             socket: ws,
-            event: 'damage',
+            event: 'changeStats',
             onSuccess: (data) => {
-                console.log(`${data.attackerIndex} dealt ${data.damage} to ${data.targetIndex}`);
+                console.log(`${data.minionID} stats changed to ${data.stats}`);
+                // TODO: find a better way to do this. maybe have some minion pool shared between the two objects?
+                this.playerBoardView.changeStats(data.minionID, data.stats);
+                this.playerHandView.changeStats(data.minionID, data.stats);
+            }
+        });
+
+        wsEventHandler({
+            socket: ws,
+            event: 'attack',
+            onSuccess: (data) => {
+                console.log(`${data.attackerIndex} attacked ${data.targetIndex}`);
+                console.log(`-----attacker dealt ${data.damageToTarget}, target dealt ${data.damageToAttacker}`);
             }
         });
     }

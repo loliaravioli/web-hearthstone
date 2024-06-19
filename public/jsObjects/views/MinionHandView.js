@@ -21,7 +21,7 @@ export class MinionHandView {
             playerNameValueInHand = document.createElement('div'),
             tutorialHintValueInHand = document.createElement('div');
 
-        cardDiv.dataset.minionID = this.minion.minionID;
+        cardDiv.dataset.minionid = this.minion.minionID;
 
         cardDiv.classList.add("card");
         playerCardFaceInHandDiv.classList.add("card-face");

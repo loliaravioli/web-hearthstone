@@ -18,16 +18,14 @@ export class BoardView {
         return this.cardViews[index];
     }
 
-    // addCard(card) {
-    //     if (this.placeholderIndex == -1) {
-    //         this.board.addCard(card, 0);
-    //     } else {
-    //         this.board.addCard(card, this.placeholderIndex);
-    //         this.placeholderIndex = -1;
-    //     }
-    //     card.triggerPlay();
-    //     this.update();
-    // }
+    playMinion(minion, index) {
+        this.board.splice(index, 0, minion);
+
+        const view = new MinionBoardView(this.board[index], index, this.isPlayer);
+        this.cardViews.splice(index, 0, view);
+
+        this.getElement().insertBefore(view.getElement(), this.getElement().children[index]);
+    }
 
     killCard(index) {
         console.log(`Killing minion at index ${index} on ${this.isPlayer ? "player's" : "opponent's"} board`);
@@ -71,7 +69,17 @@ export class BoardView {
 
     removePlaceholder() {
         this.placeholderIndex = -1;
-        this.update();
+        $('.card--placeholder').remove();
+    }
+
+    changeStats(minionID, stats) {
+        const index = this.board.findIndex(c => c.minionID == minionID);
+        if (index == -1) { return; }
+        
+        this.board[index].mana = stats[0];
+        this.board[index].attack = stats[1];
+        this.board[index].health = stats[2];
+        this.cardViews[index].update();
     }
 
     update() {

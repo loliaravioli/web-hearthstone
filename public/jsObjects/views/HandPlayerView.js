@@ -35,9 +35,24 @@ export class HandPlayerView {
         // view.getElement().offsetHeight;
     }
 
-    removeCard(index) {
-        this.hand.removeCard(index);
-        this.update();
+    changeStats(minionID, stats) {
+        const index = this.hand.findIndex(c => c.minionID == minionID);
+        if (index == -1) { return; }
+        
+        this.hand[index].mana = stats[0];
+        this.hand[index].attack = stats[1];
+        this.hand[index].health = stats[2];
+        this.cardViews[index].update();
+    }
+
+    removeCard(card) {
+        const index = this.hand.findIndex(c => c.minionID == card.minionID);
+        this.hand.splice(index, 1);
+        this.cardViews.splice(index, 1);
+        const element = this.getElement().querySelector(`[data-minionid='${card.minionID}']`);
+        if (element) {
+            this.getElement().removeChild(element);
+        }
     }
 
     setAllCardsUnplayable() {

@@ -74,8 +74,6 @@ async function playMinion(ws, data) {
     } catch (err) {
         console.error(err);
     }
-
-    getGameState(ws, {});
 }
 
 async function attack(ws, data) {
@@ -102,7 +100,9 @@ async function attack(ws, data) {
 
         sendEvent(ws, 'attack', true, { // trigger animation on client
             attackerIndex: attackerIndex,
-            targetIndex: targetIndex
+            targetIndex: targetIndex,
+            damageToAttacker: damageToAttacker,
+            damageToTarget: damageToTarget
         });
 
         if (damageToTarget > 0) { // deal damage to target
@@ -111,11 +111,12 @@ async function attack(ws, data) {
             } else {
                 gameState.opponentBoard[targetIndex].health -= damageToTarget;
             }
-            sendEvent(ws, 'damage', true, {
-                attackerIndex: attackerIndex,
-                targetIndex: targetIndex,
-                damage: damageToTarget
-            });
+            // sendEvent(ws, 'damage', true, {
+            //     attackerIndex: attackerIndex,
+            //     targetIndex: targetIndex,
+            //     damage: damageToTarget
+            // });
+            // REPLACE WITH GENERIC "changeStats"
 
             if (targetIndex != 99 && gameState.opponentBoard[targetIndex].health <= 0) {
                 gameState.opponentBoard.splice(targetIndex, 1);
@@ -129,11 +130,12 @@ async function attack(ws, data) {
 
         if (damageToAttacker > 0) { // deal damage to attacker
             gameState.playerBoard[attackerIndex].health -= damageToAttacker;
-            sendEvent(ws, 'damage', true, {
-                attackerIndex: targetIndex,
-                targetIndex: attackerIndex,
-                damage: damageToAttacker
-            });
+            // sendEvent(ws, 'damage', true, {
+            //     attackerIndex: targetIndex,
+            //     targetIndex: attackerIndex,
+            //     damage: damageToAttacker
+            // });
+            // REPLACE WITH GENERIC "changeStats"
 
             if (gameState.playerBoard[attackerIndex].health <= 0) {
                 gameState.playerBoard.splice(attackerIndex, 1);

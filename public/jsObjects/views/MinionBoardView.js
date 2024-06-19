@@ -34,7 +34,7 @@ export class MinionBoardView {
 
         cardDiv.id = this.isPlayer ? `playerCardInPlay${this.boardIndex}` : `opponentCardInPlay${this.boardIndex}`;
         cardDiv.dataset.boardIndex = this.boardIndex;
-        cardDiv.dataset.minionID = this.minion.minionID;
+        cardDiv.dataset.minionid = this.minion.minionID;
 
         cardDiv.classList.add("cardinplay");
         cardDiv.classList.add(this.isPlayer ? "cardInPlay--player" : "cardInPlay--opponent");

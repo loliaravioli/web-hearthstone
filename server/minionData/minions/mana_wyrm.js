@@ -11,9 +11,10 @@ class mana_wyrm extends Minion {
         
         this.attack += 1;
         return {
-            event: 'plus_attack', data: {
+            event: 'changeStats', data: {
                 minionID: this.minionID,
-                attack: this.attack
+                stats: [this.mana, this.attack, this.health],
+                baseStats: [this.baseMana, this.baseAttack, this.baseHealth]
             }
         };
     }

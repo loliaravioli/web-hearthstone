@@ -135,6 +135,11 @@ class GameState {
                     sendEvent(this.ws, ret.event, true, ret.data);
                 }
             });
+
+        sendEvent(this.ws, 'playMinion', true, {
+            boardIndex: boardIndex,
+            minion: minion
+        });
     }
 
     // playSpell(spell) {
