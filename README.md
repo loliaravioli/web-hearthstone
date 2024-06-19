@@ -26,3 +26,5 @@ To-do List:
     - Minion dies https://animista.net/play/attention/shake
 
 - Figure out how things like battlecries will work between client and server. (it'll probably work the same way as spells. store whether or not the minion has a battlecry and initiate the targeting system entirely clientside)
+
+- For visuals: three.js? https://youtu.be/e2ntx-fyXaE
