@@ -1,5 +1,7 @@
 import GAME from '../game.js';
 
+const isTutorial = false;
+
 const mainmenuOST = new Audio("../media/sounds/ost/mainmenu.mp3"),
     crowdSnd = new Audio("../media/sounds/crowd.mp3"),
     openmenuSnd = new Audio("../media/sounds/openmenu.mp3"),
@@ -31,15 +33,13 @@ const mainmenuOST = new Audio("../media/sounds/ost/mainmenu.mp3"),
 // backfrompackbtn = document.getElementById('backfrompackbtn'),
 // donepackbtn = document.getElementById('donepackbutton');
 
-let playedIntroLine = false,
-    hasPlayedBattleBeginSnd = new Boolean(false),
+let hasPlayedBattleBeginSnd = new Boolean(false),
     tutorialIntroRunning = new Boolean(false),
     vol = 0.5,
     interval = 175;
 
 [playbtn/*, tutorialbtn*/, howtoplaybtn, openpacksbtn,
-    starttutorialbtn/*, backfrompackbtn*/, shopbtn]
-    .forEach(i => {
+    starttutorialbtn/*, backfrompackbtn*/, shopbtn].forEach(i => {
         if (!i) { return; }
         i.addEventListener('mouseover', () => menuhoverSnd.play());
     });
@@ -228,71 +228,6 @@ playbtn.onclick = function () {
     }, 16.25 * 1000);
 };
 
-function tutorial() {
-    GAME.resetValues();
-
-    fadeOutMainMenuOST();
-
-    setTimeout(function () {
-        mainmenuOST.pause();
-    }, 1 * 1750);
-
-    crowdSnd.pause();
-    document.getElementById('mainmenu').style.visibility = "hidden";
-    document.getElementById('contents').style.visibility = "visible";
-
-    $('#confirm').show()
-        .css({
-            'background-color': 'transparent',
-            'border': 'none',
-            'width': '11%',
-            'height': '25%',
-            'top': '34%',
-            'left': '44.7%',
-            'transform': 'rotate(-15deg)',
-            'background-image': 'url(../media/images/pack.png)'
-        })
-        .addClass('packHoverAnim').html('');
-
-    setTimeout(function () {
-        if (tutorialIntroRunning) { return; }
-
-        tutorialIntroRunning = true;
-        $('#opponentHeroContainer')
-            .css({
-                'visibility': 'hidden',
-                'z-index': 20
-            });
-
-        $('#opponentHeroContainer')
-            .css({
-                'visibility': 'hidden',
-                'background-image': 'url(../media/images/hogger.png)',
-                'z-index': 5
-            });
-
-        $('#transitionblock, #block')
-            .css({ 'visibility': 'visible' });
-        endturnbtn.style.zIndex = "9";
-
-        setTimeout(function () {
-            $('#transitionblock')
-                .addClass('fadeInAnim')
-                .addClass('fadeOutAnim');
-        }, 1 * 1000);
-
-        setTimeout(function () {
-            document.getElementById('transitionblock').style.visibility = "hidden";
-            $('#triangle')
-                .css({ 'visibility': 'visible' })
-                .addClass('triangleOpenMenuAnim');
-            $('#hintbackbackground, #hintbackground, #hint')
-                .css({ 'visibility': 'visible' })
-                .addClass('openMenuAnim');
-        }, 2 * 1000);
-    }, 48 * 1000);
-}
-
 // tutorialbtn.onclick = function () {
 //     menubtnsSnd.play();
 //     tutorial();
@@ -422,66 +357,147 @@ document.getElementById('togglefps').onclick = function () {
 document.getElementById('preventCORS').onclick = function () {
     this.onclick = null;
 
-    if (!playedIntroLine) {
-        const introLines = [
-            "../media/sounds/voiceovers/innkeeper_1.mp3",
-            "../media/sounds/voiceovers/innkeeper_2.mp3",
-            "../media/sounds/voiceovers/innkeeper_3.mp3"
-        ], introLine = introLines[Math.floor(Math.random() * introLines.length)],
-            introLineAudio = new Audio(introLine);
-        introLineAudio.volume = 0.4;
-        introLineAudio.play();
-        playedIntroLine = true;
-    }
+    const introLines = [
+        "../media/sounds/voiceovers/innkeeper_1.mp3",
+        "../media/sounds/voiceovers/innkeeper_2.mp3",
+        "../media/sounds/voiceovers/innkeeper_3.mp3"
+    ], introLine = introLines[Math.floor(Math.random() * introLines.length)],
+        introLineAudio = new Audio(introLine);
+    introLineAudio.volume = 0.4;
+    introLineAudio.play();
 
     $('#preventCORS').addClass('fadeOutAnim');
     setTimeout(function () {
         $('#preventCORS').css({ 'visibility': 'hidden' });
     }, 1 * 1000)
 
-    tutorial();
+    GAME.resetValues();
 
-    /* if not tutorial
-    mainmenuOST.play();
-    mainmenuOST.volume = 0.7;
+    fadeOutMainMenuOST();
+
     setTimeout(function () {
-        voiceover.play();
-    }, 0.55 * 1000);
-    if (typeof crowdSnd.loop == 'boolean') {
-        crowdSnd.loop = true;
+        mainmenuOST.pause();
+    }, 1.75 * 1000);
+
+    crowdSnd.pause();
+
+    if (isTutorial) {
+        document.getElementById('mainmenu').style.visibility = "hidden";
+        document.getElementById('contents').style.visibility = "visible";
+
+        $('#confirm').show()
+            .css({
+                'background-color': 'transparent',
+                'border': 'none',
+                'width': '11%',
+                'height': '25%',
+                'top': '34%',
+                'left': '44.7%',
+                'transform': 'rotate(-15deg)',
+                'background-image': 'url(../media/images/pack.png)'
+            })
+            .addClass('packHoverAnim').html('');
+
+        setTimeout(function () {
+            if (tutorialIntroRunning) { return; }
+
+            tutorialIntroRunning = true;
+            $('#opponentHeroContainer')
+                .css({
+                    'visibility': 'hidden',
+                    'z-index': 20
+                });
+
+            $('#opponentHeroContainer')
+                .css({
+                    'visibility': 'hidden',
+                    'background-image': 'url(../media/images/hogger.png)',
+                    'z-index': 5
+                });
+
+            $('#transitionblock, #block')
+                .css({ 'visibility': 'visible' });
+            endturnbtn.style.zIndex = "9";
+
+            setTimeout(function () {
+                $('#transitionblock')
+                    .addClass('fadeInAnim')
+                    .addClass('fadeOutAnim');
+            }, 1 * 1000);
+
+            setTimeout(function () {
+                document.getElementById('transitionblock').style.visibility = "hidden";
+                $('#triangle')
+                    .css({ 'visibility': 'visible' })
+                    .addClass('triangleOpenMenuAnim');
+                $('#hintbackbackground, #hintbackground, #hint')
+                    .css({ 'visibility': 'visible' })
+                    .addClass('openMenuAnim');
+            }, 2 * 1000);
+        }, 48 * 1000);
+
+        tutorialIntroRunning = true;
+
+        $('#playerHeroContainer')
+            .css({
+                'visibility': 'hidden',
+                'z-index': 20
+            });
+
+        $('#opponentHeroContainer')
+            .css({
+                'visibility': 'hidden',
+                'background-image': 'url(../media/images/hogger.png)',
+                'z-index': 5
+            });
     } else {
-        crowdSnd.addEventListener('ended', function () {
-            this.play();
-        }, false);
+        $('#tutorialmenuContent, #tutorialmenu').hide();
+        $('#block').hide();
+        document.getElementById('block').style.zIndex = "9";
+        $('#triangle, #hintbackbackground, #hintbackground, #hint')
+            .css({
+                'visibility': 'hidden',
+                'opacity': 0,
+                'transition': 'visibility 0s 0.5s, opacity 0.5s linear'
+            });
+            document.getElementById('playerHeroContainer').style.zIndex = "8";
+        document.getElementById('opponentHeroContainer').style.zIndex = "5";
+        document.getElementById('playerHeroHealth').innerText = "30";
+        document.getElementById('opponentHeroHealth').innerText = "10";
+        $('#playerHeroHealth, #opponentHeroHealth')
+            .css({
+                'visibility': 'visible',
+                'opacity': 1,
+                'transition': 'visibility 0.5s, opacity 0.5s linear'
+            });
+        // mainmenuOST.play();
+        // mainmenuOST.volume = 0.7;
+        // setTimeout(function () {
+        //     voiceover.play();
+        // }, 0.55 * 1000);
+        // if (typeof crowdSnd.loop == 'boolean') {
+        //     crowdSnd.loop = true;
+        // } else {
+        //     crowdSnd.addEventListener('ended', function () {
+        //         this.play();
+        //     }, false);
+        // }
+
+        // crowdSnd.play();
+        // crowdSnd.volume = 0.5;
+        // $('#blockmainmenu').show();
+        // $('#mainmenu')
+        //     .css({ 'visibility': 'visible' })
+        //     .addClass('zoomOutAnim');
+
+        // setTimeout(function () {
+        //     $('#blockmainmenu').hide();
+        //     document.getElementById('mainmenu').classList.remove("zoomOutAnim");
+        // }, 4 * 1000);
     }
 
-    crowdSnd.play();
-    crowdSnd.volume = 0.5;
-    $('#blockmainmenu').show();
-    $('#mainmenu')
-        .css({ 'visibility': 'visible' })
-        .addClass('zoomOutAnim');
 
-    setTimeout(function () {
-        $('#blockmainmenu').hide();
-        document.getElementById('mainmenu').classList.remove("zoomOutAnim");
-    }, 4 * 1000);
-    */
 
-    tutorialIntroRunning = true;
-
-    $('#playerHeroContainer')
-        .css({
-            'visibility': 'hidden',
-            'z-index': 20
-        });
-
-    $('#opponentHeroContainer')
-        .css({
-            'visibility': 'hidden',
-            'background-image': 'url(../media/images/hogger.png)',
-            'z-index': 5
-        });
 
     $('#transitionblock, #block')
         .css({ 'visibility': 'visible' });
@@ -503,11 +519,3 @@ document.getElementById('preventCORS').onclick = function () {
             .addClass('openMenuAnim');
     }, 2 * 1000);
 }
-
-endturnbtn.addEventListener("click", function () {
-    (new Audio("../media/sounds/endturn.mp3")).play();
-    endturnbtn.style.zIndex = "50";
-    document.getElementById("gifhint").style.backgroundImage = "url('../media/hints/attack.gif')";
-    document.getElementById("texthint").innerText = "Click on an green glowing allied card then click on an enemy to attack.";
-    GAME.turnController.startOpponentTurn();
-});

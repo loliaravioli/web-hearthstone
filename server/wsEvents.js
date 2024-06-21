@@ -80,12 +80,7 @@ async function attack(ws, data) {
     console.log(arguments.callee.name);
 
     try {
-        const { attackerIndex, targetIndex } = data;
-
-        // TODO: add condition for where the hero is the attacker
-        if (attackerIndex >= gameState.playerBoard.length || attackerIndex < 0) {
-            throw new Error('Invalid attacker index');
-        }
+        const { attackerID, targetID } = data;
 
         let damageToAttacker = damageToTarget = 0;
 
@@ -99,8 +94,8 @@ async function attack(ws, data) {
         }
 
         sendEvent(ws, 'attack', true, { // trigger animation on client
-            attackerIndex: attackerIndex,
-            targetIndex: targetIndex,
+            attackerID: attackerID,
+            targetID: targetID,
             damageToAttacker: damageToAttacker,
             damageToTarget: damageToTarget
         });
@@ -149,8 +144,6 @@ async function attack(ws, data) {
     } catch (err) {
         console.error(err);
     }
-
-    getGameState(ws, {});
 }
 
 // TODO: create unique minion ID's to use in place of indices

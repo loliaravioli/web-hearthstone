@@ -1,11 +1,17 @@
 import GAME from '../../../game.js';
 
-// TODO: create separate functionality specifically for AI
-
 export class TurnController {
     constructor() {
         this.playersTurn = false;
-        this.playerTurnSound = new Audio("../media/sounds/playerturn.mp3");
+        this.playerTurnSound = new Audio("../../media/sounds/playerturn.mp3");
+
+        document.getElementById('endturn').addEventListener("click", () => {
+            (new Audio("../media/sounds/endturn.mp3")).play();
+            document.getElementById('endturn').style.zIndex = "50";
+            // document.getElementById("gifhint").style.backgroundImage = "url('../media/hints/attack.gif')";
+            // document.getElementById("texthint").innerText = "Click on a green glowing allied card then click on an enemy to attack.";
+            this.startOpponentTurn();
+        });
     }
 
     startPlayerTurn() {
@@ -43,7 +49,8 @@ export class TurnController {
             .css({ 'background-color': 'grey' })
             .html('ENEMY TURN');
 
-        setTimeout(function() {
+        setTimeout(function () {
+            // TODO: implement AI
             // AI();
             this.startPlayerTurn();
         }, 1.25 * 1000);

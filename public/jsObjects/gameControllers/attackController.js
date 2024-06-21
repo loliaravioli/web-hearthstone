@@ -82,12 +82,12 @@ export class AttackController {
 
         if (event.target.classList.contains('cardInPlay--opponent')) {
             GAME.triggerEvent('attack', {
-                attackerIndex: this.attackerCard.dataset.boardIndex,
-                targetIndex: event.target.dataset.boardIndex
+                attackerIndex: this.attackerCard.dataset.minionid,
+                targetIndex: event.target.dataset.minionid
             });
         } else if (event.target.id == 'opponentHero') {
             GAME.triggerEvent('attack', {
-                attackerIndex: this.attackerCard.dataset.boardIndex,
+                attackerIndex: this.attackerCard.dataset.minionid,
                 targetIndex: 99 // TODO: make a list of shared enums between server and client for stuff like this
             });
         }
