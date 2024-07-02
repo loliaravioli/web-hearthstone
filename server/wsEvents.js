@@ -33,12 +33,26 @@ const gameState = new GameState(),
     PLAYER_HERO = 'playerHero',
     OPPONENT_HERO = 'opponentHero';
 
-// EVENTS
-module.exports = {
-    getGameState,
-    playMinion,
-    attack
-};
+async function processEvent(ws, json) {
+    const { event, data } = json;
+
+    switch (event) {
+        case 'getGameState':
+            getGameState(ws, data);
+            break;
+        case 'playMinion':
+            playMinion(ws, data);
+            break;
+        case 'attack':
+            attack(ws, data);
+            break;
+        case 'endTurn':
+            endTurn(ws, data);
+            break;
+        default:
+            console.error('Unknown event', event);
+    }
+}
 
 async function getGameState(ws, data) {
     console.log(arguments.callee.name);
@@ -81,97 +95,21 @@ async function attack(ws, data) {
 
     try {
         const { attackerID, targetID } = data;
-
-        let damageToAttacker = damageToTarget = 0;
-
-        if (targetIndex == 99) { // target is hero
-            damageToTarget = gameState.playerBoard[attackerIndex].attack;
-        } else if (targetIndex < gameState.opponentBoard.length && targetIndex >= 0) { // target is minion
-            damageToTarget = gameState.playerBoard[attackerIndex].attack;
-            damageToAttacker = gameState.opponentBoard[targetIndex].attack;
-        } else {
-            throw new Error('Invalid target index');
-        }
-
-        sendEvent(ws, 'attack', true, { // trigger animation on client
-            attackerID: attackerID,
-            targetID: targetID,
-            damageToAttacker: damageToAttacker,
-            damageToTarget: damageToTarget
-        });
-
-        if (damageToTarget > 0) { // deal damage to target
-            if (targetIndex == 99) {
-                gameState.opponentHealth -= damageToTarget;
-            } else {
-                gameState.opponentBoard[targetIndex].health -= damageToTarget;
-            }
-            // sendEvent(ws, 'damage', true, {
-            //     attackerIndex: attackerIndex,
-            //     targetIndex: targetIndex,
-            //     damage: damageToTarget
-            // });
-            // REPLACE WITH GENERIC "changeStats"
-
-            if (targetIndex != 99 && gameState.opponentBoard[targetIndex].health <= 0) {
-                gameState.opponentBoard.splice(targetIndex, 1);
-                sendEvent(ws, 'death', true, {
-                    isPlayer: false,
-                    boardIndex: targetIndex,
-                });
-                getGameState(ws, {});
-            }
-        }
-
-        if (damageToAttacker > 0) { // deal damage to attacker
-            gameState.playerBoard[attackerIndex].health -= damageToAttacker;
-            // sendEvent(ws, 'damage', true, {
-            //     attackerIndex: targetIndex,
-            //     targetIndex: attackerIndex,
-            //     damage: damageToAttacker
-            // });
-            // REPLACE WITH GENERIC "changeStats"
-
-            if (gameState.playerBoard[attackerIndex].health <= 0) {
-                gameState.playerBoard.splice(attackerIndex, 1);
-                sendEvent(ws, 'death', true, {
-                    isPlayer: true,
-                    boardIndex: attackerIndex,
-                });
-                getGameState(ws, {});
-            }
-        }
+        gameState.setWS(ws);
+        gameState.attack(attackerID, targetID);
     } catch (err) {
         console.error(err);
     }
 }
 
-// TODO: create unique minion ID's to use in place of indices
-// should be something like "player-minionFileName-#"
-function applyDamage(attackerID, targetID, damage) {
-    if (damage < 1) { return; }
+async function endTurn(ws, data) {
+    console.log(arguments.callee.name);
 
-    let minion;
-    if (targetID == OPPONENT_HERO) {
-        gameState.opponentHealth -= damage;
-    } else {
-        minion = getMinionWithID(targetID);
-        minion.health -= damage;
-    }
-
-    sendEvent(ws, 'damage', true, {
-        attackerIndex: attackerID,
-        targetIndex: targetID,
-        damage: damage
-    });
-
-    if (targetID != OPPONENT_HERO && minion.health <= 0) {
-        const minionIndex = gameState.opponentBoard.indexOf(minion);
-        gameState.opponentBoard.splice(minionIndex, 1);
-        sendEvent(ws, 'death', true, {
-            targetID: targetID,
-        });
-        getGameState(ws, {});
+    try {
+        gameState.setWS(ws);
+        gameState.endTurn();
+    } catch (err) {
+        console.error(err);
     }
 }
 
@@ -208,3 +146,5 @@ function getMinionWithID(board, id) {
 //     [record[KEYS.IP3], record[KEYS.POINTS3]],
 //     [record[KEYS.IP4], record[KEYS.POINTS4]]
 // ];
+
+module.exports = { processEvent };

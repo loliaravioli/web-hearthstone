@@ -1,12 +1,12 @@
 const { ATTRIBUTES, MINION_IDS, MINION_DATA } = require('./baseMinionData.js');
 
 class Minion {
-    constructor(minion) {
+    constructor(minion, playedIndex = -1, minionID = '') {
         this.baseMinionID = minion[0];
         this.minionFileName = minion[1];
 
-        this.minionID = '';
-        this.playedIndex = -1;
+        this.minionID = minionID;
+        this.playedIndex = playedIndex;
 
         const baseData = MINION_DATA[minion[0]];
         this.name = baseData.name;
@@ -36,11 +36,12 @@ class Minion {
     battlecry(gameState) { return null; }
     chooseOne(gameState) { return null; }
     combo(gameState) { return null; }
-    startOfTurn(gameState) { return null; }
     aura(gameState) { return null; }
-    endOfTurn(gameState) { return null; }
     deathrattle(gameState) { return null; }
 
+    onStartTurn(gameState) { return null; }
+    onEndTurn(gameState) { return null; }
+    
     onMinionPlayed(gameState, minion) { return null; }
     onMinionSummoned(gameState, minion) { return null; }
     onMinionDied(gameState, minion) { return null; }

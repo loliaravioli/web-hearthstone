@@ -17,6 +17,8 @@ import { ManaOpponentView } from './jsObjects/views/ManaOpponentView.js';
 
 import { wsEventHandler } from './wsEventHandler.js';
 let ws;
+const PLAYER_ID = 1,
+    OPPONENT_ID = 2;
 
 class GAME {
     constructor() {
@@ -81,12 +83,7 @@ class GAME {
             socket: ws,
             event: 'death',
             onSuccess: (data) => {
-                console.log(`${data.boardIndex} died - player's side: ${data.isPlayer}`);
-                if (data.isPlayer) {
-                    this.playerBoardView.killCard(data.boardIndex);
-                } else {
-                    this.opponentBoardView.killCard(data.boardIndex);
-                }
+                console.log(`${data.minionID} died`);
             }
         });
 
@@ -115,8 +112,21 @@ class GAME {
             socket: ws,
             event: 'attack',
             onSuccess: (data) => {
-                console.log(`${data.attackerIndex} attacked ${data.targetIndex}`);
+                console.log(`${data.attackerID} attacked ${data.targetID}`);
                 console.log(`-----attacker dealt ${data.damageToTarget}, target dealt ${data.damageToAttacker}`);
+            }
+        });
+
+        wsEventHandler({
+            socket: ws,
+            event: 'endTurn',
+            onSuccess: (data) => {
+                console.log(`${data.whoseTurn}'s turn now`);
+                if(data.whoseTurn == PLAYER_ID) {
+                    this.turnController.startPlayerTurn();
+                } else {
+                    this.turnController.startOpponentTurn();
+                }
             }
         });
     }

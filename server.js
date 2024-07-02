@@ -4,7 +4,7 @@ const mime = require('mime-types');
 const fs = require('fs');
 const path = require('path');
 const staticDir = path.join(__dirname, '/public');
-const events = require('./server/wsEvents.js');
+const { processEvent } = require('./server/wsEvents.js');
 
 // const clients = new Map();
 
@@ -60,21 +60,7 @@ uWS.App({
             return;
         }
 
-        const { event, data } = parsedMessage;
-
-        switch (event) {
-            case 'getGameState':
-                events.getGameState(ws, data);
-                break;
-            case 'playMinion':
-                events.playMinion(ws, data);
-                break;
-            case 'attack':
-                events.attack(ws, data);
-                break;
-            default:
-                console.error('Unknown event', event);
-        }
+        processEvent(ws, parsedMessage);
     }
 }).listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);

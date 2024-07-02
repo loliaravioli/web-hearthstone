@@ -81,14 +81,15 @@ export class AttackController {
         if (!this.attackerCard) { return; }
 
         if (event.target.classList.contains('cardInPlay--opponent')) {
+            console.log(this.attackerCard.dataset.minionid, event.target.dataset.minionid);
             GAME.triggerEvent('attack', {
-                attackerIndex: this.attackerCard.dataset.minionid,
-                targetIndex: event.target.dataset.minionid
+                attackerID: this.attackerCard.dataset.minionid,
+                targetID: event.target.dataset.minionid
             });
         } else if (event.target.id == 'opponentHero') {
             GAME.triggerEvent('attack', {
-                attackerIndex: this.attackerCard.dataset.minionid,
-                targetIndex: 99 // TODO: make a list of shared enums between server and client for stuff like this
+                attackerID: this.attackerCard.dataset.minionid,
+                targetID: 99 // TODO: make a list of shared enums between server and client for stuff like this
             });
         }
 

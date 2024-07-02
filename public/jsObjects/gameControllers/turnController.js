@@ -4,13 +4,11 @@ export class TurnController {
     constructor() {
         this.playersTurn = false;
         this.playerTurnSound = new Audio("../../media/sounds/playerturn.mp3");
+        this.endTurnSound = new Audio("../media/sounds/endturn.mp3");
 
         document.getElementById('endturn').addEventListener("click", () => {
-            (new Audio("../media/sounds/endturn.mp3")).play();
-            document.getElementById('endturn').style.zIndex = "50";
-            // document.getElementById("gifhint").style.backgroundImage = "url('../media/hints/attack.gif')";
-            // document.getElementById("texthint").innerText = "Click on a green glowing allied card then click on an enemy to attack.";
-            this.startOpponentTurn();
+            this.endTurnSound.play();
+            GAME.triggerEvent('endTurn');
         });
     }
 
@@ -39,6 +37,10 @@ export class TurnController {
     startOpponentTurn() {
         this.playersTurn = false;
 
+        document.getElementById('endturn').style.zIndex = "50";
+        // document.getElementById("gifhint").style.backgroundImage = "url('../media/hints/attack.gif')";
+        // document.getElementById("texthint").innerText = "Click on a green glowing allied card then click on an enemy to attack.";
+
         GAME.playerHandView.setAllCardsUnplayable();
 
         document.body.style.cursor = "url(../media/images/cursor/spectate.png) 10 2, auto";
@@ -48,11 +50,5 @@ export class TurnController {
         $('#endturn')
             .css({ 'background-color': 'grey' })
             .html('ENEMY TURN');
-
-        setTimeout(function () {
-            // TODO: implement AI
-            // AI();
-            this.startPlayerTurn();
-        }, 1.25 * 1000);
     }
 }

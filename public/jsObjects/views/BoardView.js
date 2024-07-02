@@ -27,13 +27,6 @@ export class BoardView {
         this.getElement().insertBefore(view.getElement(), this.getElement().children[index]);
     }
 
-    killCard(index) {
-        console.log(`Killing minion at index ${index} on ${this.isPlayer ? "player's" : "opponent's"} board`);
-        // this.cardViews[index].triggerDeath();
-        // this.board.removeCard(index);
-        // this.update();
-    }
-
     generatePlaceholder(cardX) {
         if (this.cardViews.length == 0) { return; }
         let cardsCount = this.cardViews.length;
